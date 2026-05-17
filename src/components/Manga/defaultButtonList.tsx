@@ -2,6 +2,7 @@ import MdClose from '@material-design-icons/svg/round/close.svg';
 import MdFullscreen from '@material-design-icons/svg/round/fullscreen.svg';
 import MdFullscreenExit from '@material-design-icons/svg/round/fullscreen_exit.svg';
 import MdGrid from '@material-design-icons/svg/round/grid_4x4.svg';
+import MdImage from '@material-design-icons/svg/round/image.svg';
 import MdLooksOne from '@material-design-icons/svg/round/looks_one.svg';
 import MdLooksTwo from '@material-design-icons/svg/round/looks_two.svg';
 import MdLowPriority from '@material-design-icons/svg/round/low_priority.svg';
@@ -20,6 +21,7 @@ import {
   doubleClickZoom,
   handleScrollModeZoom,
   isOnePageMode,
+  isRelineUpscalingImage,
   isScrollMode,
   isTranslatingImage,
   isTranslatingToEnd,
@@ -29,6 +31,7 @@ import {
   switchGridMode,
   switchOnePageMode,
   switchScrollMode,
+  toggleRelineUpscaleCurrent,
   translateCurrent,
   translateToEnd,
 } from './actions';
@@ -58,6 +61,8 @@ const ZoomButton = () => (
     }
   />
 );
+
+const tt = (key: string, fallback: string) => t(key) || fallback;
 
 /** 工具栏的默认按钮列表 */
 export const defaultButtonList: ToolbarButtonList = [
@@ -101,6 +106,27 @@ export const defaultButtonList: ToolbarButtonList = [
       onClick={switchGridMode}
       children={<MdGrid />}
     />
+  ),
+  () => (
+    <Show when={store.option.relineUpscale.enabled}>
+      <hr />
+      <IconButton
+        tip={
+          isRelineUpscalingImage()
+            ? tt(
+                'button.close_current_page_reline_upscale',
+                'Close Reline upscale of the current page',
+              )
+            : tt(
+                'button.reline_upscale_current_page',
+                'Reline upscale current page',
+              )
+        }
+        enabled={isRelineUpscalingImage()}
+        onClick={toggleRelineUpscaleCurrent}
+        children={<MdImage />}
+      />
+    </Show>
   ),
   // 翻译
   () => (

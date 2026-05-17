@@ -19,6 +19,12 @@ export const ComicImg: Component<TComicImg & { index: number }> = (img) => {
   const src = () => {
     if (img.loadType === 'wait') return '';
     if (img.translationType === 'show') return img.translationUrl;
+    if (
+      store.option.relineUpscale.enabled &&
+      img.relineUpscaleUrl &&
+      (img.relineUpscaleType === 'show' || img.relineUpscaleType === 'cached')
+    )
+      return img.relineUpscaleUrl;
     if (store.option.imgRecognition.enabled) {
       if (store.option.imgRecognition.upscale && img.upscaleUrl)
         return img.upscaleUrl;
@@ -66,6 +72,8 @@ export const ComicImg: Component<TComicImg & { index: number }> = (img) => {
       data-show={showState()}
       data-type={img.type ?? store.defaultImgType}
       data-load-type={img.loadType === 'loaded' ? undefined : img.loadType}
+      data-reline-upscale-type={img.relineUpscaleType}
+      data-reline-upscale-message={img.relineUpscaleMessage}
     >
       {/* 因为 img 无法使用 ::after，所以得用 picture 包一下 */}
       <picture style={styles().picture}>

@@ -13,6 +13,7 @@ export * from './operate';
 export * from './pointer';
 export * from './readProgress';
 export * from './renderPage';
+export * from './relineUpscale';
 export * from './scroll';
 export * from './scrollbar';
 export * from './scrollMode';

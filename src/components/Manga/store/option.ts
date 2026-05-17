@@ -112,6 +112,11 @@ export type Option = {
     upscale: boolean;
   };
 
+  relineUpscale: {
+    enabled: boolean;
+    serverUrl: string;
+  };
+
   /** 翻译 */
   translation: {
     /** 是否启用翻译 */
@@ -186,6 +191,11 @@ const _defaultOption: Readonly<Option> = {
     background: true,
     pageFill: true,
     upscale: false,
+  },
+
+  relineUpscale: {
+    enabled: false,
+    serverUrl: 'http://127.0.0.1:5678',
   },
 
   translation: {

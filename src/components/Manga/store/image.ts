@@ -18,6 +18,15 @@ export type ComicImg = {
   translationType?: 'wait' | 'show' | 'hide' | 'error';
 
   upscaleUrl?: string;
+  relineUpscaleUrl?: string;
+  relineUpscaleMessage?: string;
+  relineUpscaleType?:
+    | 'wait'
+    | 'processing'
+    | 'cached'
+    | 'show'
+    | 'hide'
+    | 'error';
 };
 
 export type PageList = ([number] | [number, number])[];

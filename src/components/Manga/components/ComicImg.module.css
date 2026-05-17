@@ -76,6 +76,29 @@
   &[data-load-type='error'] > picture {
     cursor: pointer;
   }
+
+  &[data-reline-upscale-type='wait']::after,
+  &[data-reline-upscale-type='processing']::after,
+  &[data-reline-upscale-type='error']::after {
+    pointer-events: none;
+    content: attr(data-reline-upscale-message);
+
+    position: absolute;
+    right: 0.5em;
+    bottom: 0.5em;
+
+    padding: 0.25em 0.5em;
+    border-radius: 0.25em;
+
+    color: #fff;
+    font-size: 0.8em;
+
+    background: #0009;
+  }
+
+  &[data-reline-upscale-type='error']::after {
+    background: #b00020cc;
+  }
 }
 
 .mangaFlow[dir='ltr'] .img[data-show='1'],

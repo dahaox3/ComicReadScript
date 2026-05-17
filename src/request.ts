@@ -14,6 +14,7 @@ export type Response<T = any> = {
   readonly response: T;
   readonly status: number;
   readonly statusText: string;
+  readonly responseHeaders?: string;
 };
 
 export type ErrorResponse = {

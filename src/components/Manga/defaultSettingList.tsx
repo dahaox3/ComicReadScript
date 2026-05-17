@@ -40,6 +40,8 @@ export type SettingList = (
     ]
 )[];
 
+const tt = (key: string, fallback: string) => t(key) || fallback;
+
 /** 默认菜单项 */
 export const defaultSettingList: () => SettingList = () => [
   [
@@ -356,6 +358,32 @@ export const defaultSettingList: () => SettingList = () => [
           name={t('setting.option.auto_scroll_trigger_end')}
           {...bindOption('autoScroll', 'triggerEnd')}
         />
+      </>
+    ),
+  ],
+  [
+    tt('reline_upscale.title', 'Reline Upscale'),
+    () => (
+      <>
+        <SettingsItemSwitch
+          name={t('other.enabled')}
+          {...bindOption('relineUpscale', 'enabled')}
+        />
+        <SettingsItem
+          name={tt('reline_upscale.server_url', 'Reline service URL')}
+        >
+          <input
+            type="url"
+            value={store.option.relineUpscale.serverUrl}
+            onChange={(e) => {
+              setOption((draftOption) => {
+                const url = e.target.value.trim().replace(/\/$/, '');
+                draftOption.relineUpscale.serverUrl =
+                  url || 'http://127.0.0.1:5678';
+              });
+            }}
+          />
+        </SettingsItem>
       </>
     ),
   ],
