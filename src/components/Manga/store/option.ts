@@ -115,6 +115,8 @@ export type Option = {
   relineUpscale: {
     enabled: boolean;
     serverUrl: string;
+    preloadRange: 0 | 5 | 10 | -1;
+    preloadPrevious: boolean;
   };
 
   /** 翻译 */
@@ -196,6 +198,8 @@ const _defaultOption: Readonly<Option> = {
   relineUpscale: {
     enabled: false,
     serverUrl: 'http://127.0.0.1:5678',
+    preloadRange: -1,
+    preloadPrevious: false,
   },
 
   translation: {

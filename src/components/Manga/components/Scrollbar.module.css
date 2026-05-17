@@ -59,6 +59,19 @@
     background-color: #d1c4e9;
   }
 
+  &[data-reline-upscale] {
+    transform: scaleY(1);
+    background-color: #42a5f5;
+  }
+
+  &[data-reline-upscale='loading'] {
+    background-color: #90caf9;
+  }
+
+  &[data-reline-upscale='error'] {
+    background-color: #f005;
+  }
+
   &[data-translation-type] {
     transform-origin: top;
     transform: scaleY(1);
@@ -285,11 +298,16 @@
   }
 
   /* 将 scaleY 改成 scaleX */
-  & .scrollbarPage {
+    & .scrollbarPage {
     transform: scaleX(1);
 
     &[data-type='loaded'] {
       transform: scaleX(0);
+    }
+
+    &[data-reline-upscale],
+    &[data-upscale] {
+      transform: scaleX(1);
     }
 
     &[data-translation-type] {

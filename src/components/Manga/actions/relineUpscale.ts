@@ -4,7 +4,7 @@ import { request } from 'request';
 
 import { downloadImg } from '../helper';
 import { setState, store } from '../store';
-import { activePage } from './memo';
+import { activeImgIndex, activePage } from './memo';
 
 type RelineCacheItem = {
   blob: Blob;
@@ -17,6 +17,8 @@ const maxCacheCount = 50;
 const maxCacheSize = 512 * 1024 * 1024;
 const cache = new Map<string, RelineCacheItem>();
 let cacheSize = 0;
+let runId = 0;
+let relineRunEnabled = false;
 
 const rt = (key: string, fallback: string, variables?: Record<string, unknown>) =>
   t(`reline_upscale.${key}`, variables) || fallback;
@@ -76,12 +78,15 @@ const saveCache = (key: string, blob: Blob) => {
   return item;
 };
 
-const applyCache = (url: string) => {
+const applyCache = (
+  url: string,
+  type: 'cached' | 'show' | 'hide' = 'cached',
+) => {
   const item = getCache(url);
   if (!item) return false;
   setState('imgMap', url, {
     relineUpscaleUrl: item.blobUrl,
-    relineUpscaleType: 'cached',
+    relineUpscaleType: type,
     relineUpscaleMessage: rt('cached', 'Reline result is cached'),
   });
   return true;
@@ -126,7 +131,92 @@ const upload = async (blob: Blob) => {
   return new Blob([res.response], { type: contentType });
 };
 
-export const relineUpscaleImage = async (url: string) => {
+const isPendingType = (type: unknown) =>
+  type === 'wait' || type === 'processing' || type === 'error';
+
+const isFinishedType = (type: unknown) =>
+  type === 'show' || type === 'cached' || type === 'hide';
+
+const shouldProcessImg = (index: number) => {
+  const url = store.imgList[index];
+  const img = store.imgMap[url];
+  if (!img || img.loadType !== 'loaded') return false;
+  if (img.relineUpscaleUrl || getCache(url)) return false;
+  return !isFinishedType(img.relineUpscaleType);
+};
+
+const promoteOrMark = (index: number) => {
+  const url = store.imgList[index];
+  const img = store.imgMap[url];
+  if (!img || img.loadType !== 'loaded') return;
+  if (img.relineUpscaleUrl) {
+    if (img.relineUpscaleType === 'hide' || img.relineUpscaleType === undefined)
+      setState('imgMap', url, {
+        relineUpscaleType: 'show',
+        relineUpscaleMessage: rt('completed', 'Reline upscale completed'),
+      });
+    return;
+  }
+  const item = getCache(url);
+  if (item) {
+    setState('imgMap', url, {
+      relineUpscaleUrl: item.blobUrl,
+      relineUpscaleType: 'show',
+      relineUpscaleMessage: rt('cached', 'Reline result is cached'),
+    });
+    return;
+  }
+  if (isFinishedType(img.relineUpscaleType) || img.relineUpscaleType === 'processing')
+    return;
+  setState('imgMap', url, {
+    relineUpscaleType: 'wait',
+    relineUpscaleMessage: rt('wait', 'Waiting for Reline upscale'),
+  });
+};
+
+const getScanBounds = () => {
+  const range = store.option.relineUpscale.preloadRange;
+  if (range === -1) return [0, store.imgList.length - 1] as const;
+  const active = activeImgIndex();
+  return [
+    Math.max(0, active - range),
+    Math.min(store.imgList.length - 1, active + range),
+  ] as const;
+};
+
+const enqueueConfiguredRange = () => {
+  const [start, end] = getScanBounds();
+  const active = activeImgIndex();
+  for (let i = active; i <= end; i++) promoteOrMark(i);
+  if (!store.option.relineUpscale.preloadPrevious) return;
+  for (let i = Math.min(active - 1, end); i >= start; i--) promoteOrMark(i);
+};
+
+const findNextUnprocessed = () => {
+  const [start, end] = getScanBounds();
+  const active = activeImgIndex();
+  for (let i = active; i <= end; i++) if (shouldProcessImg(i)) return store.imgList[i];
+  if (!store.option.relineUpscale.preloadPrevious) return;
+  for (let i = Math.min(active - 1, end); i >= start; i--)
+    if (shouldProcessImg(i)) return store.imgList[i];
+};
+
+const stopRelineRun = () => {
+  runId += 1;
+  relineRunEnabled = false;
+  setState((state) => {
+    for (const url of state.imgList) {
+      const img = state.imgMap[url];
+      if (!img) continue;
+      if (img.relineUpscaleType === 'show' || img.relineUpscaleType === 'cached')
+        img.relineUpscaleType = 'hide';
+      else if (isPendingType(img.relineUpscaleType))
+        img.relineUpscaleType = undefined;
+    }
+  });
+};
+
+export const relineUpscaleImage = async (url: string, currentRunId = runId) => {
   try {
     if (!url) return;
     const img = store.imgMap[url];
@@ -135,14 +225,15 @@ export const relineUpscaleImage = async (url: string) => {
       return;
     }
 
-    if (applyCache(url)) return;
+    if (applyCache(url, relineRunEnabled ? 'show' : 'hide')) return;
 
-    setState('imgMap', url, {
-      relineUpscaleType: 'wait',
-      relineUpscaleMessage: rt('connecting', 'Connecting to Reline service'),
-    });
+    if (currentRunId === runId)
+      setState('imgMap', url, {
+        relineUpscaleType: 'wait',
+        relineUpscaleMessage: rt('connecting', 'Connecting to Reline service'),
+      });
     const status = await checkServer();
-    if (status.queue_length)
+    if (currentRunId === runId && status.queue_length)
       setMessage(
         url,
         rt('queued', `Reline queue: ${status.queue_length} image(s)`, {
@@ -150,15 +241,20 @@ export const relineUpscaleImage = async (url: string) => {
         }),
       );
 
-    setState('imgMap', url, {
-      relineUpscaleType: 'processing',
-      relineUpscaleMessage: rt('processing', 'Reline processing image'),
-    });
+    if (currentRunId === runId)
+      setState('imgMap', url, {
+        relineUpscaleType: 'processing',
+        relineUpscaleMessage: rt('processing', 'Reline processing image'),
+      });
     const blob = await downloadImg(url);
     const resultBlob = await upload(blob);
     const item = saveCache(getCacheKey(url), resultBlob);
     const currentType = store.imgMap[url]?.relineUpscaleType;
-    const shouldShow = currentType === 'wait' || currentType === 'processing';
+    const shouldShow =
+      relineRunEnabled &&
+      (currentType === undefined ||
+        currentType === 'wait' ||
+        currentType === 'processing');
 
     setState('imgMap', url, {
       relineUpscaleUrl: item.blobUrl,
@@ -167,6 +263,7 @@ export const relineUpscaleImage = async (url: string) => {
     });
   } catch (error) {
     log.error('Reline upscale error', error);
+    if (currentRunId !== runId) return;
     setState('imgMap', url, {
       relineUpscaleType: 'error',
       relineUpscaleMessage:
@@ -177,13 +274,12 @@ export const relineUpscaleImage = async (url: string) => {
 };
 
 const relineUpscaleNext = singleThreaded(async (state) => {
-  const targetUrl = store.imgList.find((url) => {
-    const img = store.imgMap[url];
-    return img?.relineUpscaleType === 'wait';
-  });
+  const currentRunId = runId;
+  enqueueConfiguredRange();
+  const targetUrl = findNextUnprocessed();
   if (!targetUrl) return;
-  await relineUpscaleImage(targetUrl);
-  state.continueRun();
+  await relineUpscaleImage(targetUrl, currentRunId);
+  if (currentRunId === runId) state.continueRun();
 });
 
 export const setImgRelineUpscaleEnable = (
@@ -191,6 +287,13 @@ export const setImgRelineUpscaleEnable = (
   enable: boolean,
 ) => {
   if (!store.option.relineUpscale.enabled && enable) return;
+  if (!enable) {
+    stopRelineRun();
+    return;
+  }
+
+  runId += 1;
+  relineRunEnabled = true;
 
   setState((state) => {
     for (const i of list) {
@@ -226,12 +329,12 @@ export const setImgRelineUpscaleEnable = (
     }
   });
 
-  if (enable) void relineUpscaleNext();
+  void relineUpscaleNext();
 };
 
 export const isRelineUpscalingImage = () =>
-  activePage().some((i) => {
-    const type = store.imgMap[store.imgList[i]]?.relineUpscaleType;
+  store.imgList.some((url) => {
+    const type = store.imgMap[url]?.relineUpscaleType;
     return (
       type === 'wait' ||
       type === 'processing' ||

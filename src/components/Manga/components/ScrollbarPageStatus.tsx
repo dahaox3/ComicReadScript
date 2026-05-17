@@ -12,6 +12,7 @@ type ScrollbarPageItem = {
   loadType: ComicImg['loadType'];
   translationType: ComicImg['translationType'];
   upscale?: 'loading' | true;
+  relineUpscale?: 'loading' | 'done' | 'error';
 };
 
 const getScrollbarPage = (
@@ -27,11 +28,28 @@ const getScrollbarPage = (
   if (isUpscale() && img.upscaleUrl !== undefined)
     upscale = img.upscaleUrl === '' ? 'loading' : true;
 
+  let relineUpscale: ScrollbarPageItem['relineUpscale'];
+  switch (img.relineUpscaleType) {
+    case 'wait':
+    case 'processing':
+      relineUpscale = 'loading';
+      break;
+    case 'show':
+    case 'cached':
+    case 'hide':
+      relineUpscale = 'done';
+      break;
+    case 'error':
+      relineUpscale = 'error';
+      break;
+  }
+
   return {
     num,
     loadType: img.loadType,
     translationType: img.translationType,
     upscale,
+    relineUpscale,
   };
 };
 
@@ -42,13 +60,15 @@ const ScrollbarPage: Component<ScrollbarPageItem> = (props) => (
     data-type={props.loadType}
     data-translation-type={props.translationType}
     data-upscale={props.upscale}
+    data-reline-upscale={props.relineUpscale}
   />
 );
 
 const isSameItem = (a: ScrollbarPageItem, b: ScrollbarPageItem) =>
   a.loadType === b.loadType &&
   a.translationType === b.translationType &&
-  a.upscale === b.upscale;
+  a.upscale === b.upscale &&
+  a.relineUpscale === b.relineUpscale;
 
 /** 显示对应图片加载情况的元素 */
 export const ScrollbarPageStatus = () => {

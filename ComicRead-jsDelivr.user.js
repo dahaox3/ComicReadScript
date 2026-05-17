@@ -1,10 +1,10 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name            ComicRead
 // @namespace       ComicRead
 // @version         12.5.2
-// @description     涓烘极鐢荤珯澧炲姞鍙岄〉闃呰銆佺炕璇戠瓑浼樺寲浣撻獙鐨勫寮哄姛鑳姐€傜櫨鍚堜細锛堣褰曢槄璇诲巻鍙层€佽嚜鍔ㄧ鍒扮瓑锛夈€佺櫨鍚堜細鏂扮珯銆丒-Hentai锛堝叧鑱斿绔欍€佸揩鎹锋敹钘忋€佹爣绛炬煋鑹层€佽瘑鍒箍鍛婇〉绛夛級銆乶hentai锛堝交搴曞睆钄芥极鐢汇€佹棤闄愭粴鍔級銆乊urifans锛堣嚜鍔ㄧ鍒帮級銆佹嫹璐濇极鐢?copymanga)锛堟樉绀烘渶鍚庨槄璇昏褰曘€佽В閿侀殣钘忔极鐢伙級銆佸啀婕敾銆佹极鐢绘煖(manhuagui)銆佸姩婕眿(dm5)銆乵angabz銆乲omiic銆佺劇闄愬嫊婕€佺粎澹极鐢?wnacg)銆佺婕ぉ鍫傘€丯oyAcg銆佺啽杈ｆ极鐣€乭anime1銆乭itomi銆乭doujin銆丼chaleNetwork銆乶ude-moon銆丠entaiZap銆両MHentai銆丠entaiEra銆丠entaiEnvy銆丮angaDex銆亀elovemanga銆乲isslove(klz9)銆乲emono銆乶ekohouse銆丳ixiv銆佹槑鏃ユ柟鑸熸嘲鎷夎浜嬬ぞ銆佹渶鍓嶇窔銆佽姼鑳姐儗銉笺儔銆乀achidesk銆丩ANraragi
+// @description     为漫画站增加双页阅读、翻译等优化体验的增强功能。百合会（记录阅读历史、自动签到等）、百合会新站、E-Hentai（关联外站、快捷收藏、标签染色、识别广告页等）、nhentai（彻底屏蔽漫画、无限滚动）、Yurifans（自动签到）、拷贝漫画(copymanga)（显示最后阅读记录、解锁隐藏漫画）、再漫画、漫画柜(manhuagui)、动漫屋(dm5)、mangabz、komiic、無限動漫、绅士漫画(wnacg)、禁漫天堂、NoyAcg、熱辣漫畫、hanime1、hitomi、hdoujin、SchaleNetwork、nude-moon、HentaiZap、IMHentai、HentaiEra、HentaiEnvy、MangaDex、welovemanga、kisslove(klz9)、kemono、nekohouse、Pixiv、明日方舟泰拉记事社、最前線、芸能ヌード、Tachidesk、LANraragi
 // @description:en  Add enhanced features to the comic site for optimized experience, including dual-page reading and translation. E-Hentai (Associate nhentai, Quick favorite, Colorize tags, Floating tag list, etc.) | nhentai (Totally block comics, Auto page turning) | hitomi | hdoujin | SchaleNetwork | nude-moon | HentaiZap | IMHentai | HentaiEra | HentaiEnvy | kemono | nekohouse | MangaDex | welovemanga | kisslove(klz9)
-// @description:ru  袛芯斜邪胁谢褟械褌 褉邪褋褕懈褉械薪薪褘械 褎褍薪泻褑懈懈 写谢褟 褍写芯斜褋褌胁邪 薪邪 褋邪泄褌, 褌邪泻懈械 泻邪泻 写胁褍褏褋褌褉邪薪懈褔薪褘泄 褉械卸懈屑 懈 锌械褉械胁芯写.
+// @description:ru  Добавляет расширенные функции для удобства на сайт, такие как двухстраничный режим и перевод.
 // @author          hymbz
 // @license         AGPL-3.0-or-later
 // @noframes
@@ -49,8 +49,8 @@
 // @resource        comlink https://cdn.jsdelivr.net/npm/comlink@4.4.2/dist/umd/comlink.min.js
 // @resource        solid-js|store https://cdn.jsdelivr.net/npm/solid-js@1.9.8/store/dist/store.cjs
 // @resource        solid-js|web https://cdn.jsdelivr.net/npm/solid-js@1.9.8/web/dist/web.cjs
-// @resource        _tensorflow|tfjs https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js
-// @resource        _tensorflow|tfjs-backend-webgpu https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgpu@4.22.0/dist/tf-backend-webgpu.js
+// @resource        _tensorflow|tfjs https://registry.npmmirror.com/@tensorflow/tfjs/4.22.0/files/dist/tf.min.js
+// @resource        _tensorflow|tfjs-backend-webgpu https://registry.npmmirror.com/@tensorflow/tfjs-backend-webgpu/4.22.0/files/dist/tf-backend-webgpu.js
 // @supportURL      https://github.com/hymbz/ComicReadScript/issues
 // @updateURL       https://github.com/hymbz/ComicReadScript/raw/master/ComicRead.user.js
 // @downloadURL     https://github.com/hymbz/ComicReadScript/raw/master/ComicRead.user.js
@@ -63,9 +63,9 @@ const langList = [
 	"en",
 	"ru"
 ];
-/** 鍒ゆ柇浼犲叆鐨勫瓧绗︿覆鏄惁鏄敮鎸佺殑璇█绫诲瀷浠ｇ爜 */
+/** 判断传入的字符串是否是支持的语言类型代码 */
 const isLanguages = (lang) => Boolean(lang) && langList.includes(lang);
-/** 杩斿洖娴忚鍣ㄥ亸濂借瑷€ */
+/** 返回浏览器偏好语言 */
 const getBrowserLang = () => {
 	for (const language of navigator.languages) {
 		const matchLang = langList.find((l) => l === language.split("-")[0]);
@@ -103,7 +103,7 @@ const getDom = (id) => {
 	document.body.append(dom);
 	return dom;
 };
-/** 鎸傝浇 solid-js 缁勪欢 */
+/** 挂载 solid-js 组件 */
 const mountComponents = (id, fc) => {
 	const dom = getDom(id);
 	dom.style.setProperty("display", "unset", "important");
@@ -154,7 +154,7 @@ var FaviconProgress = class {
 		if (!this.link || !this.canvas) return;
 		this.link.href = this.canvas.toDataURL("image/png");
 	}
-	/** 鎭㈠榛樿鍥炬爣 */
+	/** 恢复默认图标 */
 	recover() {
 		if (!this.link || !this.initLink) return;
 		this.link.href = this.initLink;
@@ -274,7 +274,7 @@ var en_default = {
 			"not_valid_url": "Not a valid URL",
 			"parse_error": "Parsing error",
 			"password_error": "Incorrect password",
-			"repeat_load": "Loading other files鈥?,
+			"repeat_load": "Loading other files…",
 			"userscript_not_installed": "ComicRead userscript not installed"
 		},
 		"button": {
@@ -285,7 +285,7 @@ var en_default = {
 			"select_files": "Select File",
 			"select_folder": "Select folder"
 		},
-		"install_md": "### Tired of opening this webpage every time?\\nIf you wish to:\\n1. Have an independent window, as if using local software\\n1. Add to the local compressed file opening method for easy direct opening\\n1. Use offline\\n### Welcome to install this page as a PWA app on your computer馃槂馃憤",
+		"install_md": "### Tired of opening this webpage every time?\\nIf you wish to:\\n1. Have an independent window, as if using local software\\n1. Add to the local compressed file opening method for easy direct opening\\n1. Use offline\\n### Welcome to install this page as a PWA app on your computer😃👍",
 		"message": {
 			"enter_password": "Please enter your password",
 			"parsing": "Parsing"
@@ -324,8 +324,8 @@ var en_default = {
 			"img_recognition": "Image Recognition",
 			"img_recognition_background": "Recognition background color",
 			"img_recognition_pageFill": "Auto switch page fill",
-			"img_recognition_warn": "鉂?The current browser does not support Web Workers. Enabling this feature may cause page lag. It's recommended to upgrade or switch browsers.",
-			"img_recognition_warn_2": "鉂?The current website does not support Web Workers. Enabling this feature may cause page lag.",
+			"img_recognition_warn": "❗ The current browser does not support Web Workers. Enabling this feature may cause page lag. It's recommended to upgrade or switch browsers.",
+			"img_recognition_warn_2": "❗ The current website does not support Web Workers. Enabling this feature may cause page lag.",
 			"paragraph_appearance": "Appearance",
 			"paragraph_dir": "Reading direction",
 			"paragraph_display": "Display",
@@ -512,694 +512,694 @@ var en_default = {
 //#region locales/ru.json
 var ru_default = {
 	alert: {
-		"comic_load_error": "袨褕懈斜泻邪 蟹邪谐褉褍蟹泻懈 泻芯屑懈泻褋邪",
-		"download_failed": "袨褕懈斜泻邪 蟹邪谐褉褍蟹泻懈",
-		"fetch_comic_img_failed": "袧械 褍写邪谢芯褋褜 蟹邪谐褉褍蟹懈褌褜 懈蟹芯斜褉邪卸械薪懈褟",
-		"img_load_failed": "袧械 褍写邪谢芯褋褜 蟹邪谐褉褍蟹懈褌褜 懈蟹芯斜褉邪卸械薪懈械",
-		"no_img_download": "袧械褌 写芯褋褌褍锌薪褘褏 泻邪褉褌懈薪芯泻 写谢褟 蟹邪谐褉褍蟹泻懈",
-		"repeat_load": "袟邪谐褉褍蟹泻邪 懈蟹芯斜褉邪卸械薪懈褟, 锌芯卸邪谢褍泄褋褌邪 锌芯写芯卸写懈褌械",
-		"retry_get_img_url": "袩芯胁褌芯褉薪芯 锌芯谢褍褔懈褌褜 邪写褉械褋 懈蟹芯斜褉邪卸械薪懈褟 薪邪 褋褌褉邪薪懈褑械 {{i}}",
-		"server_connect_failed": "袧械 褍写邪谢芯褋褜 锌芯写泻谢褞褔懈褌褜褋褟 泻 褋械褉胁械褉褍"
+		"comic_load_error": "Ошибка загрузки комикса",
+		"download_failed": "Ошибка загрузки",
+		"fetch_comic_img_failed": "Не удалось загрузить изображения",
+		"img_load_failed": "Не удалось загрузить изображение",
+		"no_img_download": "Нет доступных картинок для загрузки",
+		"repeat_load": "Загрузка изображения, пожалуйста подождите",
+		"retry_get_img_url": "Повторно получить адрес изображения на странице {{i}}",
+		"server_connect_failed": "Не удалось подключиться к серверу"
 	},
 	button: {
-		"auto_scroll": "袗胁褌芯锌褉芯泻褉褍褌泻邪",
-		"close_current_page_translation": "小泻褉褘褌褜 锌械褉械胁芯写 褌械泻褍褖械泄 褋褌褉邪薪懈褑褘",
-		"download_completed": "袟邪谐褉褍蟹泻邪 蟹邪胁械褉褕械薪邪",
-		"download_completed_error": "袟邪谐褉褍蟹泻邪 蟹邪胁械褉褕械薪邪, 薪芯 {{errorNum}} 懈蟹芯斜褉邪卸械薪懈泄 薪械 褍写邪谢芯褋褜 蟹邪谐褉褍蟹懈褌褜",
-		"downloading": "小泻邪褔懈胁邪薪懈械",
-		"fullscreen": "锌芯谢薪芯褝泻褉邪薪薪褘泄",
-		"fullscreen_exit": "胁褘泄褌懈 懈蟹 锌芯谢薪芯褝泻褉邪薪薪芯谐芯 褉械卸懈屑邪",
-		"grid_mode": "袪械卸懈屑 褋械褌泻懈",
-		"packaging": "校锌邪泻芯胁泻邪",
-		"page_fill": "袟邪锌芯谢薪懈褌褜 褋褌褉邪薪懈褑褍",
-		"page_mode_double": "袛胁褍褏褔邪褋褌懈褔薪褘泄 褉械卸懈屑",
-		"page_mode_single": "袨写薪芯褋褌褉邪薪懈褔薪褘泄 褉械卸懈屑",
-		"scroll_mode": "袪械卸懈屑 锌褉芯泻褉褍褌泻懈",
-		"translate_current_page": "袩械褉械胁械褋褌懈 褌械泻褍褖褍褞 褋褌褉邪薪懈褑褍",
-		"zoom_in": "袩褉懈斜谢懈蟹懈褌褜",
-		"zoom_out": "校屑械薪褜褕懈褌褜"
+		"auto_scroll": "Автопрокрутка",
+		"close_current_page_translation": "Скрыть перевод текущей страницы",
+		"download_completed": "Загрузка завершена",
+		"download_completed_error": "Загрузка завершена, но {{errorNum}} изображений не удалось загрузить",
+		"downloading": "Скачивание",
+		"fullscreen": "полноэкранный",
+		"fullscreen_exit": "выйти из полноэкранного режима",
+		"grid_mode": "Режим сетки",
+		"packaging": "Упаковка",
+		"page_fill": "Заполнить страницу",
+		"page_mode_double": "Двухчастичный режим",
+		"page_mode_single": "Одностраничный режим",
+		"scroll_mode": "Режим прокрутки",
+		"translate_current_page": "Перевести текущую страницу",
+		"zoom_in": "Приблизить",
+		"zoom_out": "Уменьшить"
 	},
-	description: "袛芯斜邪胁谢褟械褌 褉邪褋褕懈褉械薪薪褘械 褎褍薪泻褑懈懈 写谢褟 褍写芯斜褋褌胁邪 薪邪 褋邪泄褌, 褌邪泻懈械 泻邪泻 写胁褍褏褋褌褉邪薪懈褔薪褘泄 褉械卸懈屑 懈 锌械褉械胁芯写.",
+	description: "Добавляет расширенные функции для удобства на сайт, такие как двухстраничный режим и перевод.",
 	eh_tag_lint: {
-		"combo": "[褌械谐]: 袙 斜芯谢褜褕懈薪褋褌胁械 褋谢褍褔邪械胁 写芯谢卸械薪 褋芯褋褍褖械褋褌胁芯胁邪褌褜 褋 [褌械谐芯屑]",
-		"conflict": "[tag]: 袧械 写芯谢卸械薪 褋芯褋褍褖械褋褌胁芯胁邪褌褜 褋 [tag]",
-		"correct_tag": "袛芯谢卸械薪 斜褘褌褜 锌褉邪胁懈谢褜薪褘泄 褌械谐",
-		"miss_female": "袨褌褋褍褌褋褌胁褍械褌 屑褍卸褋泻芯泄 褌械谐, 胁芯蟹屑芯卸薪芯, 锌芯薪邪写芯斜懈褌褋褟",
-		"miss_parody": "袨褌褋褍褌褋褌胁褍械褌 褌械谐 锌邪褉芯写懈懈, 胁芯蟹屑芯卸薪芯, 锌芯薪邪写芯斜懈褌褋褟",
-		"possible_conflict": "[tag]: 袙 斜芯谢褜褕懈薪褋褌胁械 褋谢褍褔邪械胁 薪械 写芯谢卸械薪 褋芯褋褍褖械褋褌胁芯胁邪褌褜 褋 [tag]",
-		"prerequisite": "[tag]: 袩褉械写胁邪褉懈褌械谢褜薪褘泄 褌械谐 [tag] 薪械 褋褍褖械褋褌胁褍械褌"
+		"combo": "[тег]: В большинстве случаев должен сосуществовать с [тегом]",
+		"conflict": "[tag]: Не должен сосуществовать с [tag]",
+		"correct_tag": "Должен быть правильный тег",
+		"miss_female": "Отсутствует мужской тег, возможно, понадобится",
+		"miss_parody": "Отсутствует тег пародии, возможно, понадобится",
+		"possible_conflict": "[tag]: В большинстве случаев не должен сосуществовать с [tag]",
+		"prerequisite": "[tag]: Предварительный тег [tag] не существует"
 	},
 	end_page: {
-		"next_button": "小谢械写褍褞褖邪褟 谐谢邪胁邪",
-		"prev_button": "袩褉械写褘写褍褖邪褟 谐谢邪胁邪",
+		"next_button": "Следующая глава",
+		"prev_button": "Предыдущая глава",
 		"tip": {
-			"end_jump": "袩芯褋谢械写薪褟褟 褋褌褉邪薪懈褑邪, 褋谢械写褍褞褖邪褟 谐谢邪胁邪 薪懈卸械",
-			"exit": "袩芯褋谢械写薪褟褟 褋褌褉邪薪懈褑邪, 薪懈卸械 泻芯屑懈泻褋 斜褍写械褌 蟹邪泻褉褘褌",
-			"start_jump": "袩械褉胁邪褟 褋褌褉邪薪懈褑邪, 胁褘褕械 斜褍写械褌 蟹邪谐褉褍卸械薪邪 锌褉械写褘写褍褖邪褟 谐谢邪胁邪"
+			"end_jump": "Последняя страница, следующая глава ниже",
+			"exit": "Последняя страница, ниже комикс будет закрыт",
+			"start_jump": "Первая страница, выше будет загружена предыдущая глава"
 		}
 	},
 	hotkeys: {
-		"enter_read_mode": "袪械卸懈屑 褔褌械薪懈褟",
-		"float_tag_list": "袩谢邪胁邪褞褖懈泄 褋锌懈褋芯泻 褌械谐芯胁",
-		"jump_next": "袩械褉械泄褌懈 泻 褋谢械写褍褞褖械泄 谐谢邪胁械",
-		"jump_prev": "袩械褉械泄褌懈 泻 锌褉械写褘写褍褖械泄 谐谢邪胁械",
-		"jump_to_end": "袩械褉械泄褌懈 泻 锌芯褋谢械写薪械泄 褋褌褉邪薪懈褑械",
-		"jump_to_home": "袩械褉械泄褌懈 泻 锌械褉胁芯泄 褋褌褉邪薪懈褑械",
-		"multi_select_load": "袦薪芯卸械褋褌胁械薪薪邪褟 蟹邪谐褉褍蟹泻邪",
-		"page_down": "袩械褉械谢懈褋褌薪褍褌褜 褋褌褉邪薪懈褑褍 胁薪懈蟹",
-		"page_up": "袩械褉械谢懈褋褌薪褍褌褜 褋褌褉邪薪懈褑褍 胁胁械褉褏",
-		"reload_current_error_img": "袩械褉械蟹邪谐褉褍蟹懈褌褜 褌械泻褍褖械械 芯褕懈斜芯褔薪芯械 懈蟹芯斜褉邪卸械薪懈械",
-		"repeat_tip": "协褌邪 谐芯褉褟褔邪褟 泻谢邪胁懈褕邪 斜褘谢邪 薪邪蟹薪邪褔械薪邪 薪邪 \\"{{hotkey}}\\"",
-		"scroll_down": "袩褉芯泻褉褍褌懈褌褜 胁薪懈蟹",
-		"scroll_left": "袩褉芯泻褉褍褌懈褌褜 胁谢械胁芯",
-		"scroll_right": "袩褉芯泻褉褍褌懈褌械 胁锌褉邪胁芯",
-		"scroll_up": "袩褉芯泻褉褍褌懈褌械 胁胁械褉褏",
-		"switch_auto_enlarge": "袗胁褌芯屑邪褌懈褔械褋泻芯械 锌褉懈斜谢懈卸械薪懈械",
-		"switch_dir": "袧邪锌褉邪胁谢械薪懈械 褔褌械薪懈褟",
-		"switch_grid_mode": "袪械卸懈屑 褋械褌泻懈",
-		"switch_page_fill": "袟邪锌芯谢薪械薪懈械 褋褌褉邪薪懈褑褘",
-		"switch_scroll_mode": "袪械卸懈屑 锌褉芯泻褉褍褌泻懈",
-		"switch_single_double_page_mode": "袨写薪芯褋褌褉邪薪懈褔薪褘泄/袛胁褍褏褋褌褉邪薪懈褔薪褘泄 褉械卸懈屑"
+		"enter_read_mode": "Режим чтения",
+		"float_tag_list": "Плавающий список тегов",
+		"jump_next": "Перейти к следующей главе",
+		"jump_prev": "Перейти к предыдущей главе",
+		"jump_to_end": "Перейти к последней странице",
+		"jump_to_home": "Перейти к первой странице",
+		"multi_select_load": "Множественная загрузка",
+		"page_down": "Перелистнуть страницу вниз",
+		"page_up": "Перелистнуть страницу вверх",
+		"reload_current_error_img": "Перезагрузить текущее ошибочное изображение",
+		"repeat_tip": "Эта горячая клавиша была назначена на \\"{{hotkey}}\\"",
+		"scroll_down": "Прокрутить вниз",
+		"scroll_left": "Прокрутить влево",
+		"scroll_right": "Прокрутите вправо",
+		"scroll_up": "Прокрутите вверх",
+		"switch_auto_enlarge": "Автоматическое приближение",
+		"switch_dir": "Направление чтения",
+		"switch_grid_mode": "Режим сетки",
+		"switch_page_fill": "Заполнение страницы",
+		"switch_scroll_mode": "Режим прокрутки",
+		"switch_single_double_page_mode": "Одностраничный/Двухстраничный режим"
 	},
 	img_status: {
-		"error": "袨褕懈斜泻邪 蟹邪谐褉褍蟹泻懈",
-		"loading": "袟邪谐褉褍蟹泻邪",
-		"wait": "袨卸懈写邪薪懈械 蟹邪谐褉褍蟹泻懈"
+		"error": "Ошибка загрузки",
+		"loading": "Загрузка",
+		"wait": "Ожидание загрузки"
 	},
 	other: {
-		"auto": "袗胁褌芯",
+		"auto": "Авто",
 		"custom": "Custom",
-		"disable": "袨褌泻谢褞褔懈褌褜",
-		"distance": "褉邪褋褋褌芯褟薪懈械",
-		"download": "小泻邪褔邪褌褜",
-		"enabled": "袙泻谢褞褔械薪芯",
-		"enter_comic_read_mode": "袪械卸懈屑 褔褌械薪懈褟 泻芯屑懈泻褋芯胁",
-		"exit": "袙褘褏芯写",
-		"fab_hidden": "小泻褉褘褌褜 锌谢邪胁邪褞褖褍褞 泻薪芯锌泻褍",
-		"fab_show": "袩芯泻邪蟹邪褌褜 锌谢邪胁邪褞褖褍褞 泻薪芯锌泻褍",
-		"fill_page": "袟邪锌芯谢薪懈褌褜 褋褌褉邪薪懈褑褍",
-		"hotkeys": "袚芯褉褟褔懈械 泻谢邪胁懈褕懈",
-		"img_loading": "袠蟹芯斜褉邪卸械薪懈械 蟹邪谐褉褍卸邪械褌褋褟",
-		"interval": "懈薪褌械褉胁邪谢",
-		"loading_img": "袟邪谐褉褍蟹泻邪 懈蟹芯斜褉邪卸械薪懈褟",
-		"multi_select_mode": "袪械卸懈屑 屑薪芯卸械褋褌胁械薪薪芯谐芯 胁褘斜芯褉邪",
-		"none": "袨褌褋褍褌褋褌胁褍械褌",
-		"or": "懈谢懈",
-		"other": "袛褉褍谐芯械",
-		"page_range": "袙胁械写懈褌械 写懈邪锌邪蟹芯薪 褋褌褉邪薪懈褑.:\\n (薪邪锌褉懈屑械褉, 1, 3-5, 9-)",
-		"read_mode": "袪械卸懈屑 褔褌械薪懈褟",
-		"selected": "袙褘斜褉邪薪芯",
-		"setting": "袧邪褋褌褉芯泄泻懈",
-		"clear": "袨褔懈褋褌懈褌褜"
+		"disable": "Отключить",
+		"distance": "расстояние",
+		"download": "Скачать",
+		"enabled": "Включено",
+		"enter_comic_read_mode": "Режим чтения комиксов",
+		"exit": "Выход",
+		"fab_hidden": "Скрыть плавающую кнопку",
+		"fab_show": "Показать плавающую кнопку",
+		"fill_page": "Заполнить страницу",
+		"hotkeys": "Горячие клавиши",
+		"img_loading": "Изображение загружается",
+		"interval": "интервал",
+		"loading_img": "Загрузка изображения",
+		"multi_select_mode": "Режим множественного выбора",
+		"none": "Отсутствует",
+		"or": "или",
+		"other": "Другое",
+		"page_range": "Введите диапазон страниц.:\\n (например, 1, 3-5, 9-)",
+		"read_mode": "Режим чтения",
+		"selected": "Выбрано",
+		"setting": "Настройки",
+		"clear": "Очистить"
 	},
 	pwa: {
 		"alert": {
-			"img_data_error": "袨褕懈斜泻邪 写邪薪薪褘褏 懈蟹芯斜褉邪卸械薪懈褟",
-			"img_not_found": "袠蟹芯斜褉邪卸械薪懈械 薪械 薪邪泄写械薪芯",
-			"img_not_found_files": "袩芯卸邪谢褍泄褋褌邪 胁褘斜械褉懈褌械 褎邪泄谢 懈谢懈 邪褉褏懈胁 褋 懈蟹芯斜褉邪卸械薪懈褟屑懈",
-			"img_not_found_folder": "袙 锌邪锌泻械 薪械 薪邪泄写械薪褘 懈蟹芯斜褉邪卸械薪懈褟 懈谢懈 邪褉褏懈胁褘 褋 懈蟹芯斜褉邪卸械薪懈褟屑懈",
-			"not_valid_url": "袧械胁邪谢懈写薪褘泄 URL",
-			"parse_error": "袨褕懈斜泻邪 邪薪邪谢懈蟹邪",
-			"password_error": "袧械胁械褉薪褘泄 锌邪褉芯谢褜",
-			"repeat_load": "袟邪谐褉褍蟹泻邪 写褉褍谐懈褏 褎邪泄谢芯胁鈥?,
-			"userscript_not_installed": "ComicRead 薪械 褍褋褌邪薪芯胁谢械薪"
+			"img_data_error": "Ошибка данных изображения",
+			"img_not_found": "Изображение не найдено",
+			"img_not_found_files": "Пожалуйста выберите файл или архив с изображениями",
+			"img_not_found_folder": "В папке не найдены изображения или архивы с изображениями",
+			"not_valid_url": "Невалидный URL",
+			"parse_error": "Ошибка анализа",
+			"password_error": "Неверный пароль",
+			"repeat_load": "Загрузка других файлов…",
+			"userscript_not_installed": "ComicRead не установлен"
 		},
 		"button": {
-			"enter_url": "袙胁械褋褌懈 URL",
-			"install": "校褋褌邪薪芯胁懈褌褜",
-			"no_more_prompt": "袘芯谢褜褕械 薪械 锌芯泻邪蟹褘胁邪褌褜",
-			"resume_read": "袩褉芯写芯谢卸懈褌褜 褔褌械薪懈械",
-			"select_files": "袙褘斜褉邪褌褜 褎邪泄谢",
-			"select_folder": "袙褘斜褉邪褌褜 锌邪锌泻褍"
+			"enter_url": "Ввести URL",
+			"install": "Установить",
+			"no_more_prompt": "Больше не показывать",
+			"resume_read": "Продолжить чтение",
+			"select_files": "Выбрать файл",
+			"select_folder": "Выбрать папку"
 		},
-		"install_md": "### 校褋褌邪谢懈 芯褌泻褉褘胁邪褌褜 褝褌褍 褋褌褉邪薪懈褑褍 泻邪卸写褘泄 褉邪蟹?\\n袝褋谢懈 胁褘 褏芯褌懈褌械:\\n1. 袠屑械褌褜 芯褌写械谢褜薪芯械 芯泻薪芯, 泻邪泻 械褋谢懈 斜褘 胁褘 懈褋锌芯谢褜蟹芯胁邪谢懈 芯斜褘褔薪芯械 锌褉芯谐褉邪屑屑薪芯械 芯斜械褋锌械褔械薪懈械\\n1. 袨褌泻褉褘胁邪褌褜 邪褉褏懈胁褘 薪邪锌褉褟屑褍褞\\n1. 袩芯谢褜蟹芯胁邪褌褜褋褟 芯褎褎谢邪泄薪\\n### 校褋褌邪薪芯胁懈褌械 褝褌褍 褋褌褉邪薪懈褑褍 胁 泻邪褔械褋褌胁械 [PWA](https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B5%D1%81%D1%81%D0%B8%D0%B2%D0%BD%D0%BE%D0%B5_%D0%B2%D0%B5%D0%B1-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5) 薪邪 褋胁芯泄 泻芯屑锌褜褞褌械褉 馃惡鈽濓笍",
+		"install_md": "### Устали открывать эту страницу каждый раз?\\nЕсли вы хотите:\\n1. Иметь отдельное окно, как если бы вы использовали обычное программное обеспечение\\n1. Открывать архивы напрямую\\n1. Пользоваться оффлайн\\n### Установите эту страницу в качестве [PWA](https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B5%D1%81%D1%81%D0%B8%D0%B2%D0%BD%D0%BE%D0%B5_%D0%B2%D0%B5%D0%B1-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5) на свой компьютер 🐺☝️",
 		"message": {
-			"enter_password": "袩芯卸邪谢褍泄褋褌邪 胁胁械写懈褌械 锌邪褉芯谢褜",
-			"parsing": "袪邪蟹斜芯褉"
+			"enter_password": "Пожалуйста введите пароль",
+			"parsing": "Разбор"
 		},
-		"tip_enter_url": "袙胁械写懈褌械 URL 邪褉褏懈胁邪",
-		"tip_md": "# ComicRead PWA\\n袠褋锌芯谢褜蟹褍泄褌械 [ComicRead](https://github.com/hymbz/ComicReadScript) 写谢褟 褔褌械薪懈褟 泻芯屑懈泻褋芯胁 **谢芯泻邪谢褜薪芯**.\\n---\\n### 袩械褉械褌邪褖懈褌械 懈蟹芯斜褉邪卸械薪懈褟, 锌邪锌泻懈 懈谢懈 邪褉褏懈胁褘 褔褌芯斜褘 薪邪褔邪褌褜 褔懈褌邪褌褜\\n*袙褘 褌邪泻 卸械 屑芯卸械褌械 **芯褌泻褉褘褌褜** 懈谢懈 **胁褋褌邪胁懈褌褜** URL 邪褉褏懈胁邪 薪邪 薪邪锌褉褟屑褍褞*"
+		"tip_enter_url": "Введите URL архива",
+		"tip_md": "# ComicRead PWA\\nИспользуйте [ComicRead](https://github.com/hymbz/ComicReadScript) для чтения комиксов **локально**.\\n---\\n### Перетащите изображения, папки или архивы чтобы начать читать\\n*Вы так же можете **открыть** или **вставить** URL архива на напрямую*"
 	},
 	setting: {
 		"hotkeys": {
-			"add": "袛芯斜邪胁懈褌褜 谐芯褉褟褔懈械 泻谢邪胁懈褕懈",
-			"restore": "袙芯褋褋褌邪薪芯胁懈褌褜 谐芯褉褟褔懈械 泻谢邪胁懈褕懈 锌芯 褍屑芯谢褔邪薪懈褞"
+			"add": "Добавить горячие клавиши",
+			"restore": "Восстановить горячие клавиши по умолчанию"
 		},
-		"language": "携蟹褘泻",
+		"language": "Язык",
 		"option": {
-			"abreast_duplicate": "袣芯褝褎褎懈褑懈械薪褌 写褍斜谢懈褉芯胁邪薪懈褟 褋褌芯谢斜褑芯胁",
-			"abreast_mode": "袪械卸懈屑 锌褉芯泻褉褍褌泻懈 胁 褉褟写",
-			"adjust_to_width": "袗写邪锌褌懈胁薪邪褟 褕懈褉懈薪邪",
-			"align_edge": "袙褘褉邪胁薪懈胁邪薪懈械 锌芯 泻褉邪褞 锌褉懈 锌械褉械谢懈褋褌褘胁邪薪懈懈 褋褌褉邪薪懈褑褘",
-			"always_load_all_img": "袙褋械谐写邪 蟹邪谐褉褍卸邪褌褜 胁褋械 懈蟹芯斜褉邪卸械薪懈褟",
-			"autoFullscreen": "袗胁褌芯 锌芯谢薪褘泄 褝泻褉邪薪",
-			"autoHiddenMouse": "袗胁褌芯屑邪褌懈褔械褋泻懈 褋泻褉褘胁邪褌褜 泻褍褉褋芯褉 屑褘褕懈",
-			"auto_scale": "袗胁褌芯 屑邪褋褕褌邪斜",
-			"auto_scroll_trigger_end": "袩褉芯写芯谢卸懈褌褜 锌褉芯泻褉褍褌泻褍 薪邪 泻芯薪械褔薪芯泄 褋褌褉邪薪懈褑械",
-			"auto_switch_page_mode": "袗胁褌芯屑邪褌懈褔械褋泻芯械 锌械褉械泻谢褞褔械薪懈械 褉械卸懈屑邪 芯写薪芯泄/写胁芯泄薪芯泄 褋褌褉邪薪懈褑褘 胁 蟹邪胁懈褋懈屑芯褋褌懈 芯褌 褋芯芯褌薪芯褕械薪懈褟 褋褌芯褉芯薪",
-			"background_color": "笑胁械褌 褎芯薪邪",
-			"click_page_turn_area": "袨斜谢邪褋褌褜 薪邪卸邪褌懈褟",
-			"click_page_turn_enabled": "袩械褉械谢懈褋褌褘胁邪褌褜 锌芯 泻谢懈泻褍",
-			"click_page_turn_swap_area": "袩芯屑械薪褟褌褜 屑械褋褌邪屑懈 锌褉邪胁褍褞 懈 谢械胁褍褞 芯斜谢邪褋褌懈 锌械褉械泻谢褞褔械薪懈褟 褋褌褉邪薪懈褑",
-			"dark_mode": "孝褢屑薪邪褟 褌械屑邪",
-			"dark_mode_auto": "孝褢屑薪褘泄 褉械卸懈屑 褋谢械写褍械褌 蟹邪 褋懈褋褌械屑芯泄",
-			"dir_ltr": "效褌械薪懈械 褋谢械胁邪 薪邪锌褉邪胁芯 (袗屑械褉懈泻邪薪褋泻懈械 泻芯屑懈泻褋褘)",
-			"dir_rtl": "效褌械薪懈械 褋锌褉邪胁邪 薪邪谢械胁芯 (携锌芯薪褋泻邪褟 屑邪薪谐邪)",
-			"disable_auto_enlarge": "袨褌泻谢褞褔懈褌褜 邪胁褌芯屑邪褌懈褔械褋泻芯械 屑邪褋褕褌邪斜懈褉芯胁邪薪懈械 懈蟹芯斜褉邪卸械薪懈泄",
-			"first_page_fill": "袙泻谢褞褔懈褌褜 蟹邪锌芯谢薪械薪懈械 锌械褉胁芯泄 褋褌褉邪薪懈褑褘 锌芯 褍屑芯谢褔邪薪懈褞",
-			"full_width": "楔懈褉懈薪邪 芯泻薪邪 锌褉芯褋屑芯褌褉邪",
-			"img_recognition": "褉邪褋锌芯蟹薪邪胁邪薪懈械 懈蟹芯斜褉邪卸械薪懈泄",
-			"img_recognition_background": "袨锌褉械写械谢懈褌褜 褑胁械褌 褎芯薪邪",
-			"img_recognition_pageFill": "袗胁褌芯屑邪褌懈褔械褋泻芯械 锌械褉械泻谢褞褔械薪懈械 蟹邪锌芯谢薪械薪懈褟 褋褌褉邪薪懈褑褘",
-			"img_recognition_warn": "鉂?孝械泻褍褖懈泄 斜褉邪褍蟹械褉 薪械 锌芯写写械褉卸懈胁邪械褌 Web Workers. 袙泻谢褞褔械薪懈械 褝褌芯泄 褎褍薪泻褑懈懈 屑芯卸械褌 胁褘蟹胁邪褌褜 蟹邪写械褉卸泻褍 褋褌褉邪薪懈褑褘. 袪械泻芯屑械薪写褍械褌褋褟 芯斜薪芯胁懈褌褜 懈谢懈 褋屑械薪懈褌褜 斜褉邪褍蟹械褉.",
-			"img_recognition_warn_2": "鉂?孝械泻褍褖懈泄 胁械斜-褋邪泄褌 薪械 锌芯写写械褉卸懈胁邪械褌 Web Workers. 袙泻谢褞褔械薪懈械 褝褌芯泄 褎褍薪泻褑懈懈 屑芯卸械褌 锌褉懈胁械褋褌懈 泻 蟹邪写械褉卸泻械 褋褌褉邪薪懈褑褘.",
-			"paragraph_appearance": "袙薪械褕薪芯褋褌褜",
-			"paragraph_dir": "袧邪锌褉邪胁谢械薪懈械 褔褌械薪懈褟",
-			"paragraph_display": "袨褌芯斜褉邪卸械薪懈械",
-			"paragraph_scrollbar": "袩芯谢芯褋邪 锌褉芯泻褉褍褌泻懈",
-			"paragraph_translation": "袩械褉械胁芯写",
-			"preload_page_num": "袩褉械写蟹邪谐褉褍卸邪褌褜 褋褌褉邪薪懈褑",
-			"scroll_end": "袩芯褋谢械 写芯褋褌懈卸械薪懈褟 泻芯薪褑邪",
-			"scroll_end_auto": "小薪邪褔邪谢邪 锌械褉械褏芯写 泻 锌褉械写褘写褍褖械泄/褋谢械写褍褞褖械泄 谐谢邪胁械, 懈薪邪褔械 胁褘褏芯写",
-			"scroll_mode_img_scale": "袣芯褝褎褎懈褑懈械薪褌 屑邪褋褕褌邪斜懈褉芯胁邪薪懈褟 懈蟹芯斜褉邪卸械薪懈褟 胁 褉械卸懈屑械 褋泻褉芯谢谢懈薪谐邪",
-			"scroll_mode_img_spacing": "袪邪褋褋褌芯褟薪懈械 屑械卸写褍 褋褌褉邪薪懈褑邪屑懈 胁 褉械卸懈屑械 褋泻褉芯谢谢懈薪谐邪",
-			"scrollbar_auto_hidden": "袗胁褌芯屑邪褌懈褔械褋泻懈 褋泻褉褘胁邪褌褜",
-			"scrollbar_easy_scroll": "袥褢谐泻邪褟 锌褉芯泻褉褍褌泻邪",
-			"scrollbar_position": "袩芯蟹懈褑懈褟",
-			"scrollbar_position_bottom": "小薪懈蟹褍",
-			"scrollbar_position_hidden": "小锌褉褟褌邪薪芯",
-			"scrollbar_position_right": "小锌褉邪胁邪",
-			"scrollbar_position_top": "小胁械褉褏褍",
-			"scrollbar_show_img_status": "袩芯泻邪蟹褘胁邪褌褜 褋褌邪褌褍褋 蟹邪谐褉褍蟹泻懈 懈蟹芯斜褉邪卸械薪懈褟",
-			"show_clickable_area": "袩芯泻邪蟹褘胁邪褌褜 泻谢懈泻邪斜械谢褜薪褘械 芯斜谢邪褋褌懈",
-			"show_comments": "袩芯泻邪蟹褘胁邪褌褜 泻芯屑屑械薪褌邪褉懈懈 薪邪 锌芯褋谢械写薪械泄 褋褌褉邪薪懈褑械",
-			"shrink_menu": "袙泻谢褞褔懈褌褜 芯斜谢邪褋褌褜 屑械薪褞",
-			"swap_page_turn_key": "袩芯屑械薪褟褌褜 屑械褋褌邪屑懈 泻谢邪胁懈褕懈 锌械褉械泻谢褞褔械薪懈褟 褋褌褉邪薪懈褑",
-			"zoom": "袣芯褝褎褎懈褑懈械薪褌 屑邪褋褕褌邪斜懈褉芯胁邪薪懈褟 懈蟹芯斜褉邪卸械薪懈褟"
+			"abreast_duplicate": "Коэффициент дублирования столбцов",
+			"abreast_mode": "Режим прокрутки в ряд",
+			"adjust_to_width": "Адаптивная ширина",
+			"align_edge": "Выравнивание по краю при перелистывании страницы",
+			"always_load_all_img": "Всегда загружать все изображения",
+			"autoFullscreen": "Авто полный экран",
+			"autoHiddenMouse": "Автоматически скрывать курсор мыши",
+			"auto_scale": "Авто масштаб",
+			"auto_scroll_trigger_end": "Продолжить прокрутку на конечной странице",
+			"auto_switch_page_mode": "Автоматическое переключение режима одной/двойной страницы в зависимости от соотношения сторон",
+			"background_color": "Цвет фона",
+			"click_page_turn_area": "Область нажатия",
+			"click_page_turn_enabled": "Перелистывать по клику",
+			"click_page_turn_swap_area": "Поменять местами правую и левую области переключения страниц",
+			"dark_mode": "Тёмная тема",
+			"dark_mode_auto": "Тёмный режим следует за системой",
+			"dir_ltr": "Чтение слева направо (Американские комиксы)",
+			"dir_rtl": "Чтение справа налево (Японская манга)",
+			"disable_auto_enlarge": "Отключить автоматическое масштабирование изображений",
+			"first_page_fill": "Включить заполнение первой страницы по умолчанию",
+			"full_width": "Ширина окна просмотра",
+			"img_recognition": "распознавание изображений",
+			"img_recognition_background": "Определить цвет фона",
+			"img_recognition_pageFill": "Автоматическое переключение заполнения страницы",
+			"img_recognition_warn": "❗ Текущий браузер не поддерживает Web Workers. Включение этой функции может вызвать задержку страницы. Рекомендуется обновить или сменить браузер.",
+			"img_recognition_warn_2": "❗ Текущий веб-сайт не поддерживает Web Workers. Включение этой функции может привести к задержке страницы.",
+			"paragraph_appearance": "Внешность",
+			"paragraph_dir": "Направление чтения",
+			"paragraph_display": "Отображение",
+			"paragraph_scrollbar": "Полоса прокрутки",
+			"paragraph_translation": "Перевод",
+			"preload_page_num": "Предзагружать страниц",
+			"scroll_end": "После достижения конца",
+			"scroll_end_auto": "Сначала переход к предыдущей/следующей главе, иначе выход",
+			"scroll_mode_img_scale": "Коэффициент масштабирования изображения в режиме скроллинга",
+			"scroll_mode_img_spacing": "Расстояние между страницами в режиме скроллинга",
+			"scrollbar_auto_hidden": "Автоматически скрывать",
+			"scrollbar_easy_scroll": "Лёгкая прокрутка",
+			"scrollbar_position": "Позиция",
+			"scrollbar_position_bottom": "Снизу",
+			"scrollbar_position_hidden": "Спрятано",
+			"scrollbar_position_right": "Справа",
+			"scrollbar_position_top": "Сверху",
+			"scrollbar_show_img_status": "Показывать статус загрузки изображения",
+			"show_clickable_area": "Показывать кликабельные области",
+			"show_comments": "Показывать комментарии на последней странице",
+			"shrink_menu": "Включить область меню",
+			"swap_page_turn_key": "Поменять местами клавиши переключения страниц",
+			"zoom": "Коэффициент масштабирования изображения"
 		},
-		"sync_options_other_site": "小懈薪褏褉芯薪懈蟹懈褉芯胁邪褌褜 薪邪褋褌褉芯泄泻懈 褔褌械薪懈褟 褋 写褉褍谐懈屑懈 褋邪泄褌邪屑懈",
+		"sync_options_other_site": "Синхронизировать настройки чтения с другими сайтами",
 		"translation": {
-			"cotrans_tip": "<p>袠褋锌芯谢褜蟹褍械褌 写谢褟 锌械褉械胁芯写邪 <a href=\\"https://cotrans.touhou.ai\\" target=\\"_blank\\">Cotrans API</a>, 褉邪斜芯褌邪褞褖懈泄 懈褋泻谢褞褔懈褌械谢褜薪芯 蟹邪 褋褔褢褌 褋胁芯械谐芯 褋芯蟹写邪褌械谢褟.</p>\\n<p>袟邪锌褉芯褋褘 芯斜褉邪斜邪褌褘胁邪褞褌褋褟 锌芯 芯写薪芯屑褍 胁 锌芯褉褟写泻械 褋懈薪褏褉芯薪薪芯泄 芯褔械褉械写懈. 袣芯谐写邪 芯褔械褉械写褜 锌褉械胁褘褕邪械褌 谢懈屑懈褌 薪芯胁褘械 蟹邪锌褉芯褋褘 斜褍写褍褌 锌褉懈胁芯写懈褌褜 泻 芯褕懈斜泻械. 袝褋谢懈 褌邪泻芯械 褋谢褍褔懈谢芯褋褜 锌芯锌褉芯斜褍泄褌械 锌芯蟹卸械.</p>\\n<p>孝邪泻 褔褌芯 锌芯卸邪谢褍泄褋褌邪 <b>褍褔懈褌褘胁邪泄褌械 蟹邪谐褉褍卸械薪薪芯褋褌褜 锌褉懈 胁褘斜芯褉械</b></p>\\n<p>袧邪褋褌芯褟褌械谢褜薪芯 褉械泻芯屑械薪写芯胁邪薪芯 谢芯泻邪谢褜薪芯 褉邪蟹胁械褉薪褍褌褜 Manga Image Translator 褌.泻. 褝褌芯 薪械 锌芯褌褉械斜谢褟械褌 褋械褉胁械褉薪褘械 褉械褋褍褉褋褘 懈 胁褘 薪械 芯谐褉邪薪懈褔械薪褘 芯褔械褉械写褜褞.</p>",
+			"cotrans_tip": "<p>Использует для перевода <a href=\\"https://cotrans.touhou.ai\\" target=\\"_blank\\">Cotrans API</a>, работающий исключительно за счёт своего создателя.</p>\\n<p>Запросы обрабатываются по одному в порядке синхронной очереди. Когда очередь превышает лимит новые запросы будут приводить к ошибке. Если такое случилось попробуйте позже.</p>\\n<p>Так что пожалуйста <b>учитывайте загруженность при выборе</b></p>\\n<p>Настоятельно рекомендовано локально развернуть Manga Image Translator т.к. это не потребляет серверные ресурсы и вы не ограничены очередью.</p>",
 			"options": {
-				"box_threshold": "袩芯褉芯谐 泻芯褉芯斜泻懈",
-				"detection_resolution": "袪邪蟹褉械褕械薪懈械 褉邪褋锌芯蟹薪邪胁邪薪懈褟 褌械泻褋褌邪",
-				"direction": "袨褉懈械褌薪邪褑懈褟 褌械泻褋褌邪",
-				"direction_auto": "小谢械写芯胁邪薪懈械 芯褉懈谐懈薪邪谢褍",
-				"direction_horizontal": "孝芯谢褜泻芯 谐芯褉懈蟹芯薪褌邪谢褜薪芯",
-				"direction_vertical": "孝芯谢褜泻芯 胁械褉褌懈泻邪谢褜薪芯",
-				"force_retry": "袩褉懈薪褍写懈褌械谢褜薪褘泄 锌芯胁褌芯褉(袠谐薪芯褉懈褉芯胁邪褌褜 泻褝褕)",
-				"inpainter": "袠薪锌械泄薪褌械褉",
-				"inpainting_size": "袠薪锌械泄薪褌懈薪谐 褉邪蟹屑械褉 芯斜谢邪褋褌懈",
-				"local_url": "袧邪褋褌褉芯懈褌褜 URL 褋械褉胁械褉邪",
-				"mask_dilation_offset": "袦邪褋泻懈褉芯胁芯褔薪芯械 褋屑械褖械薪懈械 写懈谢邪褌邪褑懈懈",
-				"only_download_translated": "小泻邪褔邪褌褜 褌芯谢褜泻芯 锌械褉械胁械写褢薪薪褘械 懈蟹芯斜褉邪卸械薪懈褟",
-				"target_language": "笑械谢械胁芯泄 褟蟹褘泻",
-				"text_detector": "袛械褌械泻褌芯褉 褌械泻褋褌邪",
-				"translator": "袩械褉械胁芯写褔懈泻",
-				"unclip_ratio": "袧械芯斜褉械蟹邪薪薪芯械 褋芯芯褌薪芯褕械薪懈械"
+				"box_threshold": "Порог коробки",
+				"detection_resolution": "Разрешение распознавания текста",
+				"direction": "Ориетнация текста",
+				"direction_auto": "Следование оригиналу",
+				"direction_horizontal": "Только горизонтально",
+				"direction_vertical": "Только вертикально",
+				"force_retry": "Принудительный повтор(Игнорировать кэш)",
+				"inpainter": "Инпейнтер",
+				"inpainting_size": "Инпейнтинг размер области",
+				"local_url": "Настроить URL сервера",
+				"mask_dilation_offset": "Маскировочное смещение дилатации",
+				"only_download_translated": "Скачать только переведённые изображения",
+				"target_language": "Целевой язык",
+				"text_detector": "Детектор текста",
+				"translator": "Переводчик",
+				"unclip_ratio": "Необрезанное соотношение"
 			},
-			"range": "袨斜褗械屑 锌械褉械胁芯写邪",
-			"provider": "袩械褉械胁芯写褔懈泻",
-			"translate_all": "袩械褉械胁械褋褌懈 胁褋械 懈蟹芯斜褉邪卸械薪懈褟",
-			"translate_to_end": "袩械褉械胁芯写懈褌褜 褋褌褉邪薪懈褑褍 写芯 泻芯薪褑邪"
+			"range": "Объем перевода",
+			"provider": "Переводчик",
+			"translate_all": "Перевести все изображения",
+			"translate_to_end": "Переводить страницу до конца"
 		}
 	},
 	site: {
 		"add_feature": {
-			"add_hotkeys_actions": "袛芯斜邪胁懈褌褜 芯锌械褉邪褑懈懈 褋 谐芯褉褟褔懈屑懈 泻谢邪胁懈褕邪屑懈",
-			"auto_adjust_option": "袗胁褌芯屑邪褌懈褔械褋泻邪褟 薪邪褋褌褉芯泄泻邪 锌邪褉邪屑械褌褉邪 褔褌械薪懈褟",
-			"auto_page_turn": "袘械褋泻芯薪械褔薪邪褟 锌褉芯泻褉褍褌泻邪",
-			"auto_show": "袗胁褌芯屑邪褌懈褔械褋泻懈 胁泻谢褞褔邪褌褜 褉械卸懈屑 褔褌械薪懈褟",
-			"block_totally": "袚谢芯斜邪谢褜薪芯 蟹邪斜谢芯泻懈褉芯胁邪褌褜 泻芯屑懈泻褋褘",
-			"colorize_tag": "笑胁械褌薪褘械 薪邪蟹胁邪薪懈褟",
-			"cross_site_link": "袣褉芯褋褋-褋邪泄褌芯胁邪褟 褋褋褘谢泻邪",
+			"add_hotkeys_actions": "Добавить операции с горячими клавишами",
+			"auto_adjust_option": "Автоматическая настройка параметра чтения",
+			"auto_page_turn": "Бесконечная прокрутка",
+			"auto_show": "Автоматически включать режим чтения",
+			"block_totally": "Глобально заблокировать комиксы",
+			"colorize_tag": "Цветные названия",
+			"cross_site_link": "Кросс-сайтовая ссылка",
 			"detect_ad": "Detect advertise page",
-			"expand_tag_list": "袪邪蟹胁械褉薪褍褌褜 褋锌懈褋芯泻 褌械谐芯胁",
-			"float_tag_list": "袩谢邪胁邪褞褖懈泄 褋锌懈褋芯泻 褌械谐芯胁",
-			"load_original_image": "袟邪谐褉褍卸邪褌褜 芯褉懈谐懈薪邪谢褜薪芯械 懈蟹芯斜褉邪卸械薪懈械",
-			"lock_option": "袘谢芯泻懈褉芯胁泻邪 芯锌褑懈懈 褋邪泄褌邪",
-			"open_link_new_page": "袨褌泻褉褘胁邪褌褜 褋褋褘谢泻懈 胁 薪芯胁芯泄 胁泻谢邪写泻械",
-			"quick_favorite": "袘褘褋褌褉褘泄 褎邪胁芯褉懈褌",
-			"quick_rating": "袘褘褋褌褉褘泄 褉械泄褌懈薪谐",
-			"quick_tag_define": "袨锌褉械写械谢械薪懈械 褌械谐邪 斜褘褋褌褉芯谐芯 锌褉芯褋屑芯褌褉邪",
-			"remember_current_site": "袟邪锌芯屑薪懈褌褜 褌械泻褍褖懈泄 褋邪泄褌",
-			"tag_lint": "孝褝谐 袥懈薪褌"
+			"expand_tag_list": "Развернуть список тегов",
+			"float_tag_list": "Плавающий список тегов",
+			"load_original_image": "Загружать оригинальное изображение",
+			"lock_option": "Блокировка опции сайта",
+			"open_link_new_page": "Открывать ссылки в новой вкладке",
+			"quick_favorite": "Быстрый фаворит",
+			"quick_rating": "Быстрый рейтинг",
+			"quick_tag_define": "Определение тега быстрого просмотра",
+			"remember_current_site": "Запомнить текущий сайт",
+			"tag_lint": "Тэг Линт"
 		},
-		"changed_load_failed": "小褌褉邪薪懈褑邪 懈蟹屑械薪懈谢邪褋褜, 薪械胁芯蟹屑芯卸薪芯 蟹邪谐褉褍蟹懈褌褜 泻芯屑懈泻褋",
+		"changed_load_failed": "Страница изменилась, невозможно загрузить комикс",
 		"ehentai": {
-			"change_favorite_failed": "袧械 褍写邪谢芯褋褜 懈蟹屑械薪懈褌褜 懈蟹斜褉邪薪薪芯械",
-			"change_favorite_success": "袠蟹斜褉邪薪薪芯械 褍褋锌械褕薪芯 懈蟹屑械薪械薪芯",
-			"change_rating_failed": "袧械 褍写邪谢芯褋褜 懈蟹屑械薪懈褌褜 芯褑械薪泻褍",
-			"change_rating_success": "校褋锌械褕薪芯 懈蟹屑械薪械薪 褉械泄褌懈薪谐",
-			"fetch_favorite_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 懈薪褎芯褉屑邪褑懈褞 芯 懈蟹斜褉邪薪薪芯屑",
-			"fetch_img_page_source_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 懈褋褏芯写薪褘泄 泻芯写 褋褌褉邪薪懈褑褘 褋 懈蟹芯斜褉邪卸械薪懈褟屑懈",
-			"fetch_img_page_url_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 邪写褉械褋 褋褌褉邪薪懈褑褘 懈蟹芯斜褉邪卸械薪懈泄 懈蟹 写械褌邪谢械泄",
-			"fetch_img_url_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 邪写褉械褋 懈蟹芯斜褉邪卸械薪懈褟",
-			"hitomi_error": "袨褕懈斜泻邪 褋芯锌芯褋褌邪胁谢械薪懈褟 hitomi",
-			"html_changed_link_failed": "小褌褉褍泻褌褍褉邪 褋褌褉邪薪懈褑褘 懈蟹屑械薪懈谢邪褋褜, 懈 褋胁褟蟹邪薪薪褘械 褎褍薪泻褑懈懈 胁薪械褕薪械谐芯 褋邪泄褌邪 薪械 褉邪斜芯褌邪褞褌 写芯谢卸薪褘屑 芯斜褉邪蟹芯屑",
-			"ip_banned": "IP 邪写褉械褋 蟹邪斜邪薪械薪",
-			"nhentai_error": "袨褕懈斜泻邪 褋芯锌芯褋褌邪胁谢械薪懈褟 nhentai",
-			"nhentai_failed": "袨褕懈斜泻邪 褋芯锌芯褋褌芯胁谢械薪懈褟. 袩芯卸邪谢褍泄褋褌邪 锌械褉械蟹邪谐褉褍蟹懈褌械 褋褌褉邪薪懈褑褍 锌芯褋谢械 胁褏芯写邪 薪邪 {{nhentai}}"
+			"change_favorite_failed": "Не удалось изменить избранное",
+			"change_favorite_success": "Избранное успешно изменено",
+			"change_rating_failed": "Не удалось изменить оценку",
+			"change_rating_success": "Успешно изменен рейтинг",
+			"fetch_favorite_failed": "Не удалось получить информацию о избранном",
+			"fetch_img_page_source_failed": "Не удалось получить исходный код страницы с изображениями",
+			"fetch_img_page_url_failed": "Не удалось получить адрес страницы изображений из деталей",
+			"fetch_img_url_failed": "Не удалось получить адрес изображения",
+			"hitomi_error": "Ошибка сопоставления hitomi",
+			"html_changed_link_failed": "Структура страницы изменилась, и связанные функции внешнего сайта не работают должным образом",
+			"ip_banned": "IP адрес забанен",
+			"nhentai_error": "Ошибка сопоставления nhentai",
+			"nhentai_failed": "Ошибка сопостовления. Пожалуйста перезагрузите страницу после входа на {{nhentai}}"
 		},
 		"nhentai": {
-			"fetch_next_page_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 褋谢械写褍褞褖褍褞 褋褌褉邪薪懈褑褍",
-			"tag_blacklist_fetch_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 蟹邪斜谢芯泻懈褉芯胁邪薪薪褘械 褌械谐懈"
+			"fetch_next_page_failed": "Не удалось получить следующую страницу",
+			"tag_blacklist_fetch_failed": "Не удалось получить заблокированные теги"
 		},
-		"show_settings_menu": "袩芯泻邪蟹邪褌褜 屑械薪褞 薪邪褋褌褉芯械泻",
+		"show_settings_menu": "Показать меню настроек",
 		"simple": {
-			"auto_read_mode_message": "\\"袗胁褌芯屑邪褌懈褔械褋泻懈 胁泻谢褞褔邪褌褜 褉械卸懈屑 褔褌械薪懈褟\\" 锌芯 褍屑芯谢褔邪薪懈褞",
-			"no_img": "袧械 薪邪泄写械薪芯 锌芯写褏芯写褟褖懈褏 懈蟹芯斜褉邪卸械薪懈泄. 袧邪卸屑懈褌械 褌褍褌 褔褌芯 斜褘 胁褘泻谢褞褔懈褌褜 褉械卸懈屑 锌褉芯褋褌芯谐芯 褔褌械薪懈褟.",
-			"simple_read_mode": "袙泻谢褞褔懈褌褜 锌褉芯褋褌芯泄 褉械卸懈屑 褔褌械薪懈褟"
+			"auto_read_mode_message": "\\"Автоматически включать режим чтения\\" по умолчанию",
+			"no_img": "Не найдено подходящих изображений. Нажмите тут что бы выключить режим простого чтения.",
+			"simple_read_mode": "Включить простой режим чтения"
 		}
 	},
 	touch_area: {
-		"menu": "袦械薪褞",
+		"menu": "Меню",
 		"type": {
-			"edge": "袚褉邪薪褜",
+			"edge": "Грань",
 			"l": "L",
-			"left_right": "袥械胁芯 袩褉邪胁芯",
-			"up_down": "袙械褉褏 袧懈蟹"
+			"left_right": "Лево Право",
+			"up_down": "Верх Низ"
 		}
 	},
 	translation: {
 		"status": {
-			"after-translating": "袩芯褋褌芯斜褉邪斜芯褌泻邪 锌械褉械胁芯写邪",
-			"cancelled": "袩械褉械胁芯写 芯褌屑械薪褢薪",
-			"colorizing": "袪邪褋泻褉邪褕懈胁邪薪懈械",
-			"default": "袧械懈蟹胁械褋褌薪褘泄 褋褌邪褌褍褋",
-			"detection": "袪邪褋锌芯蟹薪邪胁邪薪懈械 褌械泻褋褌邪",
-			"downloading": "袟邪谐褉褍蟹泻邪",
-			"downscaling": "校屑械薪褜褕械薪懈械 屑邪褋褕褌邪斜邪",
-			"error": "袨褕懈斜泻邪 锌械褉械胁芯写邪",
-			"error-download": "袨褕懈斜泻邪 蟹邪谐褉褍蟹泻懈",
-			"error-lang": "笑械谢械胁芯泄 褟蟹褘泻 薪械 锌芯写写械褉卸懈胁邪械褌褋褟 胁褘斜褉邪薪薪褘屑 锌械褉械胁芯写褔懈泻芯屑",
-			"error-translating": "袨褕懈斜泻邪 锌械褉械胁芯写邪(锌褍褋褌芯泄 芯褌胁械褌)",
-			"error-too-large": "袪邪蟹屑械褉 懈蟹芯斜褉邪卸械薪懈褟 褋谢懈褕泻芯屑 斜芯谢褜褕芯泄 (斜芯谢械械 8000x8000 锌懈泻褋械谢械泄)",
-			"error-upload": "袨褕懈斜泻邪 芯褌锌褉邪胁泻懈",
-			"error-disconnect": "袩芯褌械褉褟薪芯 褋芯械写懈薪械薪懈械 褋 褋械褉胁械褉芯屑",
-			"error-with-id": "袨褕懈斜泻邪 胁芯 胁褉械屑褟 锌械褉械胁芯写邪",
-			"finished": "袟邪胁械褉褕械薪懈械",
-			"inpainting": "袧邪谢芯卸械薪懈械",
-			"mask-generation": "袚械薪械褉邪褑懈褟 屑邪褋泻懈",
-			"ocr": "袪邪褋锌芯蟹薪邪胁邪薪懈械 褌械泻褋褌邪",
-			"pending": "袨卸懈写邪薪懈械",
-			"pending-pos": "袨卸懈写邪薪懈械",
-			"preparing": "袨卸懈写邪薪懈械 芯泻薪邪 斜械蟹写械泄褋褌胁懈褟",
-			"rendering": "袨褌褉懈褋芯胁泻邪",
-			"running_pre_translation_hooks": "袙褘锌芯谢薪械薪懈械 锌褉械写芯斜褉邪斜芯褌泻懈 锌械褉械胁芯写邪",
-			"saved": "小芯褏褉邪薪械薪芯",
-			"saving": "小芯褏褉邪薪械薪懈械",
-			"skip-no-regions": "袧邪 懈蟹芯斜褉邪卸械薪懈懈 薪械 芯斜薪邪褉褍卸械薪芯 褌械泻褋褌芯胁褘褏 芯斜谢邪褋褌械泄.",
-			"skip-no-text": "孝械泻褋褌 薪邪 懈蟹芯斜褉邪卸械薪懈懈 薪械 芯斜薪邪褉褍卸械薪",
-			"textline_merge": "袨斜褜械写懈薪械薪懈械 褌械泻褋褌邪",
-			"translating": "袩械褉械胁芯写懈褌褋褟",
-			"upload": "袨褌锌褉邪胁泻邪",
-			"upscaling": "校胁械谢懈褔械薪懈械 懈蟹芯斜褉邪卸械薪懈褟",
-			"uploading": "袨褌锌褉邪胁泻邪"
+			"after-translating": "Постобработка перевода",
+			"cancelled": "Перевод отменён",
+			"colorizing": "Раскрашивание",
+			"default": "Неизвестный статус",
+			"detection": "Распознавание текста",
+			"downloading": "Загрузка",
+			"downscaling": "Уменьшение масштаба",
+			"error": "Ошибка перевода",
+			"error-download": "Ошибка загрузки",
+			"error-lang": "Целевой язык не поддерживается выбранным переводчиком",
+			"error-translating": "Ошибка перевода(пустой ответ)",
+			"error-too-large": "Размер изображения слишком большой (более 8000x8000 пикселей)",
+			"error-upload": "Ошибка отправки",
+			"error-disconnect": "Потеряно соединение с сервером",
+			"error-with-id": "Ошибка во время перевода",
+			"finished": "Завершение",
+			"inpainting": "Наложение",
+			"mask-generation": "Генерация маски",
+			"ocr": "Распознавание текста",
+			"pending": "Ожидание",
+			"pending-pos": "Ожидание",
+			"preparing": "Ожидание окна бездействия",
+			"rendering": "Отрисовка",
+			"running_pre_translation_hooks": "Выполнение предобработки перевода",
+			"saved": "Сохранено",
+			"saving": "Сохранение",
+			"skip-no-regions": "На изображении не обнаружено текстовых областей.",
+			"skip-no-text": "Текст на изображении не обнаружен",
+			"textline_merge": "Обьединение текста",
+			"translating": "Переводится",
+			"upload": "Отправка",
+			"upscaling": "Увеличение изображения",
+			"uploading": "Отправка"
 		},
 		"tip": {
-			"check_img_status_failed": "袧械 褍写邪谢芯褋褜 锌褉芯胁械褉懈褌褜 褋褌邪褌褍褋 懈蟹芯斜褉邪卸械薪懈褟",
-			"download_img_failed": "袧械 褍写邪谢芯褋褜 褋泻邪褔邪褌褜 懈蟹芯斜褉邪卸械薪懈械",
-			"get_translator_list_error": "袩褉芯懈蟹芯褕谢邪 芯褕懈斜泻邪 胁芯 胁褉械屑褟 锌芯谢褍褔械薪懈褟 褋锌懈褋泻邪 写芯褋褌褍锌薪褘褏 锌械褉械胁芯写褔懈泻芯胁",
-			"id_not_returned": "ID 薪械 胁械褉薪褍谢懈(",
-			"img_downloading": "小泻邪褔邪褌褜",
-			"img_not_fully_loaded": "袠蟹芯斜褉邪卸械薪懈械 胁褋褢 械褖褢 蟹邪谐褉褍卸邪械褌褋褟",
-			"pending": "袨卸懈写械薪懈械, 锌芯蟹懈褑懈褟 胁 芯褔械褉械写懈 {{pos}}",
-			"resize_img_failed": "袧械 褍写邪谢芯褋褜 懈蟹屑械薪懈褌褜 褉邪蟹屑械褉 懈蟹芯斜褉邪卸械薪懈褟",
-			"translating": "袠蟹芯斜褉邪卸械薪懈械 锌械褉械胁芯写懈褌褋褟",
-			"translation_completed": "袩械褉械胁芯写 蟹邪胁械褉褕褢薪",
-			"upload": "袟邪谐褉褍蟹泻邪 懈蟹芯斜褉邪卸械薪懈褟",
-			"upload_error": "袨褕懈斜泻邪 芯褌锌褉邪胁泻懈 懈蟹芯斜褉邪卸械薪懈褟",
-			"upload_return_error": "袨褕懈斜泻邪 锌械褉械胁芯写邪 薪邪 褋械褉胁械褉械",
-			"wait_translation": "袨卸懈写邪薪懈械 锌械褉械胁芯写邪"
+			"check_img_status_failed": "Не удалось проверить статус изображения",
+			"download_img_failed": "Не удалось скачать изображение",
+			"get_translator_list_error": "Произошла ошибка во время получения списка доступных переводчиков",
+			"id_not_returned": "ID не вернули(",
+			"img_downloading": "Скачать",
+			"img_not_fully_loaded": "Изображение всё ещё загружается",
+			"pending": "Ожидение, позиция в очереди {{pos}}",
+			"resize_img_failed": "Не удалось изменить размер изображения",
+			"translating": "Изображение переводится",
+			"translation_completed": "Перевод завершён",
+			"upload": "Загрузка изображения",
+			"upload_error": "Ошибка отправки изображения",
+			"upload_return_error": "Ошибка перевода на сервере",
+			"wait_translation": "Ожидание перевода"
 		},
 		"translator": {
 			"baidu": "baidu",
 			"deepl": "DeepL",
 			"google": "Google",
 			"gpt3.5": "GPT-3.5",
-			"none": "校斜褉邪褌褜 褌械泻褋褌",
-			"offline": "袨褎褎谢邪泄薪 锌械褉械胁芯写褔懈泻",
-			"original": "袨褉懈谐懈薪邪谢",
+			"none": "Убрать текст",
+			"offline": "Оффлайн переводчик",
+			"original": "Оригинал",
 			"papago": "Papago",
 			"youdao": "youdao"
 		}
 	},
 	upscale: {
-		"module_download_complete": "袟邪谐褉褍蟹泻邪 屑芯写械谢懈 褍胁械谢懈褔械薪懈褟 懈蟹芯斜褉邪卸械薪懈泄 蟹邪胁械褉褕械薪邪",
-		"module_download_failed": "小斜芯泄 蟹邪谐褉褍蟹泻懈 屑芯写械谢懈 褍胁械谢懈褔械薪懈褟 懈蟹芯斜褉邪卸械薪懈泄",
-		"module_downloading": "袟邪谐褉褍蟹泻邪 屑芯写械谢懈 褍胁械谢懈褔械薪懈褟 懈蟹芯斜褉邪卸械薪懈泄...",
-		"title": "校胁械谢懈褔械薪懈械 懈蟹芯斜褉邪卸械薪懈褟",
-		"upscaled": "校胁械谢懈褔械薪薪褘泄",
-		"upscaling": "校胁械谢懈褔懈胁邪械褌褋褟",
-		"webgpu_tip": "袧械胁芯蟹屑芯卸薪芯 褍胁械谢懈褔懈褌褜 懈蟹芯斜褉邪卸械薪懈褟 褋 锌芯屑芯褖褜褞 WebGPU, 芯斜褉邪斜芯褌泻邪 斜褍写械褌 屑械写谢械薪薪械械"
+		"module_download_complete": "Загрузка модели увеличения изображений завершена",
+		"module_download_failed": "Сбой загрузки модели увеличения изображений",
+		"module_downloading": "Загрузка модели увеличения изображений...",
+		"title": "Увеличение изображения",
+		"upscaled": "Увеличенный",
+		"upscaling": "Увеличивается",
+		"webgpu_tip": "Невозможно увеличить изображения с помощью WebGPU, обработка будет медленнее"
 	}
 };
 //#endregion
 //#region locales/zh.json
 var zh_default = {
 	alert: {
-		"comic_load_error": "婕敾鍔犺浇鍑洪敊",
-		"download_failed": "涓嬭浇澶辫触",
-		"fetch_comic_img_failed": "鑾峰彇婕敾鍥剧墖澶辫触",
-		"img_load_failed": "鍥剧墖鍔犺浇澶辫触",
-		"no_img_download": "娌℃湁鑳戒笅杞界殑鍥剧墖",
-		"repeat_load": "鍔犺浇鍥剧墖涓紝璇风◢鍊?,
-		"retry_get_img_url": "閲嶆柊鑾峰彇绗?{{i}} 椤靛浘鐗囩殑鍦板潃",
-		"server_connect_failed": "鏃犳硶杩炴帴鍒版湇鍔″櫒"
+		"comic_load_error": "漫画加载出错",
+		"download_failed": "下载失败",
+		"fetch_comic_img_failed": "获取漫画图片失败",
+		"img_load_failed": "图片加载失败",
+		"no_img_download": "没有能下载的图片",
+		"repeat_load": "加载图片中，请稍候",
+		"retry_get_img_url": "重新获取第 {{i}} 页图片的地址",
+		"server_connect_failed": "无法连接到服务器"
 	},
 	button: {
-		"auto_scroll": "鑷姩婊氬姩",
-		"close_current_page_translation": "鍏抽棴褰撳墠椤电殑缈昏瘧",
-		"download_completed": "涓嬭浇瀹屾垚",
-		"download_completed_error": "涓嬭浇瀹屾垚锛屼絾鏈?{{errorNum}} 寮犲浘鐗囦笅杞藉け璐?,
-		"downloading": "涓嬭浇涓?,
-		"fullscreen": "鍏ㄥ睆",
-		"fullscreen_exit": "閫€鍑哄叏灞?,
-		"grid_mode": "缃戞牸妯″紡",
-		"packaging": "鎵撳寘涓?,
-		"page_fill": "椤甸潰濉厖",
-		"page_mode_double": "鍙岄〉妯″紡",
-		"page_mode_single": "鍗曢〉妯″紡",
-		"scroll_mode": "鍗疯酱妯″紡",
-		"translate_current_page": "缈昏瘧褰撳墠椤?,
-		"zoom_in": "鏀惧ぇ",
-		"zoom_out": "缂╁皬"
+		"auto_scroll": "自动滚动",
+		"close_current_page_translation": "关闭当前页的翻译",
+		"download_completed": "下载完成",
+		"download_completed_error": "下载完成，但有 {{errorNum}} 张图片下载失败",
+		"downloading": "下载中",
+		"fullscreen": "全屏",
+		"fullscreen_exit": "退出全屏",
+		"grid_mode": "网格模式",
+		"packaging": "打包中",
+		"page_fill": "页面填充",
+		"page_mode_double": "双页模式",
+		"page_mode_single": "单页模式",
+		"scroll_mode": "卷轴模式",
+		"translate_current_page": "翻译当前页",
+		"zoom_in": "放大",
+		"zoom_out": "缩小"
 	},
-	description: "涓烘极鐢荤珯澧炲姞鍙岄〉闃呰銆佺炕璇戠瓑浼樺寲浣撻獙鐨勫寮哄姛鑳姐€?,
+	description: "为漫画站增加双页阅读、翻译等优化体验的增强功能。",
 	eh_tag_lint: {
-		"combo": "瀛樺湪 [tag] 鏃讹紝涓€鑸篃瀛樺湪 [tag]",
-		"conflict": "瀛樺湪 [tag] 鏃讹紝涓嶅簲璇ュ瓨鍦?[tag]",
-		"correct_tag": "搴旇鏄纭殑鏍囩",
-		"miss_female": "缂哄皯鐢锋€ф爣绛撅紝鍙兘闇€瑕?,
-		"miss_parody": "缂哄皯鍘熶綔鏍囩锛屽彲鑳介渶瑕?,
-		"possible_conflict": "瀛樺湪 [tag] 鏃讹紝涓€鑸笉搴旇瀛樺湪 [tag]",
-		"prerequisite": "[tag] 鐨勫墠缃爣绛?[tag] 涓嶅瓨鍦?
+		"combo": "存在 [tag] 时，一般也存在 [tag]",
+		"conflict": "存在 [tag] 时，不应该存在 [tag]",
+		"correct_tag": "应该是正确的标签",
+		"miss_female": "缺少男性标签，可能需要",
+		"miss_parody": "缺少原作标签，可能需要",
+		"possible_conflict": "存在 [tag] 时，一般不应该存在 [tag]",
+		"prerequisite": "[tag] 的前置标签 [tag] 不存在"
 	},
 	end_page: {
-		"next_button": "涓嬩竴璇?,
-		"prev_button": "涓婁竴璇?,
+		"next_button": "下一话",
+		"prev_button": "上一话",
 		"tip": {
-			"end_jump": "宸插埌缁撳熬锛岀户缁悜涓嬬炕椤靛皢璺宠嚦涓嬩竴璇?,
-			"exit": "宸插埌缁撳熬锛岀户缁炕椤靛皢閫€鍑?,
-			"start_jump": "宸插埌寮€澶达紝缁х画鍚戜笂缈婚〉灏嗚烦鑷充笂涓€璇?
+			"end_jump": "已到结尾，继续向下翻页将跳至下一话",
+			"exit": "已到结尾，继续翻页将退出",
+			"start_jump": "已到开头，继续向上翻页将跳至上一话"
 		}
 	},
 	hotkeys: {
-		"enter_read_mode": "杩涘叆闃呰妯″紡",
-		"float_tag_list": "鎮诞鏍囩鍒楄〃",
-		"jump_next": "璺宠嚦涓嬩竴璇?,
-		"jump_prev": "璺宠嚦涓婁竴璇?,
-		"jump_to_end": "璺宠嚦灏鹃〉",
-		"jump_to_home": "璺宠嚦棣栭〉",
-		"multi_select_load": "澶氶€夊姞杞?,
-		"page_down": "鍚戜笅缈婚〉",
-		"page_up": "鍚戜笂缈婚〉",
-		"reload_current_error_img": "閲嶈浇褰撳墠閿欒鍥剧墖",
-		"repeat_tip": "姝ゅ揩鎹烽敭宸茶缁戝畾鑷炽€寋{hotkey}}銆?,
-		"scroll_down": "鍚戜笅婊氬姩",
-		"scroll_left": "鍚戝乏婊氬姩",
-		"scroll_right": "鍚戝彸婊氬姩",
-		"scroll_up": "鍚戜笂婊氬姩",
-		"switch_auto_enlarge": "鍒囨崲鍥剧墖鑷姩鏀惧ぇ閫夐」",
-		"switch_dir": "鍒囨崲闃呰鏂瑰悜",
-		"switch_grid_mode": "鍒囨崲缃戞牸妯″紡",
-		"switch_page_fill": "鍒囨崲椤甸潰濉厖",
-		"switch_scroll_mode": "鍒囨崲鍗疯酱妯″紡",
-		"switch_single_double_page_mode": "鍒囨崲鍗曞弻椤垫ā寮?
+		"enter_read_mode": "进入阅读模式",
+		"float_tag_list": "悬浮标签列表",
+		"jump_next": "跳至下一话",
+		"jump_prev": "跳至上一话",
+		"jump_to_end": "跳至尾页",
+		"jump_to_home": "跳至首页",
+		"multi_select_load": "多选加载",
+		"page_down": "向下翻页",
+		"page_up": "向上翻页",
+		"reload_current_error_img": "重载当前错误图片",
+		"repeat_tip": "此快捷键已被绑定至「{{hotkey}}」",
+		"scroll_down": "向下滚动",
+		"scroll_left": "向左滚动",
+		"scroll_right": "向右滚动",
+		"scroll_up": "向上滚动",
+		"switch_auto_enlarge": "切换图片自动放大选项",
+		"switch_dir": "切换阅读方向",
+		"switch_grid_mode": "切换网格模式",
+		"switch_page_fill": "切换页面填充",
+		"switch_scroll_mode": "切换卷轴模式",
+		"switch_single_double_page_mode": "切换单双页模式"
 	},
 	img_status: {
-		"error": "鍔犺浇鍑洪敊",
-		"loading": "姝ｅ湪鍔犺浇",
-		"wait": "绛夊緟鍔犺浇"
+		"error": "加载出错",
+		"loading": "正在加载",
+		"wait": "等待加载"
 	},
 	other: {
-		"auto": "鑷姩",
-		"custom": "鑷畾涔?,
-		"disable": "绂佺敤",
-		"distance": "璺濈",
-		"download": "涓嬭浇",
-		"enabled": "鍚敤",
-		"enter_comic_read_mode": "杩涘叆婕敾闃呰妯″紡",
-		"exit": "閫€鍑?,
-		"fab_hidden": "闅愯棌鎮诞鎸夐挳",
-		"fab_show": "鏄剧ず鎮诞鎸夐挳",
-		"fill_page": "濉厖椤?,
-		"hotkeys": "蹇嵎閿?,
-		"img_loading": "鍥剧墖鍔犺浇涓?,
-		"interval": "闂撮殧",
-		"loading_img": "鍔犺浇鍥剧墖涓?,
-		"multi_select_mode": "澶氶€夋ā寮?,
-		"none": "鏃?,
-		"or": "鎴?,
-		"other": "鍏朵粬",
-		"page_range": "璇疯緭鍏ラ〉鐮佽寖鍥达細\\n锛堜緥濡傦細1, 3-5, 9-)",
-		"read_mode": "闃呰妯″紡",
-		"selected": "宸查€変腑",
-		"setting": "璁剧疆",
-		"clear": "娓呯┖"
+		"auto": "自动",
+		"custom": "自定义",
+		"disable": "禁用",
+		"distance": "距离",
+		"download": "下载",
+		"enabled": "启用",
+		"enter_comic_read_mode": "进入漫画阅读模式",
+		"exit": "退出",
+		"fab_hidden": "隐藏悬浮按钮",
+		"fab_show": "显示悬浮按钮",
+		"fill_page": "填充页",
+		"hotkeys": "快捷键",
+		"img_loading": "图片加载中",
+		"interval": "间隔",
+		"loading_img": "加载图片中",
+		"multi_select_mode": "多选模式",
+		"none": "无",
+		"or": "或",
+		"other": "其他",
+		"page_range": "请输入页码范围：\\n（例如：1, 3-5, 9-)",
+		"read_mode": "阅读模式",
+		"selected": "已选中",
+		"setting": "设置",
+		"clear": "清空"
 	},
 	pwa: {
 		"alert": {
-			"img_data_error": "鍥剧墖鏁版嵁閿欒",
-			"img_not_found": "鎵句笉鍒板浘鐗?,
-			"img_not_found_files": "璇烽€夋嫨鍥剧墖鏂囦欢鎴栧惈鏈夊浘鐗囨枃浠剁殑鍘嬬缉鍖?,
-			"img_not_found_folder": "鏂囦欢澶逛笅娌℃湁鍥剧墖鏂囦欢鎴栧惈鏈夊浘鐗囨枃浠剁殑鍘嬬缉鍖?,
-			"not_valid_url": "涓嶆槸鏈夋晥鐨?URL",
-			"parse_error": "瑙ｆ瀽鍑洪敊",
-			"password_error": "瀵嗙爜閿欒",
-			"repeat_load": "姝ｅ湪鍔犺浇鍏朵粬鏂囦欢涓€︹€?,
-			"userscript_not_installed": "鏈畨瑁?ComicRead 鑴氭湰"
+			"img_data_error": "图片数据错误",
+			"img_not_found": "找不到图片",
+			"img_not_found_files": "请选择图片文件或含有图片文件的压缩包",
+			"img_not_found_folder": "文件夹下没有图片文件或含有图片文件的压缩包",
+			"not_valid_url": "不是有效的 URL",
+			"parse_error": "解析出错",
+			"password_error": "密码错误",
+			"repeat_load": "正在加载其他文件中……",
+			"userscript_not_installed": "未安装 ComicRead 脚本"
 		},
 		"button": {
-			"enter_url": "杈撳叆 URL",
-			"install": "瀹夎",
-			"no_more_prompt": "涓嶅啀鎻愮ず",
-			"resume_read": "鎭㈠闃呰",
-			"select_files": "閫夋嫨鏂囦欢",
-			"select_folder": "閫夋嫨鏂囦欢澶?
+			"enter_url": "输入 URL",
+			"install": "安装",
+			"no_more_prompt": "不再提示",
+			"resume_read": "恢复阅读",
+			"select_files": "选择文件",
+			"select_folder": "选择文件夹"
 		},
-		"install_md": "### 姣忔閮借鎵撳紑杩欎釜缃戦〉寰堥夯鐑︼紵\\n濡傛灉浣犲笇鏈沑\n1. 鑳芥湁鐙珛鐨勭獥鍙ｏ紝鍍忔槸鍦ㄤ娇鐢ㄦ湰鍦拌蒋浠朵竴鏍穃\n1. 鍔犲叆鏈湴鍘嬬缉鏂囦欢鐨勬墦寮€鏂瑰紡涔嬩腑锛屾柟渚跨洿鎺ユ墦寮€\\n1. 绂荤嚎浣跨敤~~锛堜富瑕佹槸鎷呭績鍥藉唴缃戠粶鎶介鏃犳硶璁块棶杩欎釜缃戦〉~~\\n### 娆㈣繋灏嗘湰椤甸潰浣滀负 PWA 搴旂敤瀹夎鍒扮數鑴戜笂馃槂馃憤",
+		"install_md": "### 每次都要打开这个网页很麻烦？\\n如果你希望\\n1. 能有独立的窗口，像是在使用本地软件一样\\n1. 加入本地压缩文件的打开方式之中，方便直接打开\\n1. 离线使用~~（主要是担心国内网络抽风无法访问这个网页~~\\n### 欢迎将本页面作为 PWA 应用安装到电脑上😃👍",
 		"message": {
-			"enter_password": "璇疯緭鍏ュ瘑鐮?,
-			"parsing": "瑙ｆ瀽涓?
+			"enter_password": "请输入密码",
+			"parsing": "解析中"
 		},
-		"tip_enter_url": "璇疯緭鍏ュ帇缂╁寘 URL",
-		"tip_md": "# ComicRead PWA\\n浣跨敤 [ComicRead](https://github.com/hymbz/ComicReadScript) 鐨勯槄璇绘ā寮忛槄璇?*鏈湴**婕敾\\n---\\n### 灏嗗浘鐗囨枃浠躲€佹枃浠跺す銆佸帇缂╁寘鐩存帴鎷栧叆鍗冲彲寮€濮嬮槄璇籠\n*涔熷彲浠ラ€夋嫨**鐩存帴绮樿创**鎴?*杈撳叆**鍘嬬缉鍖?URL 涓嬭浇闃呰*"
+		"tip_enter_url": "请输入压缩包 URL",
+		"tip_md": "# ComicRead PWA\\n使用 [ComicRead](https://github.com/hymbz/ComicReadScript) 的阅读模式阅读**本地**漫画\\n---\\n### 将图片文件、文件夹、压缩包直接拖入即可开始阅读\\n*也可以选择**直接粘贴**或**输入**压缩包 URL 下载阅读*"
 	},
 	setting: {
 		"hotkeys": {
-			"add": "娣诲姞鏂板揩鎹烽敭",
-			"restore": "鎭㈠榛樿蹇嵎閿?
+			"add": "添加新快捷键",
+			"restore": "恢复默认快捷键"
 		},
-		"language": "璇█",
+		"language": "语言",
 		"option": {
-			"abreast_duplicate": "姣忓垪閲嶅姣斾緥",
-			"abreast_mode": "骞舵帓鍗疯酱妯″紡",
-			"adjust_to_width": "鑷€傚簲瀹藉害",
-			"align_edge": "婊氬姩缈婚〉鏃跺榻愯竟缂?,
-			"always_load_all_img": "濮嬬粓鍔犺浇鎵€鏈夊浘鐗?,
-			"autoFullscreen": "鑷姩鍏ㄥ睆",
-			"autoHiddenMouse": "鑷姩闅愯棌榧犳爣",
-			"auto_scale": "鑷姩缂╂斁",
-			"auto_scroll_trigger_end": "鍦ㄧ粨鏉熼〉涓婄户缁粴鍔?,
-			"auto_switch_page_mode": "鎸夊睆骞曟瘮渚嬪垏鎹㈠崟鍙岄〉",
-			"background_color": "鑳屾櫙棰滆壊",
-			"click_page_turn_area": "鐐瑰嚮鍖哄煙",
-			"click_page_turn_enabled": "鐐瑰嚮缈婚〉",
-			"click_page_turn_swap_area": "宸﹀彸鐐瑰嚮鍖哄煙浜ゆ崲",
-			"dark_mode": "榛戞殫妯″紡",
-			"dark_mode_auto": "榛戞殫妯″紡璺熼殢绯荤粺",
-			"dir_ltr": "浠庡乏鍒板彸锛堢編婕級",
-			"dir_rtl": "浠庡彸鍒板乏锛堟棩婕級",
-			"disable_auto_enlarge": "绂佹鍥剧墖鑷姩鏀惧ぇ",
-			"first_page_fill": "榛樿鍚敤棣栭〉濉厖",
-			"full_width": "瑙嗙獥瀹藉害",
-			"img_recognition": "鍥惧儚璇嗗埆",
-			"img_recognition_background": "璇嗗埆鑳屾櫙鑹?,
-			"img_recognition_pageFill": "鑷姩璋冩暣椤甸潰濉厖",
-			"img_recognition_warn": "鉂?褰撳墠娴忚鍣ㄤ笉鏀寔 Web Worker锛屽紑鍚鍔熻兘鍙兘瀵艰嚧椤甸潰鍗￠】锛屽缓璁崌绾ф垨鏇存崲娴忚鍣ㄣ€?,
-			"img_recognition_warn_2": "鉂?褰撳墠缃戠珯涓嶆敮鎸?Web Worker锛屽紑鍚鍔熻兘鍙兘瀵艰嚧椤甸潰鍗￠】銆?,
-			"paragraph_appearance": "澶栬",
-			"paragraph_dir": "闃呰鏂瑰悜",
-			"paragraph_display": "鏄剧ず",
-			"paragraph_scrollbar": "婊氬姩鏉?,
-			"paragraph_translation": "缈昏瘧",
-			"preload_page_num": "棰勫姞杞介〉鏁?,
-			"scroll_end": "缈婚〉鑷冲敖澶村悗",
-			"scroll_end_auto": "浼樺厛璺宠嚦涓?涓嬩竴璇濓紝鍚﹀垯閫€鍑?,
-			"scroll_mode_img_scale": "鍗疯酱鍥剧墖缂╂斁",
-			"scroll_mode_img_spacing": "鍗疯酱鍥剧墖闂磋窛",
-			"scrollbar_auto_hidden": "鑷姩闅愯棌",
-			"scrollbar_easy_scroll": "蹇嵎婊氬姩",
-			"scrollbar_position": "浣嶇疆",
-			"scrollbar_position_bottom": "搴曢儴",
-			"scrollbar_position_hidden": "闅愯棌",
-			"scrollbar_position_right": "鍙充晶",
-			"scrollbar_position_top": "椤堕儴",
-			"scrollbar_show_img_status": "鏄剧ず鍥剧墖鍔犺浇鐘舵€?,
-			"show_clickable_area": "鏄剧ず鐐瑰嚮鍖哄煙",
-			"show_comments": "鍦ㄧ粨鏉熼〉鏄剧ず璇勮",
-			"shrink_menu": "缂╁皬鑿滃崟鍖哄煙",
-			"swap_page_turn_key": "宸﹀彸缈婚〉閿氦鎹?,
-			"zoom": "鍥剧墖缂╂斁"
+			"abreast_duplicate": "每列重复比例",
+			"abreast_mode": "并排卷轴模式",
+			"adjust_to_width": "自适应宽度",
+			"align_edge": "滚动翻页时对齐边缘",
+			"always_load_all_img": "始终加载所有图片",
+			"autoFullscreen": "自动全屏",
+			"autoHiddenMouse": "自动隐藏鼠标",
+			"auto_scale": "自动缩放",
+			"auto_scroll_trigger_end": "在结束页上继续滚动",
+			"auto_switch_page_mode": "按屏幕比例切换单双页",
+			"background_color": "背景颜色",
+			"click_page_turn_area": "点击区域",
+			"click_page_turn_enabled": "点击翻页",
+			"click_page_turn_swap_area": "左右点击区域交换",
+			"dark_mode": "黑暗模式",
+			"dark_mode_auto": "黑暗模式跟随系统",
+			"dir_ltr": "从左到右（美漫）",
+			"dir_rtl": "从右到左（日漫）",
+			"disable_auto_enlarge": "禁止图片自动放大",
+			"first_page_fill": "默认启用首页填充",
+			"full_width": "视窗宽度",
+			"img_recognition": "图像识别",
+			"img_recognition_background": "识别背景色",
+			"img_recognition_pageFill": "自动调整页面填充",
+			"img_recognition_warn": "❗ 当前浏览器不支持 Web Worker，开启此功能可能导致页面卡顿，建议升级或更换浏览器。",
+			"img_recognition_warn_2": "❗ 当前网站不支持 Web Worker，开启此功能可能导致页面卡顿。",
+			"paragraph_appearance": "外观",
+			"paragraph_dir": "阅读方向",
+			"paragraph_display": "显示",
+			"paragraph_scrollbar": "滚动条",
+			"paragraph_translation": "翻译",
+			"preload_page_num": "预加载页数",
+			"scroll_end": "翻页至尽头后",
+			"scroll_end_auto": "优先跳至上/下一话，否则退出",
+			"scroll_mode_img_scale": "卷轴图片缩放",
+			"scroll_mode_img_spacing": "卷轴图片间距",
+			"scrollbar_auto_hidden": "自动隐藏",
+			"scrollbar_easy_scroll": "快捷滚动",
+			"scrollbar_position": "位置",
+			"scrollbar_position_bottom": "底部",
+			"scrollbar_position_hidden": "隐藏",
+			"scrollbar_position_right": "右侧",
+			"scrollbar_position_top": "顶部",
+			"scrollbar_show_img_status": "显示图片加载状态",
+			"show_clickable_area": "显示点击区域",
+			"show_comments": "在结束页显示评论",
+			"shrink_menu": "缩小菜单区域",
+			"swap_page_turn_key": "左右翻页键交换",
+			"zoom": "图片缩放"
 		},
-		"sync_options_other_site": "鍚屾闃呰閰嶇疆鑷冲叾浠栫珯鐐?,
+		"sync_options_other_site": "同步阅读配置至其他站点",
 		"translation": {
-			"cotrans_tip": "<p>灏嗕娇鐢?<a href=\\"https://cotrans.touhou.ai\\" target=\\"_blank\\">Cotrans</a> 鎻愪緵鐨勬帴鍙ｇ炕璇戝浘鐗囷紝璇ユ湇鍔″櫒鐢卞叾缁存姢鑰呯敤鐖卞彂鐢佃嚜璐圭淮鎶?/p>\\n<p>澶氫汉鍚屾椂浣跨敤鏃堕渶瑕佹帓闃熺瓑寰咃紝绛夊緟闃熷垪杈惧埌涓婇檺鍚庡啀涓婁紶鏂板浘鐗囦細鎶ラ敊锛岄渶瑕佽繃娈垫椂闂村啀璇?/p>\\n<p>鎵€浠ヨ繕璇?<b>娉ㄦ剰鐢ㄩ噺</b></p>\\n<p>鏇存帹鑽愯嚜宸辨湰鍦伴儴缃?Manga Image Translator锛屾棦涓嶅崰鐢ㄦ湇鍔″櫒璧勬簮涔熶笉闇€瑕佹帓闃?/p>",
+			"cotrans_tip": "<p>将使用 <a href=\\"https://cotrans.touhou.ai\\" target=\\"_blank\\">Cotrans</a> 提供的接口翻译图片，该服务器由其维护者用爱发电自费维护</p>\\n<p>多人同时使用时需要排队等待，等待队列达到上限后再上传新图片会报错，需要过段时间再试</p>\\n<p>所以还请 <b>注意用量</b></p>\\n<p>更推荐自己本地部署 Manga Image Translator，既不占用服务器资源也不需要排队</p>",
 			"options": {
-				"box_threshold": "鏂囨湰妗嗛槇鍊?,
-				"detection_resolution": "鏂囨湰鎵弿娓呮櫚搴?,
-				"direction": "娓叉煋瀛椾綋鏂瑰悜",
-				"direction_auto": "鍘熸枃涓€鑷?,
-				"direction_horizontal": "浠呴檺姘村钩",
-				"direction_vertical": "浠呴檺鍨傜洿",
-				"force_retry": "蹇界暐缂撳瓨寮哄埗閲嶈瘯",
-				"inpainter": "鍥惧儚淇鍣?,
-				"inpainting_size": "鍥惧儚淇灏哄",
-				"local_url": "鑷畾涔夋湇鍔″櫒 URL",
-				"mask_dilation_offset": "鎺╃爜鑶ㄨ儉鍋忕Щ閲?,
-				"only_download_translated": "鍙笅杞界炕璇戝畬鐨勫浘鐗?,
-				"target_language": "鐩爣璇█",
-				"text_detector": "鏂囨湰鎵弿鍣?,
-				"translator": "缈昏瘧鏈嶅姟",
-				"unclip_ratio": "鏂囨湰妗嗚啫鑳€姣旂巼"
+				"box_threshold": "文本框阈值",
+				"detection_resolution": "文本扫描清晰度",
+				"direction": "渲染字体方向",
+				"direction_auto": "原文一致",
+				"direction_horizontal": "仅限水平",
+				"direction_vertical": "仅限垂直",
+				"force_retry": "忽略缓存强制重试",
+				"inpainter": "图像修复器",
+				"inpainting_size": "图像修复尺寸",
+				"local_url": "自定义服务器 URL",
+				"mask_dilation_offset": "掩码膨胀偏移量",
+				"only_download_translated": "只下载翻译完的图片",
+				"target_language": "目标语言",
+				"text_detector": "文本扫描器",
+				"translator": "翻译服务",
+				"unclip_ratio": "文本框膨胀比率"
 			},
-			"range": "缈昏瘧鑼冨洿",
-			"provider": "缈昏瘧鍣?,
-			"translate_all": "缈昏瘧鍏ㄩ儴鍥剧墖",
-			"translate_to_end": "缈昏瘧褰撳墠椤佃嚦缁撳熬"
+			"range": "翻译范围",
+			"provider": "翻译器",
+			"translate_all": "翻译全部图片",
+			"translate_to_end": "翻译当前页至结尾"
 		}
 	},
 	site: {
 		"add_feature": {
-			"add_hotkeys_actions": "澧炲姞蹇嵎閿搷浣?,
-			"auto_adjust_option": "鑷姩璋冩暣闃呰閰嶇疆",
-			"auto_page_turn": "鏃犻檺婊氬姩",
-			"auto_show": "鑷姩杩涘叆闃呰妯″紡",
-			"block_totally": "褰诲簳灞忚斀婕敾",
-			"colorize_tag": "鏍囩鏌撹壊",
-			"cross_site_link": "鍏宠仈澶栫珯",
-			"detect_ad": "璇嗗埆骞垮憡椤?,
-			"expand_tag_list": "灞曞紑鏍囩鍒楄〃",
-			"float_tag_list": "鎮诞鏍囩鍒楄〃",
-			"load_original_image": "鍔犺浇鍘熷浘",
-			"lock_option": "閿佸畾绔欑偣閰嶇疆",
-			"open_link_new_page": "鍦ㄦ柊椤甸潰涓墦寮€閾炬帴",
-			"quick_favorite": "蹇嵎鏀惰棌",
-			"quick_rating": "蹇嵎璇勫垎",
-			"quick_tag_define": "蹇嵎鏌ョ湅鏍囩瀹氫箟",
-			"remember_current_site": "璁颁綇褰撳墠绔欑偣",
-			"tag_lint": "鏍囩妫€鏌?
+			"add_hotkeys_actions": "增加快捷键操作",
+			"auto_adjust_option": "自动调整阅读配置",
+			"auto_page_turn": "无限滚动",
+			"auto_show": "自动进入阅读模式",
+			"block_totally": "彻底屏蔽漫画",
+			"colorize_tag": "标签染色",
+			"cross_site_link": "关联外站",
+			"detect_ad": "识别广告页",
+			"expand_tag_list": "展开标签列表",
+			"float_tag_list": "悬浮标签列表",
+			"load_original_image": "加载原图",
+			"lock_option": "锁定站点配置",
+			"open_link_new_page": "在新页面中打开链接",
+			"quick_favorite": "快捷收藏",
+			"quick_rating": "快捷评分",
+			"quick_tag_define": "快捷查看标签定义",
+			"remember_current_site": "记住当前站点",
+			"tag_lint": "标签检查"
 		},
-		"changed_load_failed": "缃戠珯鍙戠敓鍙樺寲锛屾棤娉曞姞杞芥极鐢?,
+		"changed_load_failed": "网站发生变化，无法加载漫画",
 		"ehentai": {
-			"change_favorite_failed": "鏀惰棌澶逛慨鏀瑰け璐?,
-			"change_favorite_success": "鏀惰棌澶逛慨鏀规垚鍔?,
-			"change_rating_failed": "璇勫垎淇敼澶辫触",
-			"change_rating_success": "璇勫垎淇敼鎴愬姛",
-			"fetch_favorite_failed": "鑾峰彇鏀惰棌澶逛俊鎭け璐?,
-			"fetch_img_page_source_failed": "鑾峰彇鍥剧墖椤垫簮鐮佸け璐?,
-			"fetch_img_page_url_failed": "浠庤鎯呴〉鑾峰彇鍥剧墖椤靛湴鍧€澶辫触",
-			"fetch_img_url_failed": "浠庡浘鐗囬〉鑾峰彇鍥剧墖鍦板潃澶辫触",
-			"hitomi_error": "hitomi 鍖归厤鍑洪敊",
-			"html_changed_link_failed": "椤甸潰缁撴瀯鍙戠敓鏀瑰彉锛屽叧鑱斿绔欏姛鑳芥棤娉曟甯哥敓鏁?,
-			"ip_banned": "IP鍦板潃琚",
-			"nhentai_error": "nhentai 鍖归厤鍑洪敊",
-			"nhentai_failed": "鍖归厤澶辫触锛岃鍦ㄧ‘璁ょ櫥褰?{{nhentai}} 鍚庡埛鏂?
+			"change_favorite_failed": "收藏夹修改失败",
+			"change_favorite_success": "收藏夹修改成功",
+			"change_rating_failed": "评分修改失败",
+			"change_rating_success": "评分修改成功",
+			"fetch_favorite_failed": "获取收藏夹信息失败",
+			"fetch_img_page_source_failed": "获取图片页源码失败",
+			"fetch_img_page_url_failed": "从详情页获取图片页地址失败",
+			"fetch_img_url_failed": "从图片页获取图片地址失败",
+			"hitomi_error": "hitomi 匹配出错",
+			"html_changed_link_failed": "页面结构发生改变，关联外站功能无法正常生效",
+			"ip_banned": "IP地址被禁",
+			"nhentai_error": "nhentai 匹配出错",
+			"nhentai_failed": "匹配失败，请在确认登录 {{nhentai}} 后刷新"
 		},
 		"nhentai": {
-			"fetch_next_page_failed": "鑾峰彇涓嬩竴椤垫极鐢绘暟鎹け璐?,
-			"tag_blacklist_fetch_failed": "鏍囩榛戝悕鍗曡幏鍙栧け璐?
+			"fetch_next_page_failed": "获取下一页漫画数据失败",
+			"tag_blacklist_fetch_failed": "标签黑名单获取失败"
 		},
-		"show_settings_menu": "鏄剧ず璁剧疆鑿滃崟",
+		"show_settings_menu": "显示设置菜单",
 		"simple": {
-			"auto_read_mode_message": "宸查粯璁ゅ紑鍚€岃嚜鍔ㄨ繘鍏ラ槄璇绘ā寮忋€?,
-			"no_img": "鏈壘鍒板悎閫傜殑婕敾鍥剧墖锛孿\n濡傛湁闇€瑕佸彲鐐规鍏抽棴绠€鏄撻槄璇绘ā寮?,
-			"simple_read_mode": "浣跨敤绠€鏄撻槄璇绘ā寮?
+			"auto_read_mode_message": "已默认开启「自动进入阅读模式」",
+			"no_img": "未找到合适的漫画图片，\\n如有需要可点此关闭简易阅读模式",
+			"simple_read_mode": "使用简易阅读模式"
 		}
 	},
 	touch_area: {
-		"menu": "鑿滃崟",
+		"menu": "菜单",
 		"type": {
-			"edge": "杈圭紭",
+			"edge": "边缘",
 			"l": "L",
-			"left_right": "宸﹀彸",
-			"up_down": "涓婁笅"
+			"left_right": "左右",
+			"up_down": "上下"
 		}
 	},
 	translation: {
 		"status": {
-			"after-translating": "缈昏瘧鍚庡鐞嗕腑",
-			"cancelled": "缈昏瘧宸插彇娑?,
-			"colorizing": "姝ｅ湪涓婅壊",
-			"default": "鏈煡鐘舵€?,
-			"detection": "姝ｅ湪妫€娴嬫枃鏈?,
-			"downloading": "姝ｅ湪涓嬭浇",
-			"downscaling": "姝ｅ湪缂╁皬鍥剧墖",
-			"error": "缈昏瘧鍑洪敊",
-			"error-download": "涓嬭浇鍑洪敊",
-			"error-lang": "浣犻€夋嫨鐨勭炕璇戞湇鍔′笉鏀寔浣犻€夋嫨鐨勮瑷€",
-			"error-translating": "缈昏瘧鏈嶅姟娌℃湁杩斿洖浠讳綍鏂囨湰",
-			"error-too-large": "鍥剧墖灏哄杩囧ぇ锛堣秴杩?8000x8000 鍍忕礌锛?,
-			"error-upload": "涓婁紶鍑洪敊",
-			"error-disconnect": "涓庢湇鍔″櫒鏂紑杩炴帴",
-			"error-with-id": "缈昏瘧鍑洪敊",
-			"finished": "姝ｅ湪鏁寸悊缁撴灉",
-			"inpainting": "姝ｅ湪淇ˉ鍥剧墖",
-			"mask-generation": "姝ｅ湪鐢熸垚鏂囨湰鎺╃爜",
-			"ocr": "姝ｅ湪璇嗗埆鏂囨湰",
-			"pending": "姝ｅ湪绛夊緟",
-			"pending-pos": "姝ｅ湪绛夊緟",
-			"preparing": "绛夊緟绌洪棽绐楀彛",
-			"rendering": "姝ｅ湪娓叉煋",
-			"running_pre_translation_hooks": "姝ｅ湪鎵ц缈昏瘧鍓嶅鐞?,
-			"saved": "淇濆瓨缁撴灉",
-			"saving": "姝ｅ湪淇濆瓨",
-			"skip-no-regions": "鍥剧墖涓病鏈夋娴嬪埌鏂囨湰鍖哄煙",
-			"skip-no-text": "鍥剧墖涓病鏈夋娴嬪埌鏂囨湰",
-			"textline_merge": "姝ｅ湪鏁村悎鏂囨湰",
-			"translating": "姝ｅ湪缈昏瘧鏂囨湰",
-			"upload": "姝ｅ湪涓婁紶",
-			"upscaling": "姝ｅ湪鏀惧ぇ鍥剧墖",
-			"uploading": "姝ｅ湪涓婁紶"
+			"after-translating": "翻译后处理中",
+			"cancelled": "翻译已取消",
+			"colorizing": "正在上色",
+			"default": "未知状态",
+			"detection": "正在检测文本",
+			"downloading": "正在下载",
+			"downscaling": "正在缩小图片",
+			"error": "翻译出错",
+			"error-download": "下载出错",
+			"error-lang": "你选择的翻译服务不支持你选择的语言",
+			"error-translating": "翻译服务没有返回任何文本",
+			"error-too-large": "图片尺寸过大（超过 8000x8000 像素）",
+			"error-upload": "上传出错",
+			"error-disconnect": "与服务器断开连接",
+			"error-with-id": "翻译出错",
+			"finished": "正在整理结果",
+			"inpainting": "正在修补图片",
+			"mask-generation": "正在生成文本掩码",
+			"ocr": "正在识别文本",
+			"pending": "正在等待",
+			"pending-pos": "正在等待",
+			"preparing": "等待空闲窗口",
+			"rendering": "正在渲染",
+			"running_pre_translation_hooks": "正在执行翻译前处理",
+			"saved": "保存结果",
+			"saving": "正在保存",
+			"skip-no-regions": "图片中没有检测到文本区域",
+			"skip-no-text": "图片中没有检测到文本",
+			"textline_merge": "正在整合文本",
+			"translating": "正在翻译文本",
+			"upload": "正在上传",
+			"upscaling": "正在放大图片",
+			"uploading": "正在上传"
 		},
 		"tip": {
-			"check_img_status_failed": "妫€鏌ュ浘鐗囩姸鎬佸け璐?,
-			"download_img_failed": "涓嬭浇鍥剧墖澶辫触",
-			"get_translator_list_error": "鑾峰彇鍙敤缈昏瘧鏈嶅姟鍒楄〃鏃跺嚭閿?,
-			"id_not_returned": "鏈繑鍥?id",
-			"img_downloading": "涓嬭浇鍥剧墖涓?,
-			"img_not_fully_loaded": "鍥剧墖鏈姞杞藉畬姣?,
-			"pending": "姝ｅ湪绛夊緟锛屽垪闃熻繕鏈?{{pos}} 寮犲浘鐗?,
-			"resize_img_failed": "缂╂斁鍥剧墖澶辫触",
-			"translating": "缈昏瘧鍥剧墖涓?,
-			"translation_completed": "缈昏瘧瀹屾垚",
-			"upload": "涓婁紶鍥剧墖涓?,
-			"upload_error": "涓婁紶鍥剧墖鍑洪敊",
-			"upload_return_error": "鏈嶅姟鍣ㄧ炕璇戝嚭閿?,
-			"wait_translation": "绛夊緟缈昏瘧"
+			"check_img_status_failed": "检查图片状态失败",
+			"download_img_failed": "下载图片失败",
+			"get_translator_list_error": "获取可用翻译服务列表时出错",
+			"id_not_returned": "未返回 id",
+			"img_downloading": "下载图片中",
+			"img_not_fully_loaded": "图片未加载完毕",
+			"pending": "正在等待，列队还有 {{pos}} 张图片",
+			"resize_img_failed": "缩放图片失败",
+			"translating": "翻译图片中",
+			"translation_completed": "翻译完成",
+			"upload": "上传图片中",
+			"upload_error": "上传图片出错",
+			"upload_return_error": "服务器翻译出错",
+			"wait_translation": "等待翻译"
 		},
 		"translator": {
-			"baidu": "鐧惧害",
+			"baidu": "百度",
 			"deepl": "DeepL",
-			"google": "璋锋瓕",
+			"google": "谷歌",
 			"gpt3.5": "GPT-3.5",
-			"none": "鍒犻櫎鏂囨湰",
-			"offline": "绂荤嚎妯″瀷",
-			"original": "鍘熸枃",
+			"none": "删除文本",
+			"offline": "离线模型",
+			"original": "原文",
 			"papago": "Papago",
-			"youdao": "鏈夐亾"
+			"youdao": "有道"
 		}
 	},
 	upscale: {
-		"module_download_complete": "鍥剧墖鏀惧ぇ妯″瀷涓嬭浇瀹屾垚",
-		"module_download_failed": "鍥剧墖鏀惧ぇ妯″瀷涓嬭浇澶辫触",
-		"module_downloading": "鍥剧墖鏀惧ぇ妯″瀷涓嬭浇涓?..",
-		"title": "鏃犳崯鏀惧ぇ鍥剧墖",
-		"upscaled": "宸叉斁澶?,
-		"upscaling": "鏀惧ぇ涓?,
-		"webgpu_tip": "鏃犳硶浣跨敤 WebGPU 鏀惧ぇ鍥剧墖锛屽鐞嗛€熷害灏嗗彉鎱?
+		"module_download_complete": "图片放大模型下载完成",
+		"module_download_failed": "图片放大模型下载失败",
+		"module_downloading": "图片放大模型下载中...",
+		"title": "无损放大图片",
+		"upscaled": "已放大",
+		"upscaling": "放大中",
+		"webgpu_tip": "无法使用 WebGPU 放大图片，处理速度将变慢"
 	}
 };
 //#endregion
@@ -1431,7 +1431,7 @@ function dequal(foo, bar) {
 }
 //#endregion
 //#region src/helper/other.ts
-/** 鍥剧墖鏂囦欢鎵╁睍鍚嶇缉鍐?*/
+/** 图片文件扩展名缩写 */
 const fileType = {
 	j: "jpg",
 	p: "png",
@@ -1450,9 +1450,9 @@ const getFileName = (url) => /.+\\/([^?]+)/.exec(url)?.[1];
 const isString = (val) => typeof val === "string";
 const isNumber = (val) => typeof val === "number";
 const isArray = (val) => Array.isArray(val);
-/** 鍒ゆ柇涓や釜鏁版槸鍚﹀湪鎸囧畾璇樊鑼冨洿鍐呯浉绛?*/
+/** 判断两个数是否在指定误差范围内相等 */
 const approx = (val, target, range = 1) => Math.abs(target - val) <= range;
-/** 鍒涘缓涓€涓彧浼氭墽琛屼竴娆＄殑鍑芥暟 */
+/** 创建一个只会执行一次的函数 */
 const onec = (fn) => {
 	let hasRun = false;
 	return () => {
@@ -1473,19 +1473,21 @@ function range(a, b, c) {
 		case "string": return Array.from({ length: a }, () => b);
 	}
 }
-/** 鍒ゆ柇鑺傜偣鏄惁涓哄厓绱犺妭鐐?*/
+/** 判断节点是否为元素节点 */
 const isHTMLElement = (node) => node.nodeType === Node.ELEMENT_NODE;
-/** 鍒ゆ柇鑺傜偣鏄惁涓哄浘鐗囧厓绱犺妭鐐?*/
+/** 判断节点是否为图片元素节点 */
 const isImageElement = (node) => node.nodeName === "IMG";
 /**
-* 瀵?document.querySelector 鐨勫皝瑁?* 灏嗛粯璁よ繑鍥炵被鍨嬫敼涓?HTMLElement
+* 对 document.querySelector 的封装
+* 将默认返回类型改为 HTMLElement
 */
 const querySelector = (selector) => document.querySelector(selector);
 /**
-* 瀵?document.querySelector 鐨勫皝瑁?* 灏嗛粯璁よ繑鍥炵被鍨嬫敼涓?HTMLElement
+* 对 document.querySelector 的封装
+* 将默认返回类型改为 HTMLElement
 */
 const querySelectorAll = (selector) => [...document.querySelectorAll(selector)];
-/** 杩斿洖 Dom 鐨勭偣鍑诲嚱鏁?*/
+/** 返回 Dom 的点击函数 */
 const querySelectorClick = (selector, textContent) => {
 	let getDom;
 	if (typeof selector === "function") getDom = selector;
@@ -1493,13 +1495,13 @@ const querySelectorClick = (selector, textContent) => {
 	else getDom = () => querySelector(selector);
 	if (getDom()) return () => getDom()?.click();
 };
-/** 鎵惧嚭鏁扮粍涓嚭鐜版渶澶氭鐨勫厓绱?*/
+/** 找出数组中出现最多次的元素 */
 const getMostItem = (list) => {
 	const counts = /* @__PURE__ */ new Map();
 	for (const val of list) counts.set(val, (counts.get(val) ?? 0) + 1);
 	return [...counts.entries()].reduce((maxItem, item) => maxItem[1] > item[1] ? maxItem : item)[0];
 };
-/** 鍒ゆ柇瀛楃涓叉槸鍚︿负 URL */
+/** 判断字符串是否为 URL */
 const isUrl = (text) => {
 	try {
 		return Boolean(new URL(text));
@@ -1507,7 +1509,7 @@ const isUrl = (text) => {
 		return false;
 	}
 };
-/** 灏?blob 鏁版嵁浣滀负鏂囦欢淇濆瓨鑷虫湰鍦?*/
+/** 将 blob 数据作为文件保存至本地 */
 const saveAs = (blob, name = "download") => {
 	const a = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
 	a.download = name;
@@ -1515,9 +1517,9 @@ const saveAs = (blob, name = "download") => {
 	a.href = URL.createObjectURL(blob);
 	setTimeout(() => a.dispatchEvent(new MouseEvent("click")));
 };
-/** 婊氬姩椤甸潰鍒版寚瀹氬厓绱犵殑鎵€鍦ㄤ綅缃?*/
+/** 滚动页面到指定元素的所在位置 */
 const scrollIntoView = (selector, behavior = "instant") => querySelector(selector)?.scrollIntoView({ behavior });
-/** 纭繚鍑芥暟鍦ㄥ悓涓€鏃堕棿涓嬪彧鏈変竴涓湪杩愯 */
+/** 确保函数在同一时间下只有一个在运行 */
 const singleThreaded = (callback, initState) => {
 	const state = {
 		running: false,
@@ -1546,10 +1548,12 @@ const singleThreaded = (callback, initState) => {
 	};
 };
 /**
-* 闄愬埗 Promise 骞跺彂
-* @param fnList 浠诲姟鍑芥暟鍒楄〃
-* @param callBack 鎴愬姛鎵ц涓€涓?Promise 鍚庤皟鐢紝涓昏鐢ㄤ簬鏄剧ず杩涘害
-* @param limit 闄愬埗鏁?* @returns 鎵€鏈?Promise 鐨勮繑鍥炲€?*/
+* 限制 Promise 并发
+* @param fnList 任务函数列表
+* @param callBack 成功执行一个 Promise 后调用，主要用于显示进度
+* @param limit 限制数
+* @returns 所有 Promise 的返回值
+*/
 const plimit = async (fnList, callBack = void 0, limit = 10) => {
 	let doneNum = 0;
 	const totalNum = fnList.length;
@@ -1573,7 +1577,7 @@ const plimit = async (fnList, callBack = void 0, limit = 10) => {
 	}
 	return resList;
 };
-/** Promise 骞跺彂闃熷垪 */
+/** Promise 并发队列 */
 var PQueue = class {
 	wait = /* @__PURE__ */ new Set();
 	running = /* @__PURE__ */ new Set();
@@ -1617,8 +1621,8 @@ var PQueue = class {
 	}
 };
 /**
-* 鍒ゆ柇浣跨敤鍙傛暟棰滆壊浣滀负榛樿鍊兼椂鏄惁闇€瑕佸垏鎹负榛戞殫妯″紡
-* @param hexColor 鍗佸叚杩涘埗棰滆壊銆備緥濡?#112233
+* 判断使用参数颜色作为默认值时是否需要切换为黑暗模式
+* @param hexColor 十六进制颜色。例如 #112233
 */
 const needDarkMode = (hexColor) => {
 	const r = Number.parseInt(hexColor.slice(1, 3), 16);
@@ -1642,7 +1646,7 @@ function waitDom(selector, count = 1, timeout) {
 		return elements.length >= count ? [...elements] : void 0;
 	}, timeout);
 }
-/** 绛夊緟鎸囧畾鐨勫浘鐗囧厓绱犲姞杞藉畬鎴?*/
+/** 等待指定的图片元素加载完成 */
 const waitImgLoad = (target, timeout) => new Promise((resolve, reject) => {
 	const img = typeof target === "string" ? new Image() : target;
 	if (img.complete && img.naturalHeight) resolve(img);
@@ -1660,9 +1664,9 @@ const waitImgLoad = (target, timeout) => new Promise((resolve, reject) => {
 	img.addEventListener("error", handleError, { once: true });
 	if (typeof target === "string") img.src = target;
 });
-/** 灏嗘寚瀹氱殑甯冨皵鍊艰浆鎹负瀛楃涓叉垨鏈畾涔?*/
+/** 将指定的布尔值转换为字符串或未定义 */
 const boolDataVal = (val) => val ? "" : void 0;
-/** 娴嬭瘯鍥剧墖 url 鑳藉惁姝ｇ‘鍔犺浇 */
+/** 测试图片 url 能否正确加载 */
 const testImgUrl = (url) => new Promise((resolve) => {
 	const img = new Image();
 	img.onload = () => resolve(true);
@@ -1679,8 +1683,9 @@ const canvasToBlob = (canvas, type, quality = 1) => {
 	});
 };
 /**
-* 姹?a 鍜?b 鐨勫樊闆嗭紝鐩稿綋浜庝粠 a 涓垹鍘诲拰 b 鐩稿悓鐨勫睘鎬?*
-* 涓嶄細淇敼鍙傛暟瀵硅薄锛岃繑鍥炵殑鏄柊瀵硅薄
+* 求 a 和 b 的差集，相当于从 a 中删去和 b 相同的属性
+*
+* 不会修改参数对象，返回的是新对象
 */
 const difference = (a, b) => {
 	const res = {};
@@ -1702,16 +1707,16 @@ const _assign = (a, b) => {
 	return res;
 };
 /**
-* Object.assign 鐨勬繁鎷疯礉鐗堬紝涓嶄細瀵艰嚧瀛愬璞″睘鎬х殑缂哄け
+* Object.assign 的深拷贝版，不会导致子对象属性的缺失
 *
-* 涓嶄細淇敼鍙傛暟瀵硅薄锛岃繑鍥炵殑鏄柊瀵硅薄
+* 不会修改参数对象，返回的是新对象
 */
 const assign = (target, ...sources) => {
 	let res = target;
 	for (const source of sources) if (typeof source === "object") res = _assign(res, source);
 	return res;
 };
-/** 鏍规嵁璺緞鑾峰彇瀵硅薄涓嬬殑鎸囧畾鍊?*/
+/** 根据路径获取对象下的指定值 */
 const byPath = (obj, path, handleVal) => {
 	const keys = typeof path === "string" ? path.split(".") : path;
 	let target = obj;
@@ -1741,7 +1746,7 @@ const requestIdleCallback$1 = (callback, timeout) => {
 	if (Reflect.has(window, "requestIdleCallback")) return window.requestIdleCallback(callback, { timeout });
 	return window.setTimeout(callback, 16);
 };
-/** 鑾峰彇閿洏浜嬩欢鐨勭紪鐮?*/
+/** 获取键盘事件的编码 */
 const getKeyboardCode = (e) => {
 	let { key } = e;
 	switch (key) {
@@ -1755,13 +1760,14 @@ const getKeyboardCode = (e) => {
 	if (e.shiftKey) key = \`Shift + \${key}\`;
 	return key;
 };
-/** 灏嗗揩鎹烽敭鐨勭紪鐮佽浆鎹㈡垚鏇存槗璇荤殑褰㈠紡 */
-const keyboardCodeToText = (code) => code.replace("Control", "Ctrl").replace("ArrowUp", "鈫?).replace("ArrowDown", "鈫?).replace("ArrowLeft", "鈫?).replace("ArrowRight", "鈫?).replace(/^\\s$/, "Space");
-/** 灏?HTML 瀛楃涓茶浆鎹负 DOM 瀵硅薄 */
+/** 将快捷键的编码转换成更易读的形式 */
+const keyboardCodeToText = (code) => code.replace("Control", "Ctrl").replace("ArrowUp", "↑").replace("ArrowDown", "↓").replace("ArrowLeft", "←").replace("ArrowRight", "→").replace(/^\\s$/, "Space");
+/** 将 HTML 字符串转换为 DOM 对象 */
 const domParse = (html) => new DOMParser().parseFromString(html, "text/html");
 /**
-* 鍔寔淇敼鍘熺綉椤典笂鐨勫嚱鏁?*
-* 濡傛灉浼犲叆鍑芥暟鐨勬墍闇€鍙傛暟涓洪浂锛屽皢鍦ㄥ師鍑芥暟鎵ц瀹屽悗鑷姩璋冪敤
+* 劫持修改原网页上的函数
+*
+* 如果传入函数的所需参数为零，将在原函数执行完后自动调用
 */
 const hijackFn = (fnName, fn) => {
 	const rawFn = unsafeWindow[fnName];
@@ -1772,8 +1778,10 @@ const hijackFn = (fnName, fn) => {
 	} : (...args) => fn(rawFn, args);
 };
 /**
-* 纭繚鎸囧畾 key 鐨勫€间竴瀹氬瓨鍦?* 濡傛灉瀵瑰簲鍊间笉瀛樺湪锛屽垯浣跨敤 defaultValue 鏉ヨ缃€硷紝鐒跺悗杩斿洖璇ュ€?* defaultValue 鍙互鏄粯璁ゅ€硷紝鎴栬€呰繑鍥為粯璁ゅ€肩殑鍑芥暟
-* 涔熷彲浠ユ槸浣跨敤浜?GM.setValue 鏉ヨ缃粯璁ゅ€肩殑鍑芥暟锛堟鏃朵篃浼氳繑鍥炶璁剧疆鐨勫€硷級
+* 确保指定 key 的值一定存在
+* 如果对应值不存在，则使用 defaultValue 来设置值，然后返回该值
+* defaultValue 可以是默认值，或者返回默认值的函数
+* 也可以是使用了 GM.setValue 来设置默认值的函数（此时也会返回被设置的值）
 */
 const ensureGmValue = async (name, defaultValue) => {
 	const value = await GM.getValue(name);
@@ -1789,7 +1797,7 @@ const ensureGmValue = async (name, defaultValue) => {
 	}
 	return await GM.getValue(name);
 };
-/** 鏍规嵁鑼冨洿鏂囨湰鎻愬彇鎸囧畾鑼冨洿鐨勫厓绱犵殑 index */
+/** 根据范围文本提取指定范围的元素的 index */
 const extractRange = (rangeText, length) => {
 	const list = /* @__PURE__ */ new Set();
 	for (const text of rangeText.replaceAll(/[^\\d,-]/g, "").split(",")) if (/^\\d+$/.test(text)) list.add(Number(text) - 1);
@@ -1800,7 +1808,7 @@ const extractRange = (rangeText, length) => {
 	}
 	return list;
 };
-/** extractRange 鐨勯€嗗悜锛屾寜鐓х浉鍚岀殑璇硶琛ㄨ堪涓€涓粨鏋滄暟缁?*/
+/** extractRange 的逆向，按照相同的语法表述一个结果数组 */
 const descRange = (list, length) => {
 	let text = "";
 	const nowRange = [];
@@ -1831,7 +1839,7 @@ const descRange = (list, length) => {
 	pushRange();
 	return text;
 };
-/** 鐩戝惉 url 鍙樺寲 */
+/** 监听 url 变化 */
 const onUrlChange = (fn, handleUrl = (location) => location.href) => {
 	let lastUrl = "";
 	const refresh = singleThreaded(async () => {
@@ -1848,7 +1856,7 @@ const onUrlChange = (fn, handleUrl = (location) => location.href) => {
 	refresh();
 	return () => controller.abort();
 };
-/** wait锛屼絾鏄彧鍦?url 鍙樺寲鏃跺垽鏂?*/
+/** wait，但是只在 url 变化时判断 */
 const waitUrlChange = (isValidUrl) => new Promise((resolve) => {
 	const abort = onUrlChange(async () => {
 		const res = await isValidUrl();
@@ -1868,7 +1876,7 @@ var AnimationFrame = class {
 		this.animationId = 0;
 	};
 };
-/** 閿佸畾灞忓箷绂佹鑷姩鐔勫睆 */
+/** 锁定屏幕禁止自动熄屏 */
 var WakeLock = class {
 	isSupported = false;
 	lock = null;
@@ -1902,7 +1910,7 @@ const withEventStop = (handler) => (e) => {
 	e.preventDefault();
 	if (handler) handler(e);
 };
-/** 鍒ゆ柇鐗堟湰鍙?鏄惁灏忎簬鐗堟湰鍙? */
+/** 判断版本号1是否小于版本号2 */
 const versionLt = (version1, version2) => {
 	const v1 = version1.split(".").map(Number);
 	const v2 = version2.split(".").map(Number);
@@ -2198,12 +2206,12 @@ let publicOwner;
 solid_js.createRoot(() => {
 	publicOwner = solid_js.getOwner();
 });
-/** 浼氳嚜鍔ㄨ缃?equals 鐨?createSignal */
+/** 会自动设置 equals 的 createSignal */
 const createEqualsSignal = ((init, options) => solid_js.createSignal(init, {
 	equals: dequal,
 	...options
 }));
-/** 浼氳嚜鍔ㄨ缃?equals 鍜?createRoot 鐨?createMemo */
+/** 会自动设置 equals 和 createRoot 的 createMemo */
 const createRootMemo = ((fn, init, options) => {
 	if (fn.name === "bound readSignal") return fn;
 	const _init = init ?? fn(void 0);
@@ -2213,7 +2221,7 @@ const createRootMemo = ((fn, init, options) => {
 	} : options;
 	return solid_js.getOwner() ? solid_js.createMemo(fn, _init, _options) : solid_js.runWithOwner(publicOwner, () => solid_js.createMemo(fn, _init, _options));
 });
-/** 鑺傛祦鐨?createMemo */
+/** 节流的 createMemo */
 const createThrottleMemo = (fn, wait = 100, init = fn(void 0), options) => {
 	const scheduled = createScheduled((_fn) => throttle(_fn, wait));
 	return createRootMemo((prev) => scheduled() ? fn(prev) : prev, init, options);
@@ -2247,8 +2255,8 @@ const openDb = (name, version, initSchema) => new Promise((resolve, reject) => {
 	request.onupgradeneeded = () => initSchema(request.result);
 	request.onsuccess = () => resolve(request.result);
 	request.onerror = (error) => {
-		console.error("鏁版嵁搴撴墦寮€澶辫触", error);
-		reject(/* @__PURE__ */ new Error("鏁版嵁搴撴墦寮€澶辫触"));
+		console.error("数据库打开失败", error);
+		reject(/* @__PURE__ */ new Error("数据库打开失败"));
 	};
 });
 const useCache = async (schema, name = "", version = 2) => {
@@ -2392,7 +2400,7 @@ const useStyle = (css, e) => {
 	if (typeof css === "string") styleSheet.replaceSync(css);
 	else createEffectOn(createRootMemo(css), (style) => styleSheet.replaceSync(style));
 };
-/** 鐢?CSSStyleSheet 瀹炵幇鍜屼慨鏀?style 涓€鏍风殑鏁堟灉 */
+/** 用 CSSStyleSheet 实现和修改 style 一样的效果 */
 const useStyleMemo = (selector, styleMapArg, e) => {
 	const styleSheet = useStyleSheet(e);
 	styleSheet.insertRule(\`\${selector} { }\`);
@@ -2505,7 +2513,7 @@ const xmlHttpRequest = (details) => new Promise((resolve, reject) => {
 	});
 	details.signal?.addEventListener("abort", () => abort.abort());
 });
-/** 鍙戣捣璇锋眰 */
+/** 发起请求 */
 const request = async (url, details = {}, retryNum = 0, errorNum = 0) => {
 	const headers = { Referer: location.href };
 	const errorText = \`\${details?.errorText ?? helper.t("alert.comic_load_error")}\\nurl: \${url}\`;
@@ -2577,7 +2585,7 @@ const request = async (url, details = {}, retryNum = 0, errorNum = 0) => {
 		return request(url, details, retryNum, errorNum + 1);
 	}
 };
-/** 杞祦鍚戝涓?api 鍙戣捣璇锋眰 */
+/** 轮流向多个 api 发起请求 */
 const eachApi = async (url, baseUrlList, details) => {
 	for (const baseUrl of baseUrlList) try {
 		return await request(\`\${baseUrl}\${url}\`, {
@@ -2587,7 +2595,7 @@ const eachApi = async (url, baseUrlList, details) => {
 	} catch {}
 	const errorText = details?.errorText ?? helper.t("alert.comic_load_error");
 	if (!details?.noTip) components_Toast.toast.error(errorText);
-	helper.log.error("鎵€鏈?api 璇锋眰鍧囧け璐?, url, baseUrlList, details);
+	helper.log.error("所有 api 请求均失败", url, baseUrlList, details);
 	throw new Error(errorText);
 };
 const downloadImgHeaders = {
@@ -2661,12 +2669,12 @@ const imgState = {
 //#endregion
 //#region src/components/Manga/actions/translation/translator/MangaImageTranslator/options.ts
 /**
-* MangaImageTranslator 缈昏瘧鏈嶅姟閰嶇疆閫夐」
+* MangaImageTranslator 翻译服务配置选项
 */
 /**
-* 榛樿閰嶇疆
+* 默认配置
 *
-* 閮ㄥ垎鍙傛暟浣跨敤鏂囨。鎺ㄨ崘鍊?
+* 部分参数使用文档推荐值:
 * @see https://github.com/zyddnys/manga-image-translator?tab=readme-ov-file#recommended-options
 */
 const mitDefaultOptions = () => ({
@@ -2692,41 +2700,41 @@ const mitDefaultOptions = () => ({
 	},
 	mask_dilation_offset: 30
 });
-/** 鍒嗚鲸鐜囨槧灏?*/
+/** 分辨率映射 */
 const sizeDict = {
 	"1024": "S",
 	"1536": "M",
 	"2048": "L",
 	"2560": "X"
 };
-/** 鐩爣璇█閫夐」 */
+/** 目标语言选项 */
 const targetLanguageOptions = [
-	["CHS", "绠€浣撲腑鏂?],
-	["CHT", "绻侀珨涓枃"],
-	["JPN", "鏃ユ湰瑾?],
+	["CHS", "简体中文"],
+	["CHT", "繁體中文"],
+	["JPN", "日本語"],
 	["ENG", "English"],
-	["KOR", "頃滉淡鞏?],
-	["VIN", "Ti岷縩g Vi峄噒"],
-	["CSY", "膷e拧tina"],
+	["KOR", "한국어"],
+	["VIN", "Tiếng Việt"],
+	["CSY", "čeština"],
 	["NLD", "Nederlands"],
-	["FRA", "fran莽ais"],
+	["FRA", "français"],
 	["DEU", "Deutsch"],
 	["HUN", "magyar nyelv"],
 	["ITA", "italiano"],
 	["PLK", "polski"],
-	["PTB", "portugu锚s"],
-	["ROM", "limba rom芒n膬"],
-	["RUS", "褉褍褋褋泻懈泄 褟蟹褘泻"],
-	["ESP", "espa帽ol"],
-	["TRK", "T眉rk dili"],
+	["PTB", "português"],
+	["ROM", "limba română"],
+	["RUS", "русский язык"],
+	["ESP", "español"],
+	["TRK", "Türk dili"],
 	["IND", "Indonesia"]
 ];
 //#endregion
 //#region src/components/Manga/actions/translation/translator/Cotrans/options.ts
 /**
-* Cotrans 缈昏瘧鏈嶅姟閰嶇疆閫夐」
+* Cotrans 翻译服务配置选项
 */
-/** Cotrans 鏀寔鐨勭炕璇戝櫒鍒楄〃 */
+/** Cotrans 支持的翻译器列表 */
 const cotransTranslators = [
 	"google",
 	"youdao",
@@ -2736,7 +2744,7 @@ const cotransTranslators = [
 	"offline",
 	"none"
 ];
-/** Cotrans 榛樿閰嶇疆 */
+/** Cotrans 默认配置 */
 const cotransDefaultOptions = () => ({
 	detector: {
 		detector: "ctd",
@@ -2806,7 +2814,9 @@ const _defaultOption = {
 	},
 	relineUpscale: {
 		enabled: false,
-		serverUrl: "http://127.0.0.1:5678"
+		serverUrl: "http://127.0.0.1:5678",
+		preloadRange: -1,
+		preloadPrevious: false
 	},
 	translation: {
 		enabled: false,
@@ -2831,14 +2841,15 @@ const optionState = {
 //#endregion
 //#region src/components/Manga/store/other.ts
 const otherState = {
-	/** 婕敾鏍囬 */
+	/** 漫画标题 */
 	title: "",
 	/**
-	* 鐢ㄤ簬闃叉婊氳疆杩炵画婊氬姩瀵艰嚧杩囧揩瑙﹀彂浜嬩欢鐨勯攣
+	* 用于防止滚轮连续滚动导致过快触发事件的锁
 	*
-	* - 鍦ㄩ娆¤Е鍙戠粨鏉熼〉鏃跺紑鍚紝涓€娈垫椂闂村叧闂€傚紑鍚椂绂佹瑙﹀彂缁撴潫椤电殑涓婁笅璇濆垏鎹㈠姛鑳姐€?	*/
+	* - 在首次触发结束页时开启，一段时间关闭。开启时禁止触发结束页的上下话切换功能。
+	*/
 	scrollLock: false,
-	/** 褰撳墠鏄惁澶勪簬鍏ㄥ睆鐘舵€?*/
+	/** 当前是否处于全屏状态 */
 	fullscreen: false,
 	rootSize: {
 		width: 0,
@@ -2848,7 +2859,7 @@ const otherState = {
 		width: 0,
 		height: 0
 	},
-	/** 鍗疯酱妯″紡涓嬬殑婊氬姩璺濈 */
+	/** 卷轴模式下的滚动距离 */
 	scrollTop: 0,
 	autoScroll: {
 		play: false,
@@ -2924,7 +2935,7 @@ const refs = {
 };
 //#endregion
 //#region src/components/Manga/handleComicData.ts
-/** 鍒ゆ柇鍥剧墖鏄惁鏄法椤靛浘 */
+/** 判断图片是否是跨页图 */
 const isWideImg = (img) => {
 	switch (img.type ?? store.defaultImgType) {
 		case "long":
@@ -2932,7 +2943,7 @@ const isWideImg = (img) => {
 		default: return false;
 	}
 };
-/** 鏍规嵁濉厖椤佃缃弻椤垫帓鍒楀崟椤靛浘鐗?*/
+/** 根据填充页设置双页排列单页图片 */
 const arrangeImg = (pageList, fill) => {
 	if (pageList.length === 0) return [];
 	const newPageList = [];
@@ -2950,7 +2961,7 @@ const arrangeImg = (pageList, fill) => {
 	}
 	return newPageList;
 };
-/** 璁＄畻鎸囧畾鍥剧墖娴佷腑鐨勫乏鍙抽〉浣嶇疆姝ｇ‘鐨勯〉鏁?*/
+/** 计算指定图片流中的左右页位置正确的页数 */
 const computeAccuracy = (imgList, pageList) => {
 	let accuracy = 0;
 	for (const [a, b] of pageList) {
@@ -2960,7 +2971,7 @@ const computeAccuracy = (imgList, pageList) => {
 	}
 	return accuracy;
 };
-/** 鑷姩鍒囨崲濉厖椤佃缃埌宸﹀彸椤垫纭巼鏇撮珮鐨勬儏鍐?*/
+/** 自动切换填充页设置到左右页正确率更高的情况 */
 const arrangePage = (pageList, { imgList, fillEffect, nowFillIndex, switchFill }) => {
 	const fill = Boolean(fillEffect[nowFillIndex]);
 	const newPageList = arrangeImg(pageList, fill);
@@ -2969,11 +2980,11 @@ const arrangePage = (pageList, { imgList, fillEffect, nowFillIndex, switchFill }
 	const anotherAccuracy = computeAccuracy(imgList, anotherPageList);
 	if (anotherAccuracy === 0) return newPageList;
 	if (anotherAccuracy <= computeAccuracy(imgList, newPageList)) return newPageList;
-	helper.log(\`\${nowFillIndex} 鑷姩鍒囨崲椤甸潰濉厖\`);
+	helper.log(\`\${nowFillIndex} 自动切换页面填充\`);
 	fillEffect[nowFillIndex] = !fill;
 	return anotherPageList;
 };
-/** 鏍规嵁鍥剧墖姣斾緥鍜屽～鍏呴〉璁剧疆瀵规极鐢诲浘鐗囪繘琛屾帓鍒?*/
+/** 根据图片比例和填充页设置对漫画图片进行排列 */
 const handleComicData = (imgList, fillEffect, switchFill) => {
 	const context = {
 		imgList,
@@ -3005,32 +3016,32 @@ const handleComicData = (imgList, fillEffect, switchFill) => {
 //#endregion
 //#region src/components/Manga/actions/helper.ts
 const getImg = (i, state = store) => state.imgMap[state.imgList[i]];
-/** 鎵惧埌鎸囧畾 url 鍥剧墖鍦?imgList 閲岀殑 index */
+/** 找到指定 url 图片在 imgList 里的 index */
 const getImgIndexs = (url) => {
 	const indexList = [];
 	for (const [i, imgUrl] of store.imgList.entries()) if (imgUrl === url) indexList.push(i);
 	return indexList;
 };
-/** 鎵惧埌鎸囧畾 url 鍥剧墖鐨?dom */
+/** 找到指定 url 图片的 dom */
 const getImgEle = (target) => {
 	const index = typeof target === "number" ? target : store.imgList.indexOf(target);
 	if (index === -1) return;
 	return refs.mangaFlow.querySelector(\`#_\${index}_0 img\`);
 };
-/** 鎵惧埌鎸囧畾椤甸潰鎵€澶勭殑鍥剧墖娴?*/
+/** 找到指定页面所处的图片流 */
 const findFillIndex = (pageIndex, fillEffect) => {
 	let nowFillIndex = pageIndex;
 	while (!Reflect.has(fillEffect, nowFillIndex)) nowFillIndex -= 1;
 	return nowFillIndex;
 };
-/** 瑙﹀彂 onOptionChange */
+/** 触发 onOptionChange */
 const triggerOnOptionChange = helper.throttle(() => store.prop.onOptionChange?.(helper.difference(store.option, store.defaultOption)), 1e3);
-/** 鍦?option 鍚庢墜鍔ㄨЕ鍙?onOptionChange */
+/** 在 option 后手动触发 onOptionChange */
 const setOption = (fn) => {
 	setState((state) => fn(state.option, state));
 	triggerOnOptionChange();
 };
-/** 鍒涘缓鐢ㄤ簬灏?ref 缁戝畾鍒板搴?state 涓婄殑宸ュ叿鍑芥暟 */
+/** 创建用于将 ref 绑定到对应 state 上的工具函数 */
 const bindRef = (name) => (e) => Reflect.set(refs, name, e);
 const watchDomSize = (name, e) => {
 	const resizeObserver = new ResizeObserver(([{ contentRect }]) => {
@@ -3046,7 +3057,7 @@ const watchDomSize = (name, e) => {
 	resizeObserver.observe(e);
 	solid_js.onCleanup(() => resizeObserver.disconnect());
 };
-/** 灏嗙晫闈㈡仮澶嶅埌姝ｅ父鐘舵€?*/
+/** 将界面恢复到正常状态 */
 const resetUI = (state) => {
 	state.show.toolbar = false;
 	state.show.scrollbar = false;
@@ -3056,7 +3067,7 @@ const focus = () => requestAnimationFrame(() => {
 	refs.mangaBox?.click();
 	refs.mangaBox?.focus();
 });
-/** 灏嗗嚱鏁扮殑 state 鍙傛暟鍙樹负鍙€?*/
+/** 将函数的 state 参数变为可选 */
 const withOptionalState = (fn) => (...args) => {
 	if (args.length < fn.length) {
 		let result;
@@ -3068,7 +3079,7 @@ const withOptionalState = (fn) => (...args) => {
 	return fn(...args);
 };
 const closeScrollLock = helper.debounce(() => setState("scrollLock", false), 100);
-/** 鎵撳紑婊氬姩閿侊紝骞跺湪涔嬪悗鑷姩鍏抽棴 */
+/** 打开滚动锁，并在之后自动关闭 */
 const openScrollLock = withOptionalState((state) => {
 	state.scrollLock = true;
 	closeScrollLock();
@@ -3079,25 +3090,25 @@ const bindOption = (...path) => ({
 });
 //#endregion
 //#region src/components/Manga/actions/memo/options.ts
-/** 褰撳墠鏄惁涓哄苟鎺掑嵎杞存ā寮?*/
+/** 当前是否为并排卷轴模式 */
 const isAbreastMode = helper.createRootMemo(() => store.option.scrollMode.enabled && store.option.scrollMode.abreastMode);
-/** 褰撳墠鏄惁涓哄弻椤靛嵎杞存ā寮?*/
+/** 当前是否为双页卷轴模式 */
 const isDoubleMode = helper.createRootMemo(() => store.option.scrollMode.enabled && store.option.scrollMode.doubleMode && !store.option.scrollMode.abreastMode);
-/** 褰撳墠鏄惁涓哄崟椤靛嵎杞存ā寮?*/
+/** 当前是否为单页卷轴模式 */
 const isSingleMode = helper.createRootMemo(() => store.option.scrollMode.enabled && !store.option.scrollMode.doubleMode && !store.option.scrollMode.abreastMode);
-/** 褰撳墠鏄惁涓烘櫘閫氬嵎杞存ā寮忥紙鍖呭惈浜嗗弻椤靛嵎杞存ā寮忥級 */
+/** 当前是否为普通卷轴模式（包含了双页卷轴模式） */
 const isScrollMode = helper.createRootMemo(() => store.option.scrollMode.enabled && !store.option.scrollMode.abreastMode);
-/** 褰撳墠鏄惁姝ｅ湪鍗疯酱妯″紡涓嬩娇鐢ㄨ嚜鍔ㄧ缉鏀惧€?*/
+/** 当前是否正在卷轴模式下使用自动缩放值 */
 const isUseAutoScale = helper.createRootMemo(() => isScrollMode() && typeof store.option.scrollMode.adjustToWidth === "number");
-/** 褰撳墠鏄惁寮€鍚簡璇嗗埆鑳屾櫙鑹?*/
+/** 当前是否开启了识别背景色 */
 const isEnableBg = helper.createRootMemo(() => store.option.imgRecognition.enabled && store.option.imgRecognition.background);
-/** 褰撳墠鏄惁寮€鍚簡鍥惧儚鏀惧ぇ */
+/** 当前是否开启了图像放大 */
 const isUpscale = helper.createRootMemo(() => !store.isMobile && store.option.imgRecognition.enabled && store.option.imgRecognition.upscale);
-/** 鏍规嵁瑙嗗尯瀹介珮鍒ゆ柇鍗曞弻椤垫ā寮?*/
+/** 根据视区宽高判断单双页模式 */
 const autoPageNum = helper.createThrottleMemo(() => store.rootSize.width >= store.rootSize.height ? 2 : 1);
-/** 褰撳墠浣跨敤鐨勫崟鍙岄〉妯″紡 */
+/** 当前使用的单双页模式 */
 const pageNum = helper.createRootMemo(() => store.option.pageNum || autoPageNum());
-/** 鏄惁涓哄崟椤垫ā寮?*/
+/** 是否为单页模式 */
 const isOnePageMode = helper.createRootMemo(() => {
 	if (store.isMobile || store.imgList.length <= 1) return true;
 	if (store.option.scrollMode.enabled) {
@@ -3109,38 +3120,38 @@ const isOnePageMode = helper.createRootMemo(() => {
 //#endregion
 //#region src/components/Manga/actions/memo/img.ts
 const imgList = helper.createRootMemo(() => store.imgList.map((url) => store.imgMap[url]));
-/** 褰撳墠鏄剧ず椤甸潰 */
+/** 当前显示页面 */
 const activePage = helper.createRootMemo(() => store.pageList[store.activePageIndex] ?? []);
-/** 褰撳墠鏄剧ず鐨勭涓€寮犲浘鐗囩殑 index */
+/** 当前显示的第一张图片的 index */
 const activeImgIndex = helper.createRootMemo(() => activePage().find((i) => i !== -1) ?? 0);
-/** 褰撳墠鎵€澶勭殑鍥剧墖娴?*/
+/** 当前所处的图片流 */
 const nowFillIndex = helper.createRootMemo(() => findFillIndex(activeImgIndex(), store.fillEffect));
-/** 棰勫姞杞介〉鏁?*/
+/** 预加载页数 */
 const preloadNum = helper.createRootMemo(() => ({
 	back: store.option.preloadPageNum,
 	front: Math.floor(store.option.preloadPageNum / 2)
 }));
-/** 鑾峰彇鍥剧墖鍒楄〃涓寚瀹氬睘鎬х殑涓綅鏁?*/
+/** 获取图片列表中指定属性的中位数 */
 const getImgMedian = (sizeFn) => {
 	const list = imgList().filter((img) => img.loadType === "loaded" && img.width).map(sizeFn).toSorted((a, b) => a - b);
 	if (list.length < 3) return null;
 	return list[Math.floor(list.length / 2)];
 };
-/** 鍥剧墖鍗犱綅灏哄 */
+/** 图片占位尺寸 */
 const placeholderSize = helper.createThrottleMemo(() => ({
 	width: getImgMedian((img) => img.width) ?? 800,
 	height: getImgMedian((img) => img.height) ?? 1200
 }), 500);
-/** 鍗疯酱妯″紡涓嬬殑鍥剧墖缂╂斁姣斾緥 */
+/** 卷轴模式下的图片缩放比例 */
 const scrollModeScale = helper.createRootMemo(() => {
 	if (!isUseAutoScale()) return store.option.scrollMode.imgScale;
 	return store.option.scrollMode.adjustToWidth / placeholderSize().width;
 });
 //#endregion
 //#region src/components/Manga/actions/memo/abreastScroll.ts
-/** 骞舵帓鍗疯酱妯″紡涓嬬殑鍏ㄥ眬婊氬姩濉厖 */
+/** 并排卷轴模式下的全局滚动填充 */
 const [abreastScrollFill, _setAbreastScrollFill] = solid_js.createSignal(0);
-/** 骞舵帓鍗疯酱妯″紡涓嬬殑姣忓垪甯冨眬 */
+/** 并排卷轴模式下的每列布局 */
 const abreastArea = helper.createRootMemo((prev) => {
 	if (!isAbreastMode()) return prev;
 	const columns = [[]];
@@ -3153,7 +3164,7 @@ const abreastArea = helper.createRootMemo((prev) => {
 		length
 	};
 	const repeatHeight = rootHeight * store.option.scrollMode.abreastDuplicate;
-	/** 褰撳墠鍥剧墖鍦ㄥ綋鍓嶅垪鐨勬墍鍦ㄩ珮搴?*/
+	/** 当前图片在当前列的所在高度 */
 	let top = abreastScrollFill();
 	while (top > rootHeight) {
 		top -= rootHeight - repeatHeight;
@@ -3181,7 +3192,7 @@ const abreastArea = helper.createRootMemo((prev) => {
 			if (!repeatHeight || columns.length === 1) continue;
 			top += repeatHeight;
 			height = Math.min(imgHeight, height + repeatHeight);
-			/** 涓轰簡澶嶇幇鑰屽嚭鐜扮殑绌虹櫧閮ㄥ垎楂樺害 */
+			/** 为了复现而出现的空白部分高度 */
 			let emptyTop = top;
 			let prevImgIndex = i;
 			while (prevImgIndex >= 1 && emptyTop > 0) {
@@ -3207,12 +3218,12 @@ const abreastArea = helper.createRootMemo((prev) => {
 	position: {},
 	length: 0
 });
-/** 澶村熬婊氬姩鐨勯檺鍒跺€?*/
+/** 头尾滚动的限制值 */
 const scrollFillLimit = helper.createRootMemo(() => abreastArea().length - store.rootSize.height);
 const setAbreastScrollFill = (val) => _setAbreastScrollFill(helper.clamp(-scrollFillLimit(), val, scrollFillLimit()));
-/** 骞舵帓鍗疯酱妯″紡涓嬬殑鍒楀搴?*/
+/** 并排卷轴模式下的列宽度 */
 const abreastColumnWidth = helper.createRootMemo(() => isAbreastMode() ? placeholderSize().width * store.option.scrollMode.imgScale : 0);
-/** 骞舵帓鍗疯酱妯″紡涓嬪綋鍓嶈鏄剧ず鐨勫垪 */
+/** 并排卷轴模式下当前要显示的列 */
 const abreastShowColumn = helper.createThrottleMemo(() => {
 	if (!isAbreastMode() || abreastArea().columns.length === 0) return {
 		start: 0,
@@ -3224,11 +3235,11 @@ const abreastShowColumn = helper.createThrottleMemo(() => {
 		end: helper.clamp(0, Math.floor((store.page.offset.x.px + store.rootSize.width) / columnWidth), abreastArea().columns.length - 1)
 	};
 });
-/** 骞舵帓鍗疯酱妯″紡涓嬬殑婕敾娴佸搴?*/
+/** 并排卷轴模式下的漫画流宽度 */
 const abreastContentWidth = helper.createRootMemo(() => abreastArea().columns.length * abreastColumnWidth() + (abreastArea().columns.length - 1) * store.option.scrollMode.spacing * 7);
-/** 骞舵帓鍗疯酱妯″紡涓嬬殑鏈€澶ф粴鍔ㄨ窛绂?*/
+/** 并排卷轴模式下的最大滚动距离 */
 const abreastScrollWidth = helper.createRootMemo(() => abreastContentWidth() - store.rootSize.width);
-/** 骞舵帓鍗疯酱妯″紡涓嬫瘡涓浘鐗囨墍鍦ㄤ綅缃殑鏍峰紡 */
+/** 并排卷轴模式下每个图片所在位置的样式 */
 const imgAreaStyle = helper.createRootMemo(() => {
 	if (!isAbreastMode() || store.gridMode) return "";
 	let styleText = "";
@@ -3244,7 +3255,7 @@ const imgAreaStyle = helper.createRootMemo(() => {
 });
 //#endregion
 //#region src/components/Manga/actions/image.ts
-/** 閲嶆柊璁＄畻鍥剧墖鎺掑垪 */
+/** 重新计算图片排列 */
 const updatePageData = (state) => {
 	const lastActiveImgIndex = activeImgIndex();
 	let newPageList = [];
@@ -3258,9 +3269,10 @@ const updatePageData = (state) => {
 };
 updatePageData.throttle = helper.throttle(() => setState(updatePageData), 100);
 /**
-* 灏嗗鐞嗗浘鐗囩殑鐩稿叧鍙橀噺鎭㈠鍒板垵濮嬬姸鎬?*
-* 蹇呴』鎸夌収浠ヤ笅椤哄簭璋冪敤
-* 1. 淇敼 imgList
+* 将处理图片的相关变量恢复到初始状态
+*
+* 必须按照以下顺序调用
+* 1. 修改 imgList
 * 2. resetImgState
 * 3. updatePageData
 */
@@ -3274,13 +3286,13 @@ const resetImgState = (state) => {
 helper.createEffectOn([pageNum, isOnePageMode], () => setState(updatePageData));
 //#endregion
 //#region src/components/Manga/actions/memo/observer.ts
-/** 璁板綍姣忓紶鍥剧墖鎵€鍦ㄧ殑椤甸潰 */
+/** 记录每张图片所在的页面 */
 const imgPageMap = helper.createRootMemo(() => {
 	const map = {};
 	for (let i = 0; i < store.pageList.length; i++) for (const imgIndex of store.pageList[i]) if (imgIndex !== -1) map[imgIndex] = i;
 	return map;
 });
-/** 婊氬姩璺濈 */
+/** 滚动距离 */
 const scrollTop = helper.createRootMemo(() => isAbreastMode() ? store.page.offset.x.px : store.scrollTop);
 const bindScrollTop = (dom) => {
 	dom.addEventListener("scroll", () => {
@@ -3308,7 +3320,7 @@ helper.createEffectOn(() => store.rootSize.width, (width) => {
 });
 //#endregion
 //#region src/components/Manga/actions/memo/scrollMode.ts
-/** 鍗疯酱妯″紡涓嬬殑姣忛〉楂樺害 */
+/** 卷轴模式下的每页高度 */
 const pageHeightList = helper.createRootMemo(() => {
 	if (!isScrollMode()) return [];
 	if (!isDoubleMode()) return imgList().map((img) => img.size.height ?? 0);
@@ -3321,12 +3333,12 @@ const pageHeightList = helper.createRootMemo(() => {
 			const img = getImg(i);
 			if (!targetImg || img.size.height > targetImg.size.height) targetImg = img;
 		}
-		if (!targetImg) throw new Error("鎵句笉鍒板浘鐗?);
+		if (!targetImg) throw new Error("找不到图片");
 		if (targetImg.size.width < doubleWidth && store.option.scrollMode.adjustToWidth === "disable") return targetImg.size.height;
 		return targetImg.size.height * (doubleWidth / targetImg.size.width);
 	});
 });
-/** 鍗疯酱妯″紡涓嬫瘡椤典綅缃?*/
+/** 卷轴模式下每页位置 */
 const pageTopList = helper.createRootMemo(() => {
 	if (!isScrollMode()) return [];
 	const list = Array.from({ length: store.pageList.length });
@@ -3336,18 +3348,18 @@ const pageTopList = helper.createRootMemo(() => {
 	}
 	return list;
 });
-/** 鍗疯酱妯″紡涓嬫极鐢绘祦鐨勬€婚珮搴?*/
+/** 卷轴模式下漫画流的总高度 */
 const contentHeight = helper.createRootMemo(() => {
 	if (!isScrollMode()) return 0;
 	return (pageTopList().at(-1) ?? 0) + (pageHeightList().at(-1) ?? 0);
 });
-/** 鑾峰彇鍗疯酱妯″紡涓嬫寚瀹氶〉鐨勪綅缃?*/
+/** 获取卷轴模式下指定页的位置 */
 const getPageTop = (index) => {
 	if (Reflect.has(pageTopList(), index)) return pageTopList()[index];
 	if (index < 0) return 0;
 	return contentHeight();
 };
-/** 鎵惧埌鍗疯酱妯″紡涓嬫寚瀹氶珮搴︿笂鏄剧ず鐨勯〉闈?*/
+/** 找到卷轴模式下指定高度上显示的页面 */
 const findTopPage = (top, initIndex = 0) => {
 	if (top > contentHeight()) return pageTopList().length - 1;
 	for (let i = initIndex; i < pageTopList().length; i++) if (pageTopList()[i] > top) return i === 0 ? 0 : i - 1;
@@ -3355,12 +3367,12 @@ const findTopPage = (top, initIndex = 0) => {
 };
 //#endregion
 //#region src/components/Manga/actions/memo/scroll.ts
-/** 婊氬姩鍐呭鐨勬粴鍔ㄨ繘搴?*/
+/** 滚动内容的滚动进度 */
 const scrollProgress = helper.createRootMemo(() => {
 	if (store.option.scrollMode.enabled) return scrollTop();
 	return store.activePageIndex;
 });
-/** 婊氬姩鍐呭鐨勬€婚暱搴?*/
+/** 滚动内容的总长度 */
 const scrollLength = helper.createRootMemo(() => {
 	if (store.option.scrollMode.enabled) {
 		if (store.option.scrollMode.abreastMode) return abreastContentWidth();
@@ -3368,26 +3380,26 @@ const scrollLength = helper.createRootMemo(() => {
 	}
 	return store.pageList.length;
 });
-/** 婊氬姩鍐呭鐨勬粴鍔ㄨ繘搴︾櫨鍒嗘瘮 */
+/** 滚动内容的滚动进度百分比 */
 const scrollPercentage = helper.createRootMemo(() => scrollProgress() / scrollLength());
-/** 褰撳墠鏄惁宸茬粡婊氬姩鍒伴《閮?*/
+/** 当前是否已经滚动到顶部 */
 const isTop = helper.createRootMemo(() => scrollPercentage() === 0);
-/** 婊氬姩鏉″厓绱犵殑闀垮害 */
+/** 滚动条元素的长度 */
 const scrollDomLength = helper.createRootMemo(() => Math.max(store.scrollbarSize.width, store.scrollbarSize.height));
-/** 婊氬姩鏉℃粦鍧楅暱搴?*/
+/** 滚动条滑块长度 */
 const sliderHeight = helper.createRootMemo(() => {
 	let itemLength = 1;
 	if (isScrollMode()) itemLength = store.rootSize.height;
 	if (isAbreastMode()) itemLength = store.rootSize.width;
 	return itemLength / scrollLength();
 });
-/** 褰撳墠鏄惁宸茬粡婊氬姩鍒板簳閮?*/
+/** 当前是否已经滚动到底部 */
 const isBottom = helper.createRootMemo(() => scrollPercentage() + sliderHeight() >= .9999);
-/** 婊氬姩鏉℃粦鍧楃殑涓績鐐归珮搴?*/
+/** 滚动条滑块的中心点高度 */
 const sliderMidpoint = helper.createRootMemo(() => scrollDomLength() * (scrollPercentage() + sliderHeight() / 2));
-/** 婊氬姩鏉℃粦鍧楃殑浣嶇疆 */
+/** 滚动条滑块的位置 */
 const sliderTop = helper.createRootMemo(() => \`\${scrollPercentage() * scrollDomLength()}px\`);
-/** 婊氬姩鏉′綅缃?*/
+/** 滚动条位置 */
 const scrollPosition = helper.createRootMemo(() => {
 	if (store.option.scrollbar.position === "auto") {
 		if (store.isMobile) return "top";
@@ -3398,7 +3410,7 @@ const scrollPosition = helper.createRootMemo(() => {
 });
 //#endregion
 //#region src/components/Manga/actions/endPage.ts
-/** 澶勭悊灏藉ご缈婚〉銆傝繑鍥炲綋鍓嶆槸鍚﹀凡鎶佃揪灏藉ご */
+/** 处理尽头翻页。返回当前是否已抵达尽头 */
 const handleEndTurnPage = withOptionalState((dir, state) => {
 	if (dir === "prev") switch (state.show.endPage) {
 		case "start":
@@ -3439,7 +3451,7 @@ const handleImgRecognition = async (url, imgEle) => {
 	const img = store.imgMap[url];
 	if (store.option.imgRecognition.background && img.background === void 0 || store.option.imgRecognition.pageFill && img.blankMargin === void 0) {
 		imgEle ??= await helper.wait(() => getImgEle(url), 1e3);
-		if (!imgEle) return helper.log.warn("鑾峰彇鍥剧墖鍏冪礌澶辫触");
+		if (!imgEle) return helper.log.warn("获取图片元素失败");
 		const { data, width, height } = helper.getImageData(imgEle);
 		initWorker$1();
 		return worker_ImageRecognition.default.recognitionImg(comlink.default.transfer(data, [data.buffer]), width, height, url, solid_js_store.unwrap(store.option.imgRecognition));
@@ -3456,16 +3468,16 @@ const initWorker$1 = helper.onec(() => {
 //#endregion
 //#region src/components/Manga/actions/imageType.ts
 const isWideType = (type) => type === "wide" || type === "long";
-const 鍗曢〉姣斾緥 = 1920 / 2 / 1080;
-const 妯箙姣斾緥 = 1920 / 1080;
-const 鏉℃极姣斾緥 = 1920 / 2 / 1080 / 2;
-/** 鏍规嵁姣斾緥鍒ゆ柇鍥剧墖绫诲瀷 */
+const 单页比例 = 1920 / 2 / 1080;
+const 横幅比例 = 1920 / 1080;
+const 条漫比例 = 1920 / 2 / 1080 / 2;
+/** 根据比例判断图片类型 */
 const getImgType = (img) => {
 	const imgRatio = img.width / img.height;
-	if (imgRatio <= 鍗曢〉姣斾緥) return imgRatio < 鏉℃极姣斾緥 ? "vertical" : "";
-	return imgRatio > 妯箙姣斾緥 ? "long" : "wide";
+	if (imgRatio <= 单页比例) return imgRatio < 条漫比例 ? "vertical" : "";
+	return imgRatio > 横幅比例 ? "long" : "wide";
 };
-/** 鏇存柊鍥剧墖绫诲瀷銆傝繑鍥炴槸鍚︿慨鏀逛簡鍥剧墖绫诲瀷 */
+/** 更新图片类型。返回是否修改了图片类型 */
 const updateImgType = (state, draftImg) => {
 	const { type } = draftImg;
 	if (!draftImg.width || !draftImg.height) return false;
@@ -3473,7 +3485,7 @@ const updateImgType = (state, draftImg) => {
 	if (isWideType(type) !== isWideType(draftImg.type)) updatePageData.throttle();
 	return (type ?? state.defaultImgType) !== draftImg.type;
 };
-/** 鏄惁鑷姩寮€鍚繃鍗疯酱妯″紡 */
+/** 是否自动开启过卷轴模式 */
 let autoScrollMode = false;
 helper.createRootEffect((prevIsWide) => {
 	if (store.rootSize.width === 0 || store.rootSize.height === 0) return;
@@ -3493,7 +3505,7 @@ helper.createRootEffect((prevIsWide) => {
 }, false);
 //#endregion
 //#region src/components/Manga/actions/imageSize.ts
-/** 鑾峰彇鎸囧畾鍥剧墖鐨勬樉绀哄昂瀵?*/
+/** 获取指定图片的显示尺寸 */
 const getImgDisplaySize = (state, img) => {
 	let height = img.height ?? placeholderSize().height;
 	let width = img.width ?? placeholderSize().width;
@@ -3519,7 +3531,7 @@ const getImgDisplaySize = (state, img) => {
 		width
 	};
 };
-/** 鏇存柊鍥剧墖灏哄 */
+/** 更新图片尺寸 */
 const updateImgSize = withOptionalState((url, width, height, state) => {
 	const img = state.imgMap[url];
 	if (img.width === width && img.height === height) return;
@@ -3544,12 +3556,12 @@ helper.createEffectOn([
 });
 //#endregion
 //#region src/components/Manga/actions/renderPage.ts
-/** 鑾峰彇骞舵帓鍗疯酱妯″紡涓嬫寚瀹氬垪鐨勬寚瀹氬浘鐗?*/
+/** 获取并排卷轴模式下指定列的指定图片 */
 const getAbreastColumnImg = (column, img) => {
 	const { columns } = abreastArea();
 	return columns[helper.clamp(0, column, columns.length - 1)]?.at(img) ?? 0;
 };
-/** 璁＄畻鏄剧ず椤甸潰 */
+/** 计算显示页面 */
 const updateShowRange = (state) => {
 	if (scrollLength() === 0) {
 		state.showRange = [0, 0];
@@ -3584,7 +3596,7 @@ helper.createEffectOn([
 	abreastShowColumn,
 	scrollTop
 ], helper.throttle(() => setState(updateShowRange)));
-/** 鑾峰彇鎸囧畾鑼冨洿鍐呴〉闈㈡墍鍖呭惈鐨勫浘鐗?*/
+/** 获取指定范围内页面所包含的图片 */
 const getRangeImgList = (range) => {
 	let list;
 	if (range[0] === range[1]) list = new Set(store.pageList[range[0]]);
@@ -3601,8 +3613,12 @@ const getRangeImgList = (range) => {
 const renderImgList = helper.createRootMemo(() => getRangeImgList(store.renderRange));
 const showImgList = helper.createRootMemo(() => getRangeImgList(store.showRange));
 /**
-* 鍥剧墖鏄剧ず鐘舵€?*
-* 0 - 椤甸潰涓殑绗竴寮犲浘鐗?* 1 - 椤甸潰涓殑鏈€鍚庝竴寮犲浘鐗?* '' - 椤甸潰涓殑鍞竴涓€寮犲浘鐗?*/
+* 图片显示状态
+*
+* 0 - 页面中的第一张图片
+* 1 - 页面中的最后一张图片
+* '' - 页面中的唯一一张图片
+*/
 const imgShowState = helper.createRootMemo(() => {
 	if (store.pageList.length === 0) return /* @__PURE__ */ new Map();
 	const showRange = store.gridMode ? [0, store.pageList.length - 1] : store.renderRange;
@@ -3628,11 +3644,11 @@ helper.createEffectOn(showImgList, (showImgs) => {
 }, { defer: true });
 //#endregion
 //#region src/components/Manga/helper.ts
-/** 闃绘浜嬩欢鍐掓场 */
+/** 阻止事件冒泡 */
 const stopPropagation = (e) => {
 	e.stopPropagation();
 };
-/** 浠庡ご寮€濮嬫挱鏀惧厓绱犵殑鍔ㄧ敾 */
+/** 从头开始播放元素的动画 */
 const playAnimation = (e) => {
 	if (!e) return;
 	for (const animation of e.getAnimations()) {
@@ -3650,19 +3666,21 @@ const downloadImg = async (imgUrl, details, retryNum = 0) => {
 //#endregion
 //#region src/components/Manga/actions/translation/TranslationTask.ts
 /**
-* 缈昏瘧浠诲姟鍩虹被
+* 翻译任务基类
 *
-* 姣忎釜缈昏瘧浠诲姟閮芥槸鐙珛鐨勫疄渚嬶紝璐熻矗鍗曞紶鍥剧墖鐨勫畬鏁寸炕璇戞祦绋嬨€?* 瀛愮被闇€瑕佸疄鐜?{@link work} 鏂规硶鏉ュ畾涔夊叿浣撶殑缈昏瘧閫昏緫銆?*/
+* 每个翻译任务都是独立的实例，负责单张图片的完整翻译流程。
+* 子类需要实现 {@link work} 方法来定义具体的翻译逻辑。
+*/
 var TranslationTask = class {
 	url;
 	constructor(url) {
 		this.url = url;
 	}
-	/** 鏇存柊褰撳墠鍥剧墖鐨勭炕璇戠姸鎬佹秷鎭?*/
+	/** 更新当前图片的翻译状态消息 */
 	setMessage(message) {
 		setState("imgMap", this.url, "translationMessage", message);
 	}
-	/** 涓嬭浇鍥剧墖 */
+	/** 下载图片 */
 	async download(url = this.url, details) {
 		try {
 			return await downloadImg(url, details);
@@ -3672,7 +3690,7 @@ var TranslationTask = class {
 			throw new Error(helper.t("translation.tip.download_img_failed"), { cause: error });
 		}
 	}
-	/** 缂╁皬杩囧ぇ鐨勫浘鐗囷紙瓒呰繃 4096px锛?*/
+	/** 缩小过大的图片（超过 4096px） */
 	async resize(blob) {
 		const img = store.imgMap[this.url];
 		const w = img.width;
@@ -3690,13 +3708,13 @@ var TranslationTask = class {
 			URL.revokeObjectURL(imgDom.src);
 			return await helper.canvasToBlob(canvas);
 		} catch (error) {
-			helper.log.error("缂╁皬鍥剧墖灏哄鏃跺嚭閿?, error);
+			helper.log.error("缩小图片尺寸时出错", error);
 			return blob;
 		}
 	}
 	/**
-	* 鎵ц缈昏瘧浠诲姟
-	* @returns 缈昏瘧鍚庣殑鍥剧墖 URL
+	* 执行翻译任务
+	* @returns 翻译后的图片 URL
 	*/
 	async run() {
 		try {
@@ -3707,26 +3725,30 @@ var TranslationTask = class {
 			return await this.work(blob);
 		} catch (error) {
 			this.setMessage(error.message);
-			helper.log.error("缈昏瘧鍑洪敊", error);
+			helper.log.error("翻译出错", error);
 			components_Toast.toast.error(error.message);
 			throw error;
 		}
 	}
-	/** 鍒濆鍖栦换鍔★紝瀛愮被鍙噸鍐?*/
+	/** 初始化任务，子类可重写 */
 	async init() {}
 };
 //#endregion
 //#region src/components/Manga/actions/translation/translator/Cotrans/index.ts
 /**
-* Cotrans 缈昏瘧浠诲姟瀹炵幇
+* Cotrans 翻译任务实现
 *
-* 浣跨敤 cotrans.touhou.ai 鍏叡鏈嶅姟杩涜鍥剧墖缈昏瘧銆?* 閫氳繃 WebSocket 鎴栬疆璇㈣幏鍙栫炕璇戠姸鎬侊紝鏈€缁堝悎骞跺師鍥惧拰缈昏瘧钂欑増銆?*/
+* 使用 cotrans.touhou.ai 公共服务进行图片翻译。
+* 通过 WebSocket 或轮询获取翻译状态，最终合并原图和翻译蒙版。
+*/
 /**
-* Cotrans 缈昏瘧浠诲姟
+* Cotrans 翻译任务
 *
-* 浣跨敤 cotrans.touhou.ai 鍏叡缈昏瘧鏈嶅姟銆?* 杩斿洖鐨勬槸缈昏瘧钂欑増锛岄渶瑕佷笌鍘熷浘鍚堝苟銆?*/
+* 使用 cotrans.touhou.ai 公共翻译服务。
+* 返回的是翻译蒙版，需要与原图合并。
+*/
 var Cotrans = class Cotrans extends TranslationTask {
-	/** 鍒涘缓涓婁紶琛ㄥ崟鏁版嵁 */
+	/** 创建上传表单数据 */
 	static createFormData(blob) {
 		const formData = new FormData();
 		const fileName = \`image.\${blob.type.split("/").at(-1)}\`;
@@ -3742,7 +3764,7 @@ var Cotrans = class Cotrans extends TranslationTask {
 		formData.append("retry", \`\${store.option.translation.forceRetry}\`);
 		return formData;
 	}
-	/** 涓婁紶鍥剧墖鍒?Cotrans 鏈嶅姟鍣?*/
+	/** 上传图片到 Cotrans 服务器 */
 	async upload(blob) {
 		try {
 			return await request.request("https://api.cotrans.touhou.ai/task/upload/v1", {
@@ -3754,19 +3776,19 @@ var Cotrans = class Cotrans extends TranslationTask {
 			throw new Error(helper.t("translation.tip.upload_error"), { cause: error });
 		}
 	}
-	/** 瑙ｆ瀽涓婁紶鍝嶅簲 */
+	/** 解析上传响应 */
 	parse(json) {
 		let data;
 		try {
 			data = JSON.parse(json);
 		} catch (error) {
-			throw new Error(\`\${helper.t("translation.tip.upload_return_error")}锛歕${json}\`, { cause: error });
+			throw new Error(\`\${helper.t("translation.tip.upload_return_error")}：\${json}\`, { cause: error });
 		}
-		if ("error_id" in data) throw new Error(\`\${helper.t("translation.tip.upload_return_error")}锛歕${data.error_id}\`);
+		if ("error_id" in data) throw new Error(\`\${helper.t("translation.tip.upload_return_error")}：\${data.error_id}\`);
 		if (!data.id) throw new Error(helper.t("translation.tip.id_not_returned"));
 		return data;
 	}
-	/** 澶勭悊 WebSocket 鎴栬疆璇㈣繑鍥炵殑娑堟伅 */
+	/** 处理 WebSocket 或轮询返回的消息 */
 	handleMessage(msg) {
 		switch (msg.type) {
 			case "result": return msg.result.translation_mask;
@@ -3776,11 +3798,11 @@ var Cotrans = class Cotrans extends TranslationTask {
 			case "status":
 				this.setMessage(helper.t(\`translation.status.\${msg.status}\`) || msg.status);
 				break;
-			case "error": throw new Error(\`\${helper.t("translation.status.error")}锛歩d \${msg.error_id}\`);
-			case "not_found": throw new Error(\`\${helper.t("translation.status.error")}锛歂ot Found\`);
+			case "error": throw new Error(\`\${helper.t("translation.status.error")}：id \${msg.error_id}\`);
+			case "not_found": throw new Error(\`\${helper.t("translation.status.error")}：Not Found\`);
 		}
 	}
-	/** 閫氳繃杞绛夊緟缈昏瘧瀹屾垚 */
+	/** 通过轮询等待翻译完成 */
 	async waitByPolling(id) {
 		let result;
 		while (result === void 0) {
@@ -3790,7 +3812,7 @@ var Cotrans = class Cotrans extends TranslationTask {
 		}
 		return result;
 	}
-	/** 閫氳繃 WebSocket 绛夊緟缈昏瘧瀹屾垚锛屽け璐ユ椂闄嶇骇涓鸿疆璇?*/
+	/** 通过 WebSocket 等待翻译完成，失败时降级为轮询 */
 	wait(id) {
 		const ws = new WebSocket(\`wss://api.cotrans.touhou.ai/task/\${id}/event/v1\`);
 		if (ws.readyState > 1) return this.waitByPolling(id);
@@ -3805,7 +3827,7 @@ var Cotrans = class Cotrans extends TranslationTask {
 			};
 		});
 	}
-	/** 灏嗗師鍥句笌缈昏瘧钂欑増鍚堝苟 */
+	/** 将原图与翻译蒙版合并 */
 	async mergeImage(rawImage, maskUri) {
 		const img = await helper.waitImgLoad(URL.createObjectURL(rawImage));
 		const canvas = new OffscreenCanvas(img.naturalWidth, img.naturalHeight);
@@ -3827,19 +3849,21 @@ var Cotrans = class Cotrans extends TranslationTask {
 //#endregion
 //#region src/components/Manga/actions/translation/translator/MangaImageTranslator/helper.ts
 /**
-* MangaImageTranslator 杈呭姪鍑芥暟
+* MangaImageTranslator 辅助函数
 *
-* 鎻愪緵 API 璇锋眰銆乁RL 鏋勫缓绛夐€氱敤鍔熻兘銆?*/
-/** 鑾峰彇 API 鍩虹 URL锛屼紭鍏堜娇鐢ㄨ嚜瀹氫箟鍦板潃 */
+* 提供 API 请求、URL 构建等通用功能。
+*/
+/** 获取 API 基础 URL，优先使用自定义地址 */
 const apiUrl = () => store.option.translation.mit?.localUrl?.replace(/\\/$/, "") || "http://127.0.0.1:5003";
-/** ngrok 浠ｇ悊闇€瑕佺殑鐗规畩璇锋眰澶?*/
+/** ngrok 代理需要的特殊请求头 */
 const headers$1 = helper.createRootMemo(() => {
 	if (apiUrl().includes(".ngrok-free.")) return { "ngrok-skip-browser-warning": "69420" };
 });
 /**
-* 鍙戦€?API 璇锋眰
-* @param url API 璺緞锛堜笉鍚熀纭€ URL锛?* @param details 璇锋眰閰嶇疆
-* @param retryNum 閲嶈瘯娆℃暟
+* 发送 API 请求
+* @param url API 路径（不含基础 URL）
+* @param details 请求配置
+* @param retryNum 重试次数
 */
 const api = (url, details, retryNum = 0) => request.request(\`\${apiUrl()}\${url}\`, {
 	...details,
@@ -3851,18 +3875,22 @@ const api = (url, details, retryNum = 0) => request.request(\`\${apiUrl()}\${url
 //#endregion
 //#region src/components/Manga/actions/translation/translator/MangaImageTranslator/index.ts
 /**
-* MangaImageTranslator 缈昏瘧浠诲姟瀹炵幇
+* MangaImageTranslator 翻译任务实现
 *
-* 鏀寔鑷儴缃茬殑 manga-image-translator 鏈嶅姟銆?* 鍚屾椂鍏煎鏂版棫鐗堟湰 API锛屾敮鎸佹祦寮忓拰闈炴祦寮忓搷搴斻€?*
-* API 鏂囨。: http://0.0.0.0:5003/docs
+* 支持自部署的 manga-image-translator 服务。
+* 同时兼容新旧版本 API，支持流式和非流式响应。
+*
+* API 文档: http://0.0.0.0:5003/docs
 */
 /**
-* MangaImageTranslator 缈昏瘧浠诲姟
+* MangaImageTranslator 翻译任务
 *
-* 鏀寔鑷儴缃叉湇鍔★紝鍙娇鐢ㄨ嚜瀹氫箟鏈嶅姟鍣ㄥ湴鍧€銆?* 浼樺厛浣跨敤娴佸紡 API 鑾峰彇瀹炴椂缈昏瘧鐘舵€併€?*/
+* 支持自部署服务，可使用自定义服务器地址。
+* 优先使用流式 API 获取实时翻译状态。
+*/
 var MIT = class MIT extends TranslationTask {
 	isOldVersion = false;
-	/** 鍒涘缓涓婁紶琛ㄥ崟鏁版嵁 */
+	/** 创建上传表单数据 */
 	static createFormData(blob, isOldVersion) {
 		const formData = new FormData();
 		const fileName = \`image.\${blob.type.split("/").at(-1)}\`;
@@ -3887,7 +3915,7 @@ var MIT = class MIT extends TranslationTask {
 		const res = await api("/", { errorText: \`\${helper.t("setting.option.paragraph_translation")} - \${helper.t("alert.server_connect_failed")}\` });
 		this.isOldVersion = res.responseText.includes("value=\\"S\\">1024px</");
 	}
-	/** 鏃х増 API锛氫笂浼犲浘鐗囪幏鍙栦换鍔?ID */
+	/** 旧版 API：上传图片获取任务 ID */
 	async oldUpload(blob) {
 		try {
 			return (await api("/submit", {
@@ -3900,7 +3928,7 @@ var MIT = class MIT extends TranslationTask {
 			throw new Error(helper.t("translation.tip.upload_error"), { cause: error });
 		}
 	}
-	/** 鏃х増 API锛氱瓑寰呯炕璇戝畬鎴?*/
+	/** 旧版 API：等待翻译完成 */
 	async oldWork(blob) {
 		const task_id = await this.oldUpload(blob);
 		let errorNum = 0;
@@ -3917,7 +3945,7 @@ var MIT = class MIT extends TranslationTask {
 		const res = await this.download(\`\${apiUrl()}/result/\${task_id}\`, { headers: headers$1() });
 		return URL.createObjectURL(res);
 	}
-	/** 鏂扮増 API锛氶€氳繃娴佸紡鎺ュ彛涓婁紶 */
+	/** 新版 API：通过流式接口上传 */
 	async uploadByStream(blob) {
 		const res = await fetch(\`\${apiUrl()}/translate/with-form/image/stream\`, {
 			method: "POST",
@@ -3927,7 +3955,7 @@ var MIT = class MIT extends TranslationTask {
 		if (res.status !== 200 || !res.body) throw new Error(helper.t("translation.status.error"));
 		return res.body.getReader();
 	}
-	/** 瑙ｆ瀽娴佸紡鍝嶅簲锛岀瓑寰呯炕璇戝畬鎴?*/
+	/** 解析流式响应，等待翻译完成 */
 	async wait(reader) {
 		const decoder = new TextDecoder("utf-8");
 		let buffer = new Uint8Array();
@@ -3963,7 +3991,7 @@ var MIT = class MIT extends TranslationTask {
 		}
 		throw new Error(helper.t("translation.status.error"));
 	}
-	/** 鏂扮増 API锛氶潪娴佸紡鎺ュ彛锛堝綋娴佸紡鎺ュ彛涓嶅彲鐢ㄦ椂闄嶇骇浣跨敤锛?*/
+	/** 新版 API：非流式接口（当流式接口不可用时降级使用） */
 	async uploadByNoStream(blob) {
 		this.setMessage(helper.t("translation.tip.translating"));
 		const res = await api("/translate/with-form/image", {
@@ -3988,9 +4016,9 @@ var MIT = class MIT extends TranslationTask {
 		}
 	}
 };
-/** 鏈嶅姟鏀寔鐨勭炕璇戝櫒鍒楄〃 */
+/** 服务支持的翻译器列表 */
 const [mitTranslators, setMitTranslators] = helper.createEqualsSignal([]);
-/** 浠庢湇鍔″櫒鑾峰彇鍙敤缈昏瘧鍣ㄥ垪琛?*/
+/** 从服务器获取可用翻译器列表 */
 const updateMitTranslators = async (noTip = false) => {
 	if (store.option.translation.provider !== "manga-image-translator") return;
 	try {
@@ -4063,7 +4091,7 @@ const classes$1 = {
 //#endregion
 //#region src/components/Manga/components/SettingsItem.tsx
 var _tmpl$$45 = /* @__PURE__ */ solid_js_web.template(\`<div><div> <!> \`);
-/** 璁剧疆鑿滃崟椤?*/
+/** 设置菜单项 */
 const SettingsItem = (props) => (() => {
 	var _el$ = _tmpl$$45(), _el$2 = _el$.firstChild, _el$5 = _el$2.firstChild.nextSibling;
 	_el$5.nextSibling;
@@ -4092,7 +4120,7 @@ const SettingsItem = (props) => (() => {
 //#endregion
 //#region src/components/Manga/components/SettingsItemSelect.tsx
 var _tmpl$$44 = /* @__PURE__ */ solid_js_web.template(\`<select>\`), _tmpl$2$9 = /* @__PURE__ */ solid_js_web.template(\`<option>\`);
-/** 閫夋嫨鍣ㄥ紡鑿滃崟椤?*/
+/** 选择器式菜单项 */
 const SettingsItemSelect = (props) => {
 	let ref;
 	solid_js.createEffect(() => {
@@ -4134,7 +4162,7 @@ const SettingsItemSelect = (props) => {
 //#region src/components/Manga/actions/translation/translator/Cotrans/settings.tsx
 var _tmpl$$43 = /* @__PURE__ */ solid_js_web.template(\`<blockquote>\`);
 const bindOption$3 = (...args) => bindOption("translation", "cotrans", ...args);
-/** Cotrans 璁剧疆缁勪欢 */
+/** Cotrans 设置组件 */
 const cotransSettings = () => [
 	(() => {
 		var _el$ = _tmpl$$43();
@@ -4188,7 +4216,7 @@ const cotransSettings = () => [
 //#endregion
 //#region src/components/NumberInput.tsx
 var _tmpl$$42 = /* @__PURE__ */ solid_js_web.template(\`<span contenteditable data-only-number>\`);
-/** 鏁板€艰緭鍏ユ */
+/** 数值输入框 */
 const NumberInput = (props) => {
 	const handleInput = (e) => {
 		const target = e.currentTarget;
@@ -4228,7 +4256,7 @@ const NumberInput = (props) => {
 //#endregion
 //#region src/components/Manga/components/SettingsItemNumber.tsx
 var _tmpl$$41 = /* @__PURE__ */ solid_js_web.template(\`<div>\`);
-/** 鏁板€艰緭鍏ユ鑿滃崟椤?*/
+/** 数值输入框菜单项 */
 const SettingsItemNumber = (props) => solid_js_web.createComponent(SettingsItem, {
 	get name() {
 		return props.name;
@@ -4249,7 +4277,7 @@ const SettingsItemNumber = (props) => solid_js_web.createComponent(SettingsItem,
 //#endregion
 //#region src/components/Manga/components/SettingsItemSwitch.tsx
 var _tmpl$$40 = /* @__PURE__ */ solid_js_web.template(\`<button type=button><div>\`);
-/** 寮€鍏冲紡鑿滃崟椤?*/
+/** 开关式菜单项 */
 const SettingsItemSwitch = (props) => {
 	const handleClick = () => props.onChange(!props.value);
 	return solid_js_web.createComponent(SettingsItem, {
@@ -4286,11 +4314,11 @@ const SettingsItemSwitch = (props) => {
 //#endregion
 //#region src/components/Manga/actions/translation/translator/MangaImageTranslator/settings.tsx
 /**
-* MangaImageTranslator 缈昏瘧鏈嶅姟璁剧疆鐣岄潰
+* MangaImageTranslator 翻译服务设置界面
 */
 var _tmpl$$39 = /* @__PURE__ */ solid_js_web.template(\`<input type=url>\`);
 const bindOption$2 = (...args) => bindOption("translation", "mit", ...args);
-/** MangaImageTranslator 璁剧疆缁勪欢 */
+/** MangaImageTranslator 设置组件 */
 const mitSettings = () => [
 	solid_js_web.createComponent(SettingsItemSelect, solid_js_web.mergeProps({
 		get name() {
@@ -4407,14 +4435,14 @@ const mitSettings = () => [
 ];
 //#endregion
 //#region src/components/Manga/actions/translation/index.ts
-/** 鍒ゆ柇褰撳墠缈昏瘧鍣ㄦ槸鍚﹀厑璁告壒閲忕炕璇?*/
+/** 判断当前翻译器是否允许批量翻译 */
 const allowBatchTranslation = () => store.option.translation.provider !== "cotrans";
 const taskRegistry = {
 	"manga-image-translator": MIT,
 	cotrans: Cotrans
 };
 const setMessage$1 = (url, message) => setState("imgMap", url, "translationMessage", message);
-/** 缈昏瘧鎸囧畾鍥剧墖 */
+/** 翻译指定图片 */
 const translationImage = async (url) => {
 	try {
 		if (!url) return;
@@ -4423,7 +4451,7 @@ const translationImage = async (url) => {
 		if (img.translationUrl) return setState("imgMap", url, "translationType", "show");
 		if (img.loadType !== "loaded") return setMessage$1(url, helper.t("translation.tip.img_not_fully_loaded"));
 		const Task = taskRegistry[store.option.translation.provider];
-		if (!Task) throw new Error("鏈煡缈昏瘧鍣?);
+		if (!Task) throw new Error("未知翻译器");
 		setState("imgMap", url, {
 			translationUrl: await new Task(url).run(),
 			translationMessage: helper.t("translation.tip.translation_completed"),
@@ -4434,14 +4462,14 @@ const translationImage = async (url) => {
 		if (error?.message) setState("imgMap", url, "translationMessage", error.message);
 	}
 };
-/** 閫愪釜缈昏瘧鐘舵€佷负绛夊緟缈昏瘧鐨勫浘鐗?*/
+/** 逐个翻译状态为等待翻译的图片 */
 const translationAll = helper.singleThreaded(async (state) => {
 	const targetImg = imgList().find((img) => img.translationType === "wait" && img.loadType === "loaded");
 	if (!targetImg) return;
 	await translationImage(targetImg.src);
 	state.continueRun();
 });
-/** 寮€鍚垨鍏抽棴鎸囧畾鍥剧墖鐨勭炕璇?*/
+/** 开启或关闭指定图片的翻译 */
 const setImgTranslationEnbale = (list, enable) => {
 	if (!store.option.translation.enabled && enable) return;
 	setState((state) => {
@@ -4476,7 +4504,7 @@ const setImgTranslationEnbale = (list, enable) => {
 	});
 	return translationAll();
 };
-/** 缈昏瘧鑼冨洿鐨勫浘鐗?*/
+/** 翻译范围的图片 */
 const translationImgs = helper.createRootMemo(() => {
 	const list = /* @__PURE__ */ new Set();
 	for (const [i, img] of imgList().entries()) switch (img.translationType) {
@@ -4486,9 +4514,9 @@ const translationImgs = helper.createRootMemo(() => {
 	}
 	return list;
 });
-/** 褰撳墠鏄剧ず鐨勫浘鐗囨槸鍚︽鍦ㄧ炕璇?*/
+/** 当前显示的图片是否正在翻译 */
 const isTranslatingImage = helper.createRootMemo(() => activePage().some((i) => translationImgs().has(i)));
-/** 缈昏瘧褰撳墠椤?*/
+/** 翻译当前页 */
 const translateCurrent = () => setImgTranslationEnbale(activePage(), !isTranslatingImage());
 const createTranslateRange = (imgs) => {
 	const isTranslating = helper.createRootMemo(() => imgs().every((i) => translationImgs().has(i)));
@@ -4502,15 +4530,15 @@ const [isTranslatingAll, translateAll] = createTranslateRange(helper.createRootM
 const [isTranslatingToEnd, translateToEnd] = createTranslateRange(helper.createRootMemo(() => helper.range(activeImgIndex(), store.imgList.length)));
 //#endregion
 //#region src/components/Manga/actions/imageLoad.ts
-/** 鍥剧墖涓婃鍔犺浇鍑洪敊鐨勬椂闂?*/
+/** 图片上次加载出错的时间 */
 const imgErrorMap = /* @__PURE__ */ new Map();
-/** 閲嶆柊鍔犺浇閿欒鍥剧墖 */
+/** 重新加载错误图片 */
 const reloadImg = (url) => {
 	if (store.imgMap[url]?.loadType !== "error") return;
 	setState("imgMap", url, "loadType", "wait");
 	updateImgLoadType();
 };
-/** 鍥剧墖鍔犺浇澶辫触鍚庡畾鏃堕噸鏂板姞杞?*/
+/** 图片加载失败后定时重新加载 */
 const handleTimeReload = (url) => {
 	const count = imgErrorMap.get(url) || 0;
 	if (count > 8) return;
@@ -4518,7 +4546,7 @@ const handleTimeReload = (url) => {
 	const time = (2 ** count + Math.random() * 2) * 1e3;
 	setTimeout(reloadImg, time, url);
 };
-/** 鍥剧墖鍔犺浇瀹屾瘯鐨勫洖璋?*/
+/** 图片加载完毕的回调 */
 const handleImgLoaded = (url, e) => {
 	if (e && !e.isConnected) return;
 	imgErrorMap.delete(url);
@@ -4534,7 +4562,7 @@ const handleImgLoaded = (url, e) => {
 	if (store.option.imgRecognition.enabled && e.src === img.blobUrl) setTimeout(handleImgRecognition, 0, url, e);
 	translationAll();
 };
-/** 鍥剧墖鍔犺浇鍑洪敊鐨勫洖璋?*/
+/** 图片加载出错的回调 */
 const handleImgError = (url, e) => {
 	if (e && !e.isConnected) return;
 	setState((state) => {
@@ -4550,7 +4578,7 @@ const handleImgError = (url, e) => {
 	store.prop.onImgError?.(url);
 	updateImgLoadType();
 };
-/** 闇€瑕佸姞杞界殑鍥剧墖 */
+/** 需要加载的图片 */
 const needLoadImgList = helper.createRootMemo(() => {
 	const list = /* @__PURE__ */ new Set();
 	for (const img of imgList()) if (img.loadType !== "loaded" && img.src) list.add(img.src);
@@ -4561,11 +4589,11 @@ const waitUrlImgNum = helper.createRootMemo(() => {
 	for (const img of imgList()) if (!img.src) num += 1;
 	return num;
 });
-/** 褰撳墠鍔犺浇鐨勫浘鐗?*/
+/** 当前加载的图片 */
 const loadImgList = /* @__PURE__ */ new Set();
-/** 鍔犺浇鑼冨洿涓瓑寰?url 鐨勫浘鐗?*/
+/** 加载范围中等待 url 的图片 */
 const waitUrlImgs = /* @__PURE__ */ new Set();
-/** 鍔犺浇鎸囧畾鍥剧墖銆傝繑鍥炴槸鍚﹀凡鍔犺浇瀹屾垚 */
+/** 加载指定图片。返回是否已加载完成 */
 const loadImg = (index) => {
 	const img = getImg(index);
 	if (!img.src) {
@@ -4577,16 +4605,18 @@ const loadImg = (index) => {
 	loadImgList.add(img.src);
 	return false;
 };
-/** 鑾峰彇鎸囧畾椤垫暟涓嬬殑澶?灏惧浘鐗?*/
+/** 获取指定页数下的头/尾图片 */
 const getPageImg = (pageNum, imgType) => {
 	const page = store.pageList[pageNum].filter((i) => i !== -1);
 	if (page.length === 1) return page[0];
 	return imgType === "start" ? Math.min(...page) : Math.max(...page);
 };
 /**
-* 浠ュ綋鍓嶆樉绀洪〉涓哄熀鍑嗭紝棰勫姞杞介檮杩戞寚瀹氶〉鏁扮殑鍥剧墖锛屽苟鍙栨秷鍏朵粬棰勫姞杞界殑鍥剧墖
-* @param target 鍔犺浇鐩爣椤?* @param loadNum 鍔犺浇鍥剧墖鏁伴噺
-* @returns 杩斿洖鎸囧畾鑼冨洿鍐呮槸鍚﹁繕鏈夋湭鍔犺浇鐨勫浘鐗?*/
+* 以当前显示页为基准，预加载附近指定页数的图片，并取消其他预加载的图片
+* @param target 加载目标页
+* @param loadNum 加载图片数量
+* @returns 返回指定范围内是否还有未加载的图片
+*/
 const loadRangeImg = (target = 0, loadNum = 2) => {
 	let start = getPageImg(store.showRange[0], "start");
 	let end = getPageImg(store.showRange[1], "end");
@@ -4601,7 +4631,7 @@ const loadRangeImg = (target = 0, loadNum = 2) => {
 		start = helper.clamp(0, start, store.imgList.length - 1);
 		end = helper.clamp(0, end, store.imgList.length - 1);
 	}
-	/** 鏄惁杩樻湁鏈姞杞界殑鍥剧墖 */
+	/** 是否还有未加载的图片 */
 	let hasUnloadedImg = false;
 	let index = start;
 	const condition = start <= end ? () => index <= end : () => index >= end;
@@ -4613,7 +4643,7 @@ const loadRangeImg = (target = 0, loadNum = 2) => {
 	}
 	return hasUnloadedImg;
 };
-/** 鍔犺浇鏈熼棿灏藉揩鑾峰彇鍥剧墖灏哄 */
+/** 加载期间尽快获取图片尺寸 */
 const checkImgSize = (url) => {
 	const imgDom = getImgEle(url);
 	if (!imgDom) return;
@@ -4655,7 +4685,7 @@ helper.createEffectOn(showImgList, helper.debounce((list) => {
 	if (imgErrorMap.size === 0) return;
 	for (const i of list) reloadImg(getImg(i).src);
 }, 500), { defer: true });
-/** 鍔犺浇涓殑鍥剧墖 */
+/** 加载中的图片 */
 const loadingImgList = helper.createRootMemo(() => {
 	const list = /* @__PURE__ */ new Set();
 	for (const [url, img] of Object.entries(store.imgMap)) if (img.loadType === "loading") list.add(url);
@@ -4674,7 +4704,7 @@ helper.createEffectOn(loadingImgList, (downImgList, prevImgList) => {
 		if (downImgList.has(url) || !abortMap.has(url)) continue;
 		abortMap.get(url)?.abort();
 		abortMap.delete(url);
-		helper.log(\`涓柇涓嬭浇 \${url}\`);
+		helper.log(\`中断下载 \${url}\`);
 	}
 	for (const url of downImgList.values()) {
 		if (abortMap.has(url) || store.imgMap[url].blobUrl) continue;
@@ -4735,7 +4765,7 @@ const zoom = (val, focal, animation = false) => {
 		if (animation) state.page.anima = "zoom";
 	});
 };
-/** 鎽╂摝绯绘暟 */
+/** 摩擦系数 */
 const FRICTION_COEFF$1 = .91;
 const mouse = {
 	x: 0,
@@ -4756,7 +4786,7 @@ const cancelAnimation = () => {
 	animationId$2 = null;
 };
 let lastTime$1 = 0;
-/** 閫愬抚璁＄畻鎯€ф粦鍔?*/
+/** 逐帧计算惯性滑动 */
 const handleSlideAnima = (timestamp) => {
 	if (helper.approx(velocity.x, 0, 1) && helper.approx(velocity.y, 0, 1)) {
 		animationId$2 = null;
@@ -4774,7 +4804,7 @@ const handleSlideAnima = (timestamp) => {
 	});
 	animationId$2 = requestAnimationFrame(handleSlideAnima);
 };
-/** 閫愬抚鏍规嵁榧犳爣鍧愭爣绉诲姩鍏冪礌锛屽苟璁＄畻閫熺巼 */
+/** 逐帧根据鼠标坐标移动元素，并计算速率 */
 const handleDragAnima$1 = () => {
 	if (mouse.x === store.option.zoom.offset.x && mouse.y === store.option.zoom.offset.y) {
 		animationId$2 = null;
@@ -4791,14 +4821,14 @@ const handleDragAnima$1 = () => {
 	});
 	animationId$2 = requestAnimationFrame(handleDragAnima$1);
 };
-/** 涓€娈垫椂闂存病鏈夌Щ鍔ㄥ悗搴旇灏嗛€熺巼褰掗浂 */
+/** 一段时间没有移动后应该将速率归零 */
 const resetVelocity = helper.debounce(() => {
 	velocity.x = 0;
 	velocity.y = 0;
 }, 200);
-/** 鏄惁姝ｅ湪鍙屾寚鎹忓悎缂╂斁涓?*/
+/** 是否正在双指捏合缩放中 */
 let pinchZoom = false;
-/** 澶勭悊鏀惧ぇ鍚庣殑鎷栨嫿绉诲姩 */
+/** 处理放大后的拖拽移动 */
 const handleZoomDrag = ({ type, xy: [x, y], last: [lx, ly] }) => {
 	if (store.option.zoom.ratio === 100) return;
 	switch (type) {
@@ -4826,13 +4856,13 @@ const handleZoomDrag = ({ type, xy: [x, y], last: [lx, ly] }) => {
 			animationId$2 = requestAnimationFrame(handleSlideAnima);
 	}
 };
-/** 鍒濆鍙屾寚璺濈 */
+/** 初始双指距离 */
 let initDistance = 0;
-/** 鍒濆缂╂斁姣斾緥 */
+/** 初始缩放比例 */
 let initScale = 100;
-/** 鑾峰彇涓や釜鎸囬拡涔嬮棿鐨勮窛绂?*/
+/** 获取两个指针之间的距离 */
 const getDistance = (a, b) => Math.hypot(b.xy[0] - a.xy[0], b.xy[1] - a.xy[1]);
-/** 閫愬抚璁＄畻褰撳墠灞忓箷涓婁袱鐐逛箣闂寸殑璺濈锛屽苟鎹㈢畻鎴愮缉鏀炬瘮渚?*/
+/** 逐帧计算当前屏幕上两点之间的距离，并换算成缩放比例 */
 const handlePinchZoomAnima = () => {
 	if (touches.size < 2) {
 		animationId$2 = null;
@@ -4845,7 +4875,7 @@ const handlePinchZoomAnima = () => {
 	});
 	animationId$2 = requestAnimationFrame(handlePinchZoomAnima);
 };
-/** 澶勭悊鍙屾寚鎹忓悎缂╂斁 */
+/** 处理双指捏合缩放 */
 const handlePinchZoom = ({ type }) => {
 	if (touches.size < 2) return;
 	switch (type) {
@@ -4884,7 +4914,7 @@ const _scrollTo = (top) => {
 		openScrollLock(state);
 	});
 };
-/** 鍦ㄥ嵎杞存ā寮忎笅婊氬姩鍒版寚瀹氳繘搴?*/
+/** 在卷轴模式下滚动到指定进度 */
 const scrollTo = (x, smooth = false) => {
 	if (!store.option.scrollMode.enabled) return;
 	if (store.option.scrollMode.abreastMode) {
@@ -4901,21 +4931,21 @@ const scrollTo = (x, smooth = false) => {
 	}
 	scrollStep.start(x);
 };
-/** 鍦ㄥ嵎杞存ā寮忎笅婊氬姩鎸囧畾杩涘害 */
+/** 在卷轴模式下滚动指定进度 */
 const scrollBy = (offset, smooth = false) => {
 	if (!store.option.scrollMode.enabled) return;
 	if (handleEndTurnPage(offset > 0 ? "next" : "prev")) return;
 	return scrollTo(scrollTop() + offset, smooth);
 };
-/** 瀹炵幇鍗疯酱妯″紡涓嬬殑骞虫粦婊氬姩 */
+/** 实现卷轴模式下的平滑滚动 */
 const scrollStep = new class extends helper.AnimationFrame {
-	/** 鍔ㄧ敾鏃堕暱 */
+	/** 动画时长 */
 	duration = 100;
-	/** 瑕佹粴鍔ㄧ殑璺濈 */
+	/** 要滚动的距离 */
 	distance = 0;
-	/** 婊氬姩寮€濮嬫椂闂?*/
+	/** 滚动开始时间 */
 	startTime = 0;
-	/** 婊氬姩寮€濮嬩綅缃?*/
+	/** 滚动开始位置 */
 	startTop = 0;
 	scrollTo = (top) => {
 		if (helper.inRange(0, top, scrollLength())) scrollTo(top);
@@ -4924,7 +4954,7 @@ const scrollStep = new class extends helper.AnimationFrame {
 	frame = (timestamp) => {
 		this.cancel();
 		this.startTime ||= timestamp;
-		/** 宸叉粴鍔ㄦ椂闂?*/
+		/** 已滚动时间 */
 		const elapsed = timestamp - this.startTime;
 		if (elapsed >= this.duration) return this.scrollTo(this.startTop + this.distance);
 		this.scrollTo(this.startTop + elapsed / this.duration * this.distance);
@@ -4937,7 +4967,7 @@ const scrollStep = new class extends helper.AnimationFrame {
 		this.frame(0);
 	};
 }();
-/** 瀹炵幇鍗疯酱妯″紡涓嬬殑鍖€閫熸粴鍔?*/
+/** 实现卷轴模式下的匀速滚动 */
 const constantScroll = new class extends helper.AnimationFrame {
 	speed = 0;
 	lastTime = 0;
@@ -4962,12 +4992,12 @@ const constantScroll = new class extends helper.AnimationFrame {
 		this.call();
 	};
 }();
-/** 淇濆瓨褰撳墠婊氬姩杩涘害锛屽苟鍦ㄤ箣鍚庢仮澶?*/
+/** 保存当前滚动进度，并在之后恢复 */
 const saveScrollProgress = () => {
 	const oldScrollPercentage = scrollPercentage();
 	return () => scrollTo(oldScrollPercentage * scrollLength());
 };
-/** 鍦ㄥ嵎杞存ā寮忎笅锛屾粴鍔ㄥ埌鑳芥樉绀烘寚瀹氬浘鐗囩殑浣嶇疆 */
+/** 在卷轴模式下，滚动到能显示指定图片的位置 */
 const scrollViewImg = (i) => {
 	if (!store.option.scrollMode.enabled) return;
 	let top;
@@ -4975,7 +5005,7 @@ const scrollViewImg = (i) => {
 	else top = pageTopList()[i] + 1;
 	scrollTo(top);
 };
-/** 璺宠浆鍒版寚瀹氬浘鐗囩殑鏄剧ず浣嶇疆 */
+/** 跳转到指定图片的显示位置 */
 const jumpToImg = (index) => {
 	zoom(100);
 	setState("gridMode", false);
@@ -4989,7 +5019,7 @@ const jumpToImg = (index) => {
 };
 //#endregion
 //#region src/components/Manga/actions/switch.ts
-/** 鍒囨崲椤甸潰濉厖 */
+/** 切换页面填充 */
 const switchFillEffect = () => {
 	setState((state) => {
 		if (state.pageList[state.activePageIndex].length !== 2) return;
@@ -4997,7 +5027,7 @@ const switchFillEffect = () => {
 		updatePageData(state);
 	});
 };
-/** 鍒囨崲鍗疯酱妯″紡 */
+/** 切换卷轴模式 */
 const switchScrollMode = () => {
 	const index = activeImgIndex();
 	zoom(100);
@@ -5008,7 +5038,7 @@ const switchScrollMode = () => {
 	});
 	jumpToImg(index);
 };
-/** 鍒囨崲鍗曞弻椤垫ā寮?*/
+/** 切换单双页模式 */
 const switchOnePageMode = () => {
 	const index = activeImgIndex();
 	setOption((draftOption, state) => {
@@ -5023,13 +5053,13 @@ const switchOnePageMode = () => {
 	});
 	jumpToImg(index);
 };
-/** 鍒囨崲闃呰鏂瑰悜 */
+/** 切换阅读方向 */
 const switchDir = () => {
 	setOption((draftOption) => {
 		draftOption.dir = draftOption.dir === "rtl" ? "ltr" : "rtl";
 	});
 };
-/** 鍒囨崲缃戞牸妯″紡 */
+/** 切换网格模式 */
 const switchGridMode = () => {
 	zoom(100);
 	setState((state) => {
@@ -5044,14 +5074,14 @@ const switchGridMode = () => {
 		});
 	});
 };
-/** 鍒囨崲鍏ㄥ睆 */
+/** 切换全屏 */
 const switchFullscreen = () => {
 	if (document.fullscreenElement) return document.exitFullscreen();
 	return refs.root.requestFullscreen();
 };
-/** 鍒囨崲鑷姩婊氬姩 */
+/** 切换自动滚动 */
 const switchAutoScroll = () => setState("autoScroll", "play", (val) => !val);
-/** 鍒囨崲鍥剧墖璇嗗埆鐩稿叧鍔熻兘 */
+/** 切换图片识别相关功能 */
 const switchImgRecognition = (...path) => setOption((draftOption, state) => {
 	const option = draftOption.imgRecognition;
 	if (path.length === 0) path.push("enabled");
@@ -5071,7 +5101,7 @@ const initCache = async () => {
 	cache$1 ||= await helper.useCache({ progress: "id" }, "ReadProgress");
 };
 let lastIndex = -1;
-/** 淇濆瓨闃呰杩涘害 */
+/** 保存阅读进度 */
 const saveReadProgress = helper.throttle(async () => {
 	await initCache();
 	const index = activeImgIndex();
@@ -5088,7 +5118,7 @@ const saveReadProgress = helper.throttle(async () => {
 		fillEffect: solid_js_store.unwrap(store.fillEffect)
 	});
 }, 1e3);
-/** 鎭㈠闃呰杩涘害 */
+/** 恢复阅读进度 */
 const resumeReadProgress = async (state) => {
 	await initCache();
 	const progress = await cache$1.get("progress", location.pathname);
@@ -5110,7 +5140,7 @@ const resumeReadProgress = async (state) => {
 };
 //#endregion
 //#region src/components/Manga/actions/show.ts
-/** 灏嗛〉闈㈢Щ鍥炲師浣?*/
+/** 将页面移回原位 */
 const resetPage = (state, animation = false) => {
 	updateShowRange(state);
 	state.page.offset.x.pct = 0;
@@ -5125,16 +5155,16 @@ const resetPage = (state, animation = false) => {
 	else state.page.offset.x.pct = i === -1 ? 0 : i;
 	state.page.anima = animation ? "page" : "";
 };
-/** 鑾峰彇鎸囧畾鍥剧墖鐨勬彁绀烘枃鏈?*/
+/** 获取指定图片的提示文本 */
 const getImgTip = (i) => {
 	if (i === -1) return helper.t("other.fill_page");
 	const img = getImg(i);
 	if (img.loadType !== "loaded") return \`\${i + 1} (\${helper.t(\`img_status.\${img.loadType}\`)})\`;
-	if (img.translationType && img.translationType !== "hide" && img.translationMessage) return \`\${i + 1}锛歕${img.translationMessage}\`;
+	if (img.translationType && img.translationType !== "hide" && img.translationMessage) return \`\${i + 1}：\${img.translationMessage}\`;
 	if (isUpscale() && img.upscaleUrl !== void 0) return \`\${i + 1} (\${img.upscaleUrl ? helper.t("upscale.upscaled") : helper.t("upscale.upscaling")})\`;
 	return \`\${i + 1}\`;
 };
-/** 鑾峰彇鎸囧畾椤甸潰鐨勬彁绀烘枃鏈?*/
+/** 获取指定页面的提示文本 */
 const getPageTip = (pageIndex) => {
 	const page = store.pageList[pageIndex];
 	if (!page) return "null";
@@ -5149,7 +5179,7 @@ helper.createEffectOn(() => store.show.toolbar, () => store.show.scrollbar && !s
 helper.createEffectOn(() => store.gridMode, () => setState(resetUI), { defer: true });
 //#endregion
 //#region src/components/Manga/actions/turnPage.ts
-/** 缈婚〉銆傝繑鍥炴槸鍚︽垚鍔熸敼鍙樹簡褰撳墠椤垫暟 */
+/** 翻页。返回是否成功改变了当前页数 */
 const turnPage = withOptionalState((dir, state) => {
 	if (state.gridMode || state.option.scrollMode.enabled) return false;
 	if (handleEndTurnPage(dir, state)) return false;
@@ -5180,7 +5210,7 @@ const turnPageAnimation = (dir) => {
 		}, 16);
 	});
 };
-/** 鍒ゆ柇缈婚〉鏂瑰悜 */
+/** 判断翻页方向 */
 const getTurnPageDir = (move, total, startTime) => {
 	let dir;
 	if (!startTime) {
@@ -5196,11 +5226,11 @@ const getTurnPageDir = (move, total, startTime) => {
 };
 //#endregion
 //#region src/components/Manga/actions/hotkeyAction.ts
-/** 鍗疯酱妯″紡涓嬫粴鍔ㄨ嚦鎸囧畾椤垫暟 */
+/** 卷轴模式下滚动至指定页数 */
 const scrollIntoView = (index, position = "start") => scrollTo(position === "start" ? getPageTop(index) : getPageTop(index + 1) - store.rootSize.height, true);
-/** 鍒ゆ柇鎸囧畾椤佃兘鍚﹁瀹屽叏鏄剧ず鍑烘潵 */
+/** 判断指定页能否被完全显示出来 */
 const isFullView = (i) => pageHeightList()[i] < store.rootSize.height;
-/** 鍦ㄥ嵎杞存ā寮忎笅锛屾櫤鑳芥粴鍔ㄨ嚦鍥剧墖鐨勫ご灏?*/
+/** 在卷轴模式下，智能滚动至图片的头尾 */
 const scrollViewTurnPage = (offset) => {
 	if (!store.option.scrollMode.enabled) return;
 	const dir = offset > 0 ? "next" : "prev";
@@ -5236,7 +5266,7 @@ const scrollViewTurnPage = (offset) => {
 		scrollIntoView(prevPage, isFullView(prevPage) ? "start" : "end");
 	}
 };
-/** 鏍规嵁鏄惁寮€鍚簡 宸﹀彸缈婚〉閿氦鎹?鏉ュ垏鎹㈢炕椤垫柟鍚?*/
+/** 根据是否开启了 左右翻页键交换 来切换翻页方向 */
 const handleSwapPageTurnKey = (nextPage) => {
 	return (store.option.swapPageTurnKey ? !nextPage : nextPage) ? "next" : "prev";
 };
@@ -5343,7 +5373,7 @@ const [defaultHotkeys, setDefaultHotkeys] = solid_js.createSignal({
 	jump_prev: [],
 	reload_current_error_img: ["r"]
 });
-/** 蹇嵎閿厤缃?*/
+/** 快捷键配置 */
 const hotkeysMap = helper.createRootMemo(() => Object.fromEntries(Object.entries(store.hotkeys).flatMap(([name, key]) => key.map((k) => [k, name]))));
 const actionsMap = {
 	bubble: null,
@@ -5375,7 +5405,7 @@ const handlers = {
 	bubble: createKeydownHandler("bubble"),
 	capture: createKeydownHandler("capture")
 };
-/** 鐩戝惉蹇嵎閿?*/
+/** 监听快捷键 */
 const listenHotkey = (actions, capture) => {
 	const type = capture ? "capture" : "bubble";
 	if (actionsMap[type]) Object.assign(actionsMap[type], actions);
@@ -5453,7 +5483,7 @@ const getModel = async () => {
 			buffer
 		};
 	} catch (error) {
-		helper.log.error("鑾峰彇鍥剧墖鏀惧ぇ妯″瀷鍑洪敊", error);
+		helper.log.error("获取图片放大模型出错", error);
 		components_Toast.toast.dismiss("upscale");
 		components_Toast.toast.error(helper.t("upscale.module_download_failed"), {
 			id: "upscale",
@@ -5491,14 +5521,14 @@ const useDoubleClick = (click, doubleClick, timeout = 200) => (event) => {
 };
 //#endregion
 //#region src/components/Manga/actions/pointer.ts
-/** 鏍规嵁鍧愭爣鎵惧嚭琚偣鍑诲埌鐨勫厓绱?*/
+/** 根据坐标找出被点击到的元素 */
 const findClickEle = (eleList, { x, y }) => {
 	for (const e of eleList) {
 		const rect = e.getBoundingClientRect();
 		if (helper.inRange(rect.left, x, rect.right) && helper.inRange(rect.top, y, rect.bottom)) return e;
 	}
 };
-/** 瑙﹀彂鐐瑰嚮鍖哄煙鎿嶄綔 */
+/** 触发点击区域操作 */
 const handlePageClick = (e) => {
 	for (const i of showImgList()) {
 		const img = getImg(i);
@@ -5525,12 +5555,12 @@ const handlePageClick = (e) => {
 		}
 	});
 };
-/** 缃戞牸妯″紡涓嬬偣鍑诲浘鐗囪烦鍒板搴旈〉 */
+/** 网格模式下点击图片跳到对应页 */
 const handleGridClick = (e) => {
 	const target = findClickEle(refs.root.getElementsByClassName(classes$1.img), e);
 	if (target) jumpToImg(Number(/_(\\d+)_/.exec(target.id)?.[1]));
 };
-/** 鍙屽嚮鏀惧ぇ */
+/** 双击放大 */
 const doubleClickZoom = (e) => !store.gridMode && zoom(store.option.zoom.ratio === 100 ? 350 : 100, e, true);
 const handleClick = useDoubleClick((e) => store.gridMode ? handleGridClick(e) : handlePageClick(e), doubleClickZoom);
 let dx$1 = 0;
@@ -5617,7 +5647,7 @@ const handleTrackpadWheel = (e) => {
 };
 //#endregion
 //#region src/components/Manga/actions/scrollMode.ts
-/** 淇敼鍗疯酱妯″紡涓嬪浘鐗囩殑鐩爣瀹藉害 */
+/** 修改卷轴模式下图片的目标宽度 */
 const setAdjustToWidth = (val) => {
 	if (typeof store.option.scrollMode.adjustToWidth !== "number") return;
 	if (typeof val === "function") val = val(store.option.scrollMode.adjustToWidth);
@@ -5634,7 +5664,7 @@ const minImgWidth = helper.createRootMemo(() => {
 	for (const img of Object.values(store.imgMap)) if (img.width && img.width < min) min = img.width;
 	return min;
 });
-/** 鍦ㄥ嵎杞存ā寮忎笅杩涜缂╂斁锛屽苟涓斾繚鎸佹粴鍔ㄨ繘搴︿笉鍙?*/
+/** 在卷轴模式下进行缩放，并且保持滚动进度不变 */
 const setImgScale = (val) => {
 	if (typeof val === "function") val = val(store.option.scrollMode.imgScale);
 	if (Number.isNaN(val)) return;
@@ -5649,7 +5679,7 @@ const setImgScale = (val) => {
 	});
 	jump();
 };
-/** 澶勭悊鍗疯酱妯″紡涓嬬殑鏀惧ぇ/缂╁皬鎿嶄綔 */
+/** 处理卷轴模式下的放大/缩小操作 */
 const handleScrollModeZoom = (dir) => {
 	if (!store.option.scrollMode.enabled) return;
 	if (store.option.scrollMode.adjustToWidth === "full") return;
@@ -5721,7 +5751,7 @@ const handleKeyUp = (e) => {
 		case "scroll_down": return constantScroll.cancel();
 	}
 };
-/** 鍒ゆ柇涓や釜鏁板€兼槸鍚︽槸鏁存暟鍊嶇殑鍏崇郴 */
+/** 判断两个数值是否是整数倍的关系 */
 const isMultipleOf = (a, b) => {
 	const decimal = \`\${a < b ? b / a : a / b}\`.split(".")?.[1];
 	return !decimal || decimal.startsWith("0000") || decimal.startsWith("9999");
@@ -5792,6 +5822,8 @@ const maxCacheCount = 50;
 const maxCacheSize = 512 * 1024 * 1024;
 const cache = /* @__PURE__ */ new Map();
 let cacheSize = 0;
+let runId = 0;
+let relineRunEnabled = false;
 const rt = (key, fallback, variables) => helper.t(\`reline_upscale.\${key}\`, variables) || fallback;
 const normalizeServerUrl = () => (store.option.relineUpscale.serverUrl || "http://127.0.0.1:5678").replace(/\\/$/, "");
 const setMessage = (url, message) => setState("imgMap", url, "relineUpscaleMessage", message);
@@ -5835,12 +5867,12 @@ const saveCache = (key, blob) => {
 	evictCache();
 	return item;
 };
-const applyCache = (url) => {
+const applyCache = (url, type = "cached") => {
 	const item = getCache(url);
 	if (!item) return false;
 	setState("imgMap", url, {
 		relineUpscaleUrl: item.blobUrl,
-		relineUpscaleType: "cached",
+		relineUpscaleType: type,
 		relineUpscaleMessage: rt("cached", "Reline result is cached")
 	});
 	return true;
@@ -5871,7 +5903,74 @@ const upload = async (blob) => {
 	if (!contentType) return res.response;
 	return new Blob([res.response], { type: contentType });
 };
-const relineUpscaleImage = async (url) => {
+const isPendingType = (type) => type === "wait" || type === "processing" || type === "error";
+const isFinishedType = (type) => type === "show" || type === "cached" || type === "hide";
+const shouldProcessImg = (index) => {
+	const url = store.imgList[index];
+	const img = store.imgMap[url];
+	if (!img || img.loadType !== "loaded") return false;
+	if (img.relineUpscaleUrl || getCache(url)) return false;
+	return !isFinishedType(img.relineUpscaleType);
+};
+const promoteOrMark = (index) => {
+	const url = store.imgList[index];
+	const img = store.imgMap[url];
+	if (!img || img.loadType !== "loaded") return;
+	if (img.relineUpscaleUrl) {
+		if (img.relineUpscaleType === "hide" || img.relineUpscaleType === void 0) setState("imgMap", url, {
+			relineUpscaleType: "show",
+			relineUpscaleMessage: rt("completed", "Reline upscale completed")
+		});
+		return;
+	}
+	const item = getCache(url);
+	if (item) {
+		setState("imgMap", url, {
+			relineUpscaleUrl: item.blobUrl,
+			relineUpscaleType: "show",
+			relineUpscaleMessage: rt("cached", "Reline result is cached")
+		});
+		return;
+	}
+	if (isFinishedType(img.relineUpscaleType) || img.relineUpscaleType === "processing") return;
+	setState("imgMap", url, {
+		relineUpscaleType: "wait",
+		relineUpscaleMessage: rt("wait", "Waiting for Reline upscale")
+	});
+};
+const getScanBounds = () => {
+	const range = store.option.relineUpscale.preloadRange;
+	if (range === -1) return [0, store.imgList.length - 1];
+	const active = activeImgIndex();
+	return [Math.max(0, active - range), Math.min(store.imgList.length - 1, active + range)];
+};
+const enqueueConfiguredRange = () => {
+	const [start, end] = getScanBounds();
+	const active = activeImgIndex();
+	for (let i = active; i <= end; i++) promoteOrMark(i);
+	if (!store.option.relineUpscale.preloadPrevious) return;
+	for (let i = Math.min(active - 1, end); i >= start; i--) promoteOrMark(i);
+};
+const findNextUnprocessed = () => {
+	const [start, end] = getScanBounds();
+	const active = activeImgIndex();
+	for (let i = active; i <= end; i++) if (shouldProcessImg(i)) return store.imgList[i];
+	if (!store.option.relineUpscale.preloadPrevious) return;
+	for (let i = Math.min(active - 1, end); i >= start; i--) if (shouldProcessImg(i)) return store.imgList[i];
+};
+const stopRelineRun = () => {
+	runId += 1;
+	relineRunEnabled = false;
+	setState((state) => {
+		for (const url of state.imgList) {
+			const img = state.imgMap[url];
+			if (!img) continue;
+			if (img.relineUpscaleType === "show" || img.relineUpscaleType === "cached") img.relineUpscaleType = "hide";
+			else if (isPendingType(img.relineUpscaleType)) img.relineUpscaleType = void 0;
+		}
+	});
+};
+const relineUpscaleImage = async (url, currentRunId = runId) => {
 	try {
 		if (!url) return;
 		const img = store.imgMap[url];
@@ -5879,21 +5978,21 @@ const relineUpscaleImage = async (url) => {
 			setMessage(url, helper.t("translation.tip.img_not_fully_loaded"));
 			return;
 		}
-		if (applyCache(url)) return;
-		setState("imgMap", url, {
+		if (applyCache(url, relineRunEnabled ? "show" : "hide")) return;
+		if (currentRunId === runId) setState("imgMap", url, {
 			relineUpscaleType: "wait",
 			relineUpscaleMessage: rt("connecting", "Connecting to Reline service")
 		});
 		const status = await checkServer();
-		if (status.queue_length) setMessage(url, rt("queued", \`Reline queue: \${status.queue_length} image(s)\`, { pos: status.queue_length }));
-		setState("imgMap", url, {
+		if (currentRunId === runId && status.queue_length) setMessage(url, rt("queued", \`Reline queue: \${status.queue_length} image(s)\`, { pos: status.queue_length }));
+		if (currentRunId === runId) setState("imgMap", url, {
 			relineUpscaleType: "processing",
 			relineUpscaleMessage: rt("processing", "Reline processing image")
 		});
 		const resultBlob = await upload(await downloadImg(url));
 		const item = saveCache(getCacheKey(url), resultBlob);
 		const currentType = store.imgMap[url]?.relineUpscaleType;
-		const shouldShow = currentType === "wait" || currentType === "processing";
+		const shouldShow = relineRunEnabled && (currentType === void 0 || currentType === "wait" || currentType === "processing");
 		setState("imgMap", url, {
 			relineUpscaleUrl: item.blobUrl,
 			relineUpscaleType: shouldShow ? "show" : "hide",
@@ -5901,6 +6000,7 @@ const relineUpscaleImage = async (url) => {
 		});
 	} catch (error) {
 		helper.log.error("Reline upscale error", error);
+		if (currentRunId !== runId) return;
 		setState("imgMap", url, {
 			relineUpscaleType: "error",
 			relineUpscaleMessage: error?.message || rt("failed", "Reline upscale failed")
@@ -5909,15 +6009,21 @@ const relineUpscaleImage = async (url) => {
 	}
 };
 const relineUpscaleNext = helper.singleThreaded(async (state) => {
-	const targetUrl = store.imgList.find((url) => {
-		return store.imgMap[url]?.relineUpscaleType === "wait";
-	});
+	const currentRunId = runId;
+	enqueueConfiguredRange();
+	const targetUrl = findNextUnprocessed();
 	if (!targetUrl) return;
-	await relineUpscaleImage(targetUrl);
-	state.continueRun();
+	await relineUpscaleImage(targetUrl, currentRunId);
+	if (currentRunId === runId) state.continueRun();
 });
 const setImgRelineUpscaleEnable = (list, enable) => {
 	if (!store.option.relineUpscale.enabled && enable) return;
+	if (!enable) {
+		stopRelineRun();
+		return;
+	}
+	runId += 1;
+	relineRunEnabled = true;
 	setState((state) => {
 		for (const i of list) {
 			const img = state.imgMap[state.imgList[i]];
@@ -5940,10 +6046,10 @@ const setImgRelineUpscaleEnable = (list, enable) => {
 			else if (img.relineUpscaleType === "wait" || img.relineUpscaleType === "processing" || img.relineUpscaleType === "error") img.relineUpscaleType = void 0;
 		}
 	});
-	if (enable) relineUpscaleNext();
+	relineUpscaleNext();
 };
-const isRelineUpscalingImage = () => activePage().some((i) => {
-	const type = store.imgMap[store.imgList[i]]?.relineUpscaleType;
+const isRelineUpscalingImage = () => store.imgList.some((url) => {
+	const type = store.imgMap[url]?.relineUpscaleType;
 	return type === "wait" || type === "processing" || type === "show" || type === "cached";
 });
 const toggleRelineUpscaleCurrent = () => setImgRelineUpscaleEnable(activePage(), !isRelineUpscalingImage());
@@ -5961,7 +6067,7 @@ const retryCurrentRelineUpscale = () => {
 };
 //#endregion
 //#region src/components/Manga/actions/scrollbar.ts
-/** 鍒ゆ柇鐐瑰嚮浣嶇疆鍦ㄦ粴鍔ㄦ潯涓婄殑浣嶇疆姣旂巼 */
+/** 判断点击位置在滚动条上的位置比率 */
 const getClickTop = (x, y, e) => {
 	switch (scrollPosition()) {
 		case "bottom":
@@ -5969,7 +6075,7 @@ const getClickTop = (x, y, e) => {
 		default: return y / e.offsetHeight;
 	}
 };
-/** 璁＄畻鍦ㄦ粴鍔ㄦ潯涓婄殑鎷栧姩璺濈 */
+/** 计算在滚动条上的拖动距离 */
 const getSliderDist = ([x, y], [ix, iy], e) => {
 	switch (scrollPosition()) {
 		case "bottom":
@@ -5980,7 +6086,7 @@ const getSliderDist = ([x, y], [ix, iy], e) => {
 const [isDrag, setIsDrag] = solid_js.createSignal(false);
 const closeDrag = helper.debounce(() => setIsDrag(false), 200);
 let lastType = "up";
-/** 寮€濮嬫嫋鎷芥椂鐨?sliderTop 鍊?*/
+/** 开始拖拽时的 sliderTop 值 */
 let startTop = 0;
 const handleScrollbarSlider = ({ type, xy, initial }, e) => {
 	const [x, y] = xy;
@@ -5992,7 +6098,7 @@ const handleScrollbarSlider = ({ type, xy, initial }, e) => {
 	if (type === "up") return saveReadProgress();
 	if (!refs.mangaFlow) return;
 	const scrollbarDom = e.target;
-	/** 鐐瑰嚮浣嶇疆鍦ㄦ粴鍔ㄦ潯涓婄殑浣嶇疆姣旂巼 */
+	/** 点击位置在滚动条上的位置比率 */
 	const clickTop = getClickTop(x, y, e.target);
 	if (store.option.scrollMode.enabled) if (type === "move") scrollTo(helper.clamp(0, startTop + getSliderDist(xy, initial, scrollbarDom), 1) * scrollLength());
 	else {
@@ -6008,7 +6114,7 @@ const handleScrollbarSlider = ({ type, xy, initial }, e) => {
 };
 //#endregion
 //#region src/components/Manga/actions/scrollModeDrag.ts
-/** 鎽╂摝绯绘暟 */
+/** 摩擦系数 */
 const FRICTION_COEFF = .96;
 let lastTop = 0;
 let dy = 0;
@@ -6016,7 +6122,7 @@ let lastLeft = 0;
 let dx = 0;
 let animationId = null;
 let lastTime = 0;
-/** 閫愬抚璁＄畻閫熺巼 */
+/** 逐帧计算速率 */
 const calcVelocity = () => {
 	const nowTop = store.option.scrollMode.abreastMode ? abreastScrollFill() : scrollTop();
 	dy = nowTop - lastTop;
@@ -6025,7 +6131,7 @@ const calcVelocity = () => {
 	lastLeft = store.page.offset.x.px;
 	animationId = requestAnimationFrame(calcVelocity);
 };
-/** 閫愬抚璁＄畻鎯€ф粦鍔?*/
+/** 逐帧计算惯性滑动 */
 const handleSlide = (timestamp) => {
 	if (Math.abs(dx) + Math.abs(dy) < 1) {
 		animationId = null;
@@ -6072,13 +6178,13 @@ const handleScrollModeDrag = ({ type, xy: [x, y], initial: [ix, iy], startTime }
 };
 //#endregion
 //#region src/components/Manga/hooks/useHiddenMouse.ts
-/** 鍦ㄩ紶鏍囬潤姝竴娈垫椂闂村悗鑷姩闅愯棌 */
+/** 在鼠标静止一段时间后自动隐藏 */
 const useHiddenMouse = () => {
 	const [hiddenMouse, setHiddenMouse] = solid_js.createSignal(true);
 	const hidden = helper.debounce(() => setHiddenMouse(true), 1e3);
 	return {
 		hiddenMouse,
-		/** 榧犳爣绉诲姩 */
+		/** 鼠标移动 */
 		onMouseMove: () => {
 			setHiddenMouse(false);
 			hidden();
@@ -6105,13 +6211,13 @@ const ComicImg = (img) => {
 		if (img.src.startsWith("blob:")) return img.src.replace(/#\\..+/, "");
 		return img.src;
 	};
-	/** 骞舵帓鍗疯酱妯″紡涓嬮渶瑕佸鍒剁殑鍥剧墖鏁伴噺 */
+	/** 并排卷轴模式下需要复制的图片数量 */
 	const cloneNum = solid_js.createMemo(() => {
 		if (!isAbreastMode()) return 0;
 		const imgPosition = abreastArea().position[img.index];
 		return imgPosition ? imgPosition.length - 1 : 0;
 	});
-	/** 鏄惁瑕佹覆鏌撳鍒跺浘鐗?*/
+	/** 是否要渲染复制图片 */
 	const renderClone = () => !store.gridMode && showState() !== void 0 && cloneNum() > 0;
 	const styles = solid_js.createMemo(() => ({
 		img: {
@@ -6262,7 +6368,7 @@ const ComicImgFlow = () => {
 			else state.page.anima = "";
 		});
 	};
-	/** 鍦ㄥ綋鍓嶉〉涔嬪墠鏈夊浘鐗囪鍔犺浇鍑烘潵锛屽鑷村唴瀹归珮搴﹀彂鐢熷彉鍖栧悗锛岄噸鏂版粴鍔ㄩ〉闈紝纭繚褰撳墠鏄剧ず浣嶇疆涓嶅彉 */
+	/** 在当前页之前有图片被加载出来，导致内容高度发生变化后，重新滚动页面，确保当前显示位置不变 */
 	helper.createEffectOn([
 		() => store.showRange[0],
 		() => pageTopList()[store.showRange[0]],
@@ -6627,34 +6733,52 @@ const getScrollbarPage = (img, i, double = false) => {
 	else num = double ? 2 : 1;
 	let upscale;
 	if (isUpscale() && img.upscaleUrl !== void 0) upscale = img.upscaleUrl === "" ? "loading" : true;
+	let relineUpscale;
+	switch (img.relineUpscaleType) {
+		case "wait":
+		case "processing":
+			relineUpscale = "loading";
+			break;
+		case "show":
+		case "cached":
+		case "hide":
+			relineUpscale = "done";
+			break;
+		case "error":
+			relineUpscale = "error";
+			break;
+	}
 	return {
 		num,
 		loadType: img.loadType,
 		translationType: img.translationType,
-		upscale
+		upscale,
+		relineUpscale
 	};
 };
 const ScrollbarPage = (props) => (() => {
 	var _el$ = _tmpl$$33();
 	solid_js_web.effect((_p$) => {
-		var _v$ = classes$1.scrollbarPage, _v$2 = \`\${props.num / scrollLength() * 100}%\`, _v$3 = props.loadType, _v$4 = props.translationType, _v$5 = props.upscale;
+		var _v$ = classes$1.scrollbarPage, _v$2 = \`\${props.num / scrollLength() * 100}%\`, _v$3 = props.loadType, _v$4 = props.translationType, _v$5 = props.upscale, _v$6 = props.relineUpscale;
 		_v$ !== _p$.e && solid_js_web.className(_el$, _p$.e = _v$);
 		_v$2 !== _p$.t && solid_js_web.setStyleProperty(_el$, "flex-basis", _p$.t = _v$2);
 		_v$3 !== _p$.a && solid_js_web.setAttribute(_el$, "data-type", _p$.a = _v$3);
 		_v$4 !== _p$.o && solid_js_web.setAttribute(_el$, "data-translation-type", _p$.o = _v$4);
 		_v$5 !== _p$.i && solid_js_web.setAttribute(_el$, "data-upscale", _p$.i = _v$5);
+		_v$6 !== _p$.n && solid_js_web.setAttribute(_el$, "data-reline-upscale", _p$.n = _v$6);
 		return _p$;
 	}, {
 		e: void 0,
 		t: void 0,
 		a: void 0,
 		o: void 0,
-		i: void 0
+		i: void 0,
+		n: void 0
 	});
 	return _el$;
 })();
-const isSameItem = (a, b) => a.loadType === b.loadType && a.translationType === b.translationType && a.upscale === b.upscale;
-/** 鏄剧ず瀵瑰簲鍥剧墖鍔犺浇鎯呭喌鐨勫厓绱?*/
+const isSameItem = (a, b) => a.loadType === b.loadType && a.translationType === b.translationType && a.upscale === b.upscale && a.relineUpscale === b.relineUpscale;
+/** 显示对应图片加载情况的元素 */
 const ScrollbarPageStatus = () => {
 	const scrollbarPageList = helper.createThrottleMemo(() => {
 		if (store.pageList.length === 0) return [];
@@ -6698,7 +6822,7 @@ const ScrollbarPageStatus = () => {
 //#endregion
 //#region src/components/Manga/components/Scrollbar.tsx
 var _tmpl$$32 = /* @__PURE__ */ solid_js_web.template(\`<div role=scrollbar tabindex=-1>\`), _tmpl$2$5 = /* @__PURE__ */ solid_js_web.template(\`<div>\`);
-/** 婊氬姩鏉?*/
+/** 滚动条 */
 const Scrollbar = () => {
 	solid_js.onMount(() => {
 		helper.useDrag({
@@ -6715,12 +6839,12 @@ const Scrollbar = () => {
 		setPenetrate(true);
 		resetPenetrate();
 	};
-	/** 鏄惁寮哄埗鏄剧ず婊氬姩鏉?*/
+	/** 是否强制显示滚动条 */
 	const showScrollbar = solid_js.createMemo(() => store.show.scrollbar || penetrate());
-	/** 婊氬姩鏉℃彁绀烘枃鏈?*/
+	/** 滚动条提示文本 */
 	const tipText = helper.createThrottleMemo(() => {
 		if (store.showRange[0] === store.showRange[1]) return getPageTip(store.showRange[0]);
-		/** 骞舵帓鍗疯酱妯″紡涓嬬殑婊氬姩鏉℃彁绀烘枃鏈?*/
+		/** 并排卷轴模式下的滚动条提示文本 */
 		if (isAbreastMode()) {
 			const columns = abreastArea().columns.slice(abreastShowColumn().start, abreastShowColumn().end + 1).map((column) => column.map(getPageTip));
 			if (store.option.dir !== "rtl") columns.reverse();
@@ -6937,11 +7061,11 @@ const classes = {
 };
 //#endregion
 //#region src/components/IconButton/index.module.css?inline
-var index_module_default$1 = ".iconButtonItem___vTPHz {\\r\\n  position: relative;\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n}\\r\\n\\r\\n.iconButton___dhWw3 {\\r\\n  cursor: pointer;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 1.5em;\\r\\n  height: 1.5em;\\r\\n  margin: 0.1em;\\r\\n  padding: 0;\\r\\n  border-style: none;\\r\\n  border-radius: 9999px;\\r\\n\\r\\n  font-size: 1.5em;\\r\\n  color: var(--text, white);\\r\\n\\r\\n  background-color: transparent;\\r\\n  outline: none;\\r\\n}\\r\\n\\r\\n.iconButton___dhWw3:focus,.iconButton___dhWw3:hover {\\r\\n    background-color: var(--hover-bg-color, #fff3);\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj) {\\r\\n    color: var(--text-bg, #121212);\\r\\n    background-color: var(--text, white);\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):focus,.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):hover {\\r\\n      background-color: var(--hover-bg-color-enable, #fffa);\\r\\n    }\\r\\n\\r\\n.iconButton___dhWw3.disable___7C-Rj {\\r\\n    cursor: not-allowed;\\r\\n    opacity: 0.5;\\r\\n    background-color: unset;\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3 > svg {\\r\\n    width: 1em;\\r\\n  }\\r\\n\\r\\n/* 榛樿鎮诞妗嗘牱寮?*/\\r\\n\\r\\n.iconButtonPopper___dVIu- {\\r\\n  pointer-events: none;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 50%;\\r\\n  transform: translateY(-50%);\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  padding: 0.4em 0.5em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 0.8em;\\r\\n  color: white;\\r\\n  white-space: nowrap;\\r\\n\\r\\n  opacity: 0;\\r\\n  background-color: #303030;\\r\\n}\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='right'] {\\r\\n    left: calc(100% + 1.5em);\\r\\n  }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='right']::before {\\r\\n      right: calc(100% + 0.5em);\\r\\n      border-right-color: var(--switch-bg, #6e6e6e);\\r\\n      border-right-width: 0.5em;\\r\\n    }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='left'] {\\r\\n    right: calc(100% + 1.5em);\\r\\n  }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='left']::before {\\r\\n      left: calc(100% + 0.5em);\\r\\n      border-left-color: var(--switch-bg, #6e6e6e);\\r\\n      border-left-width: 0.5em;\\r\\n    }\\r\\n\\r\\n/* 宸ュ叿鏍忔寜閽殑鎮诞妗嗙殑绠ご */\\r\\n\\r\\n.iconButtonPopper___dVIu-::before {\\r\\n  pointer-events: none;\\r\\n  content: '';\\r\\n\\r\\n  position: absolute;\\r\\n\\r\\n  border-color: transparent;\\r\\n  border-style: solid;\\r\\n  border-width: 0.4em;\\r\\n\\r\\n  background-color: transparent;\\r\\n\\r\\n  transition: opacity 150ms;\\r\\n}\\r\\n\\r\\n/* 鎺у埗鎮诞妗嗙殑鏄剧ず */\\r\\n\\r\\n.iconButtonItem___vTPHz:is(:hover, :focus, [data-show='true']) .iconButtonPopper___dVIu- {\\r\\n  opacity: 1;\\r\\n}\\r\\n\\r\\n.hidden___v7N-q {\\r\\n  display: none;\\r\\n}\\r\\n";
+var index_module_default$1 = ".iconButtonItem___vTPHz {\\r\\n  position: relative;\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n}\\r\\n\\r\\n.iconButton___dhWw3 {\\r\\n  cursor: pointer;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 1.5em;\\r\\n  height: 1.5em;\\r\\n  margin: 0.1em;\\r\\n  padding: 0;\\r\\n  border-style: none;\\r\\n  border-radius: 9999px;\\r\\n\\r\\n  font-size: 1.5em;\\r\\n  color: var(--text, white);\\r\\n\\r\\n  background-color: transparent;\\r\\n  outline: none;\\r\\n}\\r\\n\\r\\n.iconButton___dhWw3:focus,.iconButton___dhWw3:hover {\\r\\n    background-color: var(--hover-bg-color, #fff3);\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj) {\\r\\n    color: var(--text-bg, #121212);\\r\\n    background-color: var(--text, white);\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):focus,.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):hover {\\r\\n      background-color: var(--hover-bg-color-enable, #fffa);\\r\\n    }\\r\\n\\r\\n.iconButton___dhWw3.disable___7C-Rj {\\r\\n    cursor: not-allowed;\\r\\n    opacity: 0.5;\\r\\n    background-color: unset;\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3 > svg {\\r\\n    width: 1em;\\r\\n  }\\r\\n\\r\\n/* 默认悬浮框样式 */\\r\\n\\r\\n.iconButtonPopper___dVIu- {\\r\\n  pointer-events: none;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 50%;\\r\\n  transform: translateY(-50%);\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  padding: 0.4em 0.5em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 0.8em;\\r\\n  color: white;\\r\\n  white-space: nowrap;\\r\\n\\r\\n  opacity: 0;\\r\\n  background-color: #303030;\\r\\n}\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='right'] {\\r\\n    left: calc(100% + 1.5em);\\r\\n  }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='right']::before {\\r\\n      right: calc(100% + 0.5em);\\r\\n      border-right-color: var(--switch-bg, #6e6e6e);\\r\\n      border-right-width: 0.5em;\\r\\n    }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='left'] {\\r\\n    right: calc(100% + 1.5em);\\r\\n  }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='left']::before {\\r\\n      left: calc(100% + 0.5em);\\r\\n      border-left-color: var(--switch-bg, #6e6e6e);\\r\\n      border-left-width: 0.5em;\\r\\n    }\\r\\n\\r\\n/* 工具栏按钮的悬浮框的箭头 */\\r\\n\\r\\n.iconButtonPopper___dVIu-::before {\\r\\n  pointer-events: none;\\r\\n  content: '';\\r\\n\\r\\n  position: absolute;\\r\\n\\r\\n  border-color: transparent;\\r\\n  border-style: solid;\\r\\n  border-width: 0.4em;\\r\\n\\r\\n  background-color: transparent;\\r\\n\\r\\n  transition: opacity 150ms;\\r\\n}\\r\\n\\r\\n/* 控制悬浮框的显示 */\\r\\n\\r\\n.iconButtonItem___vTPHz:is(:hover, :focus, [data-show='true']) .iconButtonPopper___dVIu- {\\r\\n  opacity: 1;\\r\\n}\\r\\n\\r\\n.hidden___v7N-q {\\r\\n  display: none;\\r\\n}\\r\\n";
 //#endregion
 //#region src/components/IconButton/index.tsx
 var _tmpl$$17 = /* @__PURE__ */ solid_js_web.template(\`<div><button type=button tabindex=0>\`), _tmpl$2$4 = /* @__PURE__ */ solid_js_web.template(\`<div>\`);
-/** 鍥炬爣鎸夐挳 */
+/** 图标按钮 */
 const IconButton$1 = (_props) => {
 	const props = solid_js.mergeProps({ placement: "right" }, _props);
 	let buttonRef;
@@ -7017,7 +7141,7 @@ var stop_default = (props = {}) => (() => {
 //#endregion
 //#region src/components/Manga/components/autoScroll.tsx
 const autoScroll = new class extends helper.AnimationFrame {
-	/** 涓婃婊氬姩鐨勬椂闂?*/
+	/** 上次滚动的时间 */
 	lastTime = 0;
 	scroll = () => {
 		if (isBottom()) {
@@ -7090,11 +7214,11 @@ var file_download_default = (props = {}) => (() => {
 //#endregion
 //#region src/components/Manga/components/DownloadButton.tsx
 const getExtName = (mime) => /.+\\/([^;]+)/.exec(mime)?.[1] ?? "jpg";
-/** 涓嬭浇鎸夐挳 */
+/** 下载按钮 */
 const DownloadButton = () => {
 	const { store: state, setState } = helper.useStore({
 		length: 0,
-		/** undefined 琛ㄧず鏈紑濮嬩笅杞斤紝绛変簬 length 琛ㄧず姝ｅ湪鎵撳寘锛?1 琛ㄧず涓嬭浇瀹屾垚 */
+		/** undefined 表示未开始下载，等于 length 表示正在打包，-1 表示下载完成 */
 		completedNum: void 0,
 		errorNum: 0,
 		rawTitle: document.title,
@@ -7163,10 +7287,10 @@ const DownloadButton = () => {
 		switch (num) {
 			case void 0: return;
 			case state.length:
-				showTip = "馃摝";
+				showTip = "📦";
 				break;
 			case -1:
-				showTip = state.errorNum > 0 ? \`鉂梉\${state.errorNum}]\` : "鉁?;
+				showTip = state.errorNum > 0 ? \`❗[\${state.errorNum}]\` : "✅";
 				break;
 			default: showTip = \`\${num}/\${state.length}\`;
 		}
@@ -7221,7 +7345,7 @@ var refresh_default = (props = {}) => (() => {
 })();
 //#endregion
 //#region src/components/Manga/components/SettingHotkeys.tsx
-var _tmpl$$9 = /* @__PURE__ */ solid_js_web.template(\`<div tabindex=0>\`), _tmpl$2$3 = /* @__PURE__ */ solid_js_web.template(\`<div><div><p></p><span style=flex-grow:1></span><div></div><div>\`), _tmpl$3$2 = /* @__PURE__ */ solid_js_web.template(\`<div><select style=height:100%><option value disabled hidden selected> 鈥`), _tmpl$4 = /* @__PURE__ */ solid_js_web.template(\`<option>\`);
+var _tmpl$$9 = /* @__PURE__ */ solid_js_web.template(\`<div tabindex=0>\`), _tmpl$2$3 = /* @__PURE__ */ solid_js_web.template(\`<div><div><p></p><span style=flex-grow:1></span><div></div><div>\`), _tmpl$3$2 = /* @__PURE__ */ solid_js_web.template(\`<div><select style=height:100%><option value disabled hidden selected> …\`), _tmpl$4 = /* @__PURE__ */ solid_js_web.template(\`<option>\`);
 const setHotkeys = (...args) => {
 	setState(...["hotkeys", ...args]);
 	store.prop.onHotkeysChange?.(Object.fromEntries(Object.entries(store.hotkeys).filter(([name, keys]) => !helper.isEqual(keys.filter(Boolean), defaultHotkeys()[name]))));
@@ -7369,7 +7493,7 @@ const SettingHotkeysBlock = () => {
 //#endregion
 //#region src/components/Manga/components/SettingsItemButton.tsx
 var _tmpl$$8 = /* @__PURE__ */ solid_js_web.template(\`<button type=button>\`);
-/** 鎸夐挳寮忚彍鍗曢」 */
+/** 按钮式菜单项 */
 const SettingsItemButton = (props) => {
 	const [, others] = solid_js.splitProps(props, ["children", "onClick"]);
 	return solid_js_web.createComponent(SettingsItem, solid_js_web.mergeProps(others, { get children() {
@@ -7383,7 +7507,7 @@ const SettingsItemButton = (props) => {
 //#endregion
 //#region src/components/Manga/components/SettingsShowItem.tsx
 var _tmpl$$7 = /* @__PURE__ */ solid_js_web.template(\`<div><div>\`);
-/** 甯︽湁鍔ㄧ敾杩囨浮鐨勫垏鎹㈡樉绀鸿缃」 */
+/** 带有动画过渡的切换显示设置项 */
 const SettingsShowItem = (props) => (() => {
 	var _el$ = _tmpl$$7(), _el$2 = _el$.firstChild;
 	solid_js_web.insert(_el$2, () => props.children);
@@ -7403,10 +7527,10 @@ const SettingsShowItem = (props) => (() => {
 //#endregion
 //#region src/components/RangeInput.tsx
 var _tmpl$$6 = /* @__PURE__ */ solid_js_web.template(\`<textarea autocomplete=off rows=2>\`);
-/** 鑼冨洿杈撳叆妗?*/
+/** 范围输入框 */
 const RangeInput = (props) => {
 	let ref;
-	/** 鍦ㄤ繚鎸佸厜鏍囦綅缃笉鍙樼殑鎯呭喌涓嬩慨鏀规枃鏈?*/
+	/** 在保持光标位置不变的情况下修改文本 */
 	const editText = (text) => {
 		const offset = ref.selectionStart;
 		ref.value = text;
@@ -7415,7 +7539,7 @@ const RangeInput = (props) => {
 			ref.selectionEnd = offset;
 		});
 	};
-	/** 淇敼鏂囨湰涓殑鏁板瓧 */
+	/** 修改文本中的数字 */
 	const replaceTextNumer = (text, offset, fn) => {
 		const isNumber = (num) => /\\d/.test(text[num]);
 		let start = offset;
@@ -7559,7 +7683,7 @@ const SettingTranslation = () => [solid_js_web.createComponent(SettingsItemSwitc
 //#region src/components/Manga/defaultSettingList.tsx
 var _tmpl$$4 = /* @__PURE__ */ solid_js_web.template(\`<input type=color style=width:2em;margin-right:.4em>\`), _tmpl$2$2 = /* @__PURE__ */ solid_js_web.template(\`<input type=url>\`), _tmpl$3$1 = /* @__PURE__ */ solid_js_web.template(\`<blockquote><p>\`);
 const tt$1 = (key, fallback) => helper.t(key) || fallback;
-/** 榛樿鑿滃崟椤?*/
+/** 默认菜单项 */
 const defaultSettingList = () => [
 	[
 		helper.t("setting.option.paragraph_dir"),
@@ -7777,9 +7901,9 @@ const defaultSettingList = () => [
 				return helper.t("setting.language");
 			},
 			options: [
-				["zh", "涓枃"],
+				["zh", "中文"],
 				["en", "English"],
-				["ru", "袪褍褋褋泻懈泄"]
+				["ru", "Русский"]
 			],
 			get value() {
 				return helper.lang();
@@ -7889,24 +8013,51 @@ const defaultSettingList = () => [
 			return helper.t("setting.option.auto_scroll_trigger_end");
 		} }, () => bindOption("autoScroll", "triggerEnd")))
 	]],
-	[tt$1("reline_upscale.title", "Reline Upscale"), () => [solid_js_web.createComponent(SettingsItemSwitch, solid_js_web.mergeProps({ get name() {
-		return helper.t("other.enabled");
-	} }, () => bindOption("relineUpscale", "enabled"))), solid_js_web.createComponent(SettingsItem, {
-		get name() {
-			return tt$1("reline_upscale.server_url", "Reline service URL");
-		},
-		get children() {
-			var _el$2 = _tmpl$2$2();
-			_el$2.addEventListener("change", (e) => {
-				setOption((draftOption) => {
-					const url = e.target.value.trim().replace(/\\/$/, "");
-					draftOption.relineUpscale.serverUrl = url || "http://127.0.0.1:5678";
+	[tt$1("reline_upscale.title", "Reline Upscale"), () => [
+		solid_js_web.createComponent(SettingsItemSwitch, solid_js_web.mergeProps({ get name() {
+			return helper.t("other.enabled");
+		} }, () => bindOption("relineUpscale", "enabled"))),
+		solid_js_web.createComponent(SettingsItem, {
+			get name() {
+				return tt$1("reline_upscale.server_url", "Reline service URL");
+			},
+			get children() {
+				var _el$2 = _tmpl$2$2();
+				_el$2.addEventListener("change", (e) => {
+					setOption((draftOption) => {
+						const url = e.target.value.trim().replace(/\\/$/, "");
+						draftOption.relineUpscale.serverUrl = url || "http://127.0.0.1:5678";
+					});
 				});
-			});
-			solid_js_web.effect(() => _el$2.value = store.option.relineUpscale.serverUrl);
-			return _el$2;
-		}
-	})]],
+				solid_js_web.effect(() => _el$2.value = store.option.relineUpscale.serverUrl);
+				return _el$2;
+			}
+		}),
+		solid_js_web.createComponent(SettingsItemSelect, {
+			get name() {
+				return tt$1("reline_upscale.preload_range", "Preload range");
+			},
+			get value() {
+				return String(store.option.relineUpscale.preloadRange);
+			},
+			get options() {
+				return [
+					["0", tt$1("reline_upscale.preload_current", "Current page only")],
+					["5", tt$1("reline_upscale.preload_5", "Around 5 pages")],
+					["10", tt$1("reline_upscale.preload_10", "Around 10 pages")],
+					["-1", tt$1("reline_upscale.preload_all", "Whole chapter")]
+				];
+			},
+			onChange: (val) => {
+				setOption((draftOption) => {
+					draftOption.relineUpscale.preloadRange = Number(val);
+				});
+			}
+		}),
+		solid_js_web.createComponent(SettingsItemSwitch, solid_js_web.mergeProps({ get name() {
+			return tt$1("reline_upscale.preload_previous", "Preload previous pages");
+		} }, () => bindOption("relineUpscale", "preloadPrevious")))
+	]],
 	[helper.t("setting.option.img_recognition"), () => [
 		solid_js_web.createComponent(SettingsItemSwitch, {
 			get name() {
@@ -8047,7 +8198,7 @@ const SettingBlockSubtitle = (props) => (() => {
 	solid_js_web.effect(() => solid_js_web.className(_el$, classes$1.SettingBlockSubtitle));
 	return _el$;
 })();
-/** 鑿滃崟闈㈡澘 */
+/** 菜单面板 */
 const SettingPanel = () => (() => {
 	var _el$2 = _tmpl$$3();
 	solid_js_web.addEventListener(_el$2, "click", stopPropagation);
@@ -8073,7 +8224,7 @@ const SettingPanel = () => (() => {
 						solid_js_web.insert(_el$3, solid_js_web.createComponent(SettingBlockSubtitle, {
 							onClick: () => setShwo((prev) => !prev),
 							get children() {
-								return [name, solid_js_web.memo(() => show() ? null : "鈥?)];
+								return [name, solid_js_web.memo(() => show() ? null : "…")];
 							}
 						}), _el$4);
 						solid_js_web.insert(_el$4, solid_js_web.createComponent(SettingItem, {}));
@@ -8131,7 +8282,7 @@ const ZoomButton = () => solid_js_web.createComponent(IconButton$1, {
 	}
 });
 const tt = (key, fallback) => helper.t(key) || fallback;
-/** 宸ュ叿鏍忕殑榛樿鎸夐挳鍒楄〃 */
+/** 工具栏的默认按钮列表 */
 const defaultButtonList = [
 	() => solid_js_web.createComponent(IconButton$1, {
 		get tip() {
@@ -8359,7 +8510,7 @@ const defaultButtonList = [
 //#endregion
 //#region src/components/Manga/components/Toolbar.tsx
 var _tmpl$$1 = /* @__PURE__ */ solid_js_web.template(\`<div role=toolbar><div><div>\`);
-/** 宸︿晶宸ュ叿鏍?*/
+/** 左侧工具栏 */
 const Toolbar = () => {
 	helper.createEffectOn(() => store.show.toolbar, (show) => show || focus());
 	return (() => {
@@ -8393,7 +8544,7 @@ const Toolbar = () => {
 };
 //#endregion
 //#region src/components/Manga/hooks/useCssVar.ts
-/** 娣辫壊妯″紡 */
+/** 深色模式 */
 const darkStyle = {
 	"--hover-bg-color": "#FFF3",
 	"--hover-bg-color-enable": "#FFFa",
@@ -8407,7 +8558,7 @@ const darkStyle = {
 	"--text-bg": "#121212",
 	"color-scheme": "dark"
 };
-/** 娴呰壊妯″紡 */
+/** 浅色模式 */
 const lightStyle = {
 	"--hover-bg-color": "#0001",
 	"--hover-bg-color-enable": "#0009",
@@ -8539,9 +8690,9 @@ const useInit = (props) => {
 				if (!imgItem.blobUrl && url.startsWith("blob:")) imgItem.blobUrl = imgItem.src;
 				newImgMap[url] = imgItem;
 			}
-			/** 淇敼鍓嶇殑褰撳墠鏄剧ず鍥剧墖 */
+			/** 修改前的当前显示图片 */
 			const oldActiveImg = state.pageList[state.activePageIndex]?.map((i) => state.imgList?.[i]) ?? [];
-			/** 鏄惁闇€瑕侀噸缃〉闈㈠～鍏?*/
+			/** 是否需要重置页面填充 */
 			let needResetFillEffect = false;
 			const fillEffectList = Object.keys(state.fillEffect).map(Number);
 			for (const pageIndex of fillEffectList) {
@@ -8555,14 +8706,14 @@ const useInit = (props) => {
 				resumeReadProgress(state);
 				updateMitTranslators(true);
 			}
-			/** 琚垹闄ょ殑鍥剧墖 */
+			/** 被删除的图片 */
 			const deleteList = [...oldImgList].filter((url) => !newImgList.includes(url));
 			for (const url of deleteList) if (state.imgMap[url].blobUrl && state.imgMap[url].blobUrl !== url) URL.revokeObjectURL(state.imgMap[url].blobUrl);
-			/** 鍒犻櫎鍥剧墖鏁?*/
+			/** 删除图片数 */
 			const deleteNum = deleteList.length;
-			/** 浼犲叆鐨勬槸鍚︽槸鏂版极鐢?*/
+			/** 传入的是否是新漫画 */
 			const isNew = deleteNum >= oldImgList.size * .8;
-			/** 鏄惁闇€瑕佹洿鏂伴〉闈?*/
+			/** 是否需要更新页面 */
 			const needUpdatePageData = needResetFillEffect || state.imgList.length !== newImgList.length || deleteNum > 0;
 			state.imgMap = newImgMap;
 			state.imgList = [...newImgList];
@@ -8611,12 +8762,12 @@ const useInit = (props) => {
 };
 //#endregion
 //#region src/components/Manga/index.module.css?inline
-var index_module_default = ".img___7ajV4 img {\\r\\n  display: block;\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n  object-fit: contain;\\r\\n}\\r\\n\\r\\n.img___7ajV4 {\\r\\n  content-visibility: hidden;\\r\\n\\r\\n  position: relative;\\r\\n\\r\\n  display: none;\\r\\n  align-content: center;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n  margin-right: auto;\\r\\n  margin-left: auto;\\n}\\r\\n\\r\\n.img___7ajV4[data-show] {\\r\\n    content-visibility: visible;\\r\\n    display: block;\\r\\n  }\\r\\n\\r\\n.img___7ajV4 > picture {\\r\\n    position: absolute;\\r\\n    inset: 0;\\r\\n\\r\\n    display: block;\\r\\n\\r\\n    width: auto;\\r\\n    max-width: 100%;\\r\\n    height: auto;\\r\\n    max-height: 100%;\\r\\n    margin-top: auto;\\r\\n    margin-right: inherit;\\r\\n    margin-bottom: auto;\\r\\n    margin-left: inherit;\\r\\n  }\\r\\n\\r\\n.img___7ajV4 > picture,.img___7ajV4 > picture::after {\\r\\n    background-color: var(--hover-bg-color, #fff3);\\r\\n    background-image: var(--md-photo);\\r\\n    background-repeat: no-repeat;\\r\\n    background-position: center;\\r\\n    background-size: 30%;\\r\\n  }\\r\\n\\r\\n/* 閬綇榛樿鐨勫嚭閿欏浘鐗囨爣璇?*/\\r\\n\\r\\n.img___7ajV4[data-load-type='error'] > picture::after {\\r\\n    pointer-events: none;\\r\\n    content: '';\\r\\n\\r\\n    position: absolute;\\r\\n    top: 0;\\r\\n    right: 0;\\r\\n\\r\\n    width: 100%;\\r\\n    height: 100%;\\r\\n\\r\\n    background-color: #eee;\\r\\n    background-image: var(--md-image-not-supported);\\r\\n  }\\r\\n\\r\\n.img___7ajV4[data-load-type='loading'] > picture {\\r\\n    background-image: var(--md-cloud-download);\\r\\n\\r\\n    /* 鍔犺浇涓殑鍥剧墖鍏堥殣钘忎竴涓嬶紝閬垮厤鍑洪敊鍥剧墖鐨勫厓绱犺鐩存帴鏄剧ず鍑烘潵 */\\r\\n  }\\r\\n\\r\\n:is(.img___7ajV4[data-load-type='loading'] > picture) img {\\r\\n      animation: show___HzwUa 100ms forwards;\\r\\n    }\\r\\n\\r\\n.img___7ajV4[data-load-type='error'] > picture {\\n    cursor: pointer;\\n  }\\r\\n\\r\\n.img___7ajV4[data-reline-upscale-type='wait']::after,.img___7ajV4[data-reline-upscale-type='processing']::after,.img___7ajV4[data-reline-upscale-type='error']::after {\\n    pointer-events: none;\\n    content: attr(data-reline-upscale-message);\\n\\n    position: absolute;\\n    right: 0.5em;\\n    bottom: 0.5em;\\n\\n    padding: 0.25em 0.5em;\\n    border-radius: 0.25em;\\n\\n    color: #fff;\\n    font-size: 0.8em;\\n\\n    background: #0009;\\n  }\\r\\n\\r\\n.img___7ajV4[data-reline-upscale-type='error']::after {\\n    background: #b00020cc;\\n  }\\r\\n\\r\\n.mangaFlow___jMZgq[dir='ltr'] .img___7ajV4[data-show='1'],\\r\\n.mangaFlow___jMZgq[dir='rtl'] .img___7ajV4[data-show='0'] {\\r\\n  margin-right: auto;\\r\\n  margin-left: 0;\\r\\n}\\r\\n\\r\\n.mangaFlow___jMZgq[dir='ltr'] .img___7ajV4[data-show='0'],\\r\\n.mangaFlow___jMZgq[dir='rtl'] .img___7ajV4[data-show='1'] {\\r\\n  margin-right: 0;\\r\\n  margin-left: auto;\\r\\n}\\r\\n\\r\\n.mangaFlow___jMZgq {\\r\\n  touch-action: none;\\r\\n  will-change: left, top;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  transform-origin: 0 0;\\r\\n\\r\\n  contain: layout;\\r\\n  overflow: visible;\\r\\n  display: grid;\\r\\n  grid-auto-columns: 100%;\\r\\n  grid-auto-flow: column;\\r\\n  grid-auto-rows: 100%;\\r\\n  row-gap: 0;\\r\\n  place-items: center;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  color: var(--text);\\r\\n\\r\\n  backface-visibility: hidden;\\r\\n}\\r\\n\\r\\n.mangaFlow___jMZgq[data-disable-zoom] .img___7ajV4 > picture {\\r\\n    width: fit-content;\\r\\n    height: fit-content;\\r\\n  }\\r\\n\\r\\n.mangaFlow___jMZgq[data-hidden-mouse='true'] {\\r\\n    cursor: none;\\r\\n  }\\r\\n\\r\\n.mangaFlow___jMZgq[data-vertical] {\\r\\n    grid-auto-flow: row;\\r\\n  }\\r\\n\\r\\n.mangaBox___48Jek {\\r\\n  transform-origin: 0 0;\\r\\n\\r\\n  contain: layout style;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  transition-duration: 0ms;\\r\\n}\\r\\n\\r\\n.mangaBox___48Jek[data-animation='page'] .mangaFlow___jMZgq,.mangaBox___48Jek[data-animation='zoom'] {\\r\\n    transition-duration: 300ms;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2:not([data-grid-mode]) .mangaBox___48Jek {\\r\\n  /* 闅愯棌婊氬姩鏉′絾涓嶅奖鍝嶆粴鍔?*/\\r\\n  scrollbar-width: none;\\r\\n\\r\\n  /* 闅愯棌婊氬姩鏉′絾涓嶅奖鍝嶆粴鍔?*/\\r\\n}\\r\\n\\r\\n:is(.root___Hf5H2:not([data-grid-mode]) .mangaBox___48Jek)::-webkit-scrollbar {\\r\\n    display: none;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq {\\r\\n  overflow: auto;\\r\\n  grid-auto-columns: 1fr;\\r\\n  grid-auto-flow: row;\\r\\n  grid-auto-rows: max-content;\\r\\n  grid-template-rows: unset;\\r\\n  row-gap: 1.5em;\\r\\n  align-items: end;\\r\\n\\r\\n  box-sizing: border-box;\\r\\n}\\r\\n\\r\\n:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4 {\\r\\n    cursor: pointer;\\r\\n    margin-right: auto;\\r\\n    margin-left: auto;\\r\\n  }\\r\\n\\r\\n:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4) > picture {\\r\\n      position: relative;\\r\\n    }\\r\\n\\r\\n:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4) > .gridModeTip___DgsOa {\\r\\n      cursor: auto;\\r\\n\\r\\n      position: absolute;\\r\\n      bottom: -1.5em;\\r\\n\\r\\n      direction: ltr;\\r\\n      overflow: hidden;\\r\\n\\r\\n      width: 100%;\\r\\n\\r\\n      line-height: 1.5em;\\r\\n      text-align: center;\\r\\n      text-overflow: ellipsis;\\r\\n      white-space: nowrap;\\r\\n\\r\\n      opacity: 0.5;\\r\\n    }\\r\\n\\r\\n[data-load-type='error']:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4),[data-load-type='wait']:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4),[src='']:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4) {\\r\\n      height: 100%;\\r\\n    }\\r\\n\\r\\n.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek {\\r\\n  overflow: auto;\\r\\n}\\r\\n\\r\\n:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq {\\r\\n    touch-action: pan-y;\\r\\n    row-gap: calc(var(--scroll-mode-spacing) * 7px);\\r\\n    height: fit-content;\\r\\n  }\\r\\n\\r\\n[data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) {\\r\\n    touch-action: none;\\r\\n    overflow: hidden;\\r\\n  }\\r\\n\\r\\n[data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq {\\r\\n      column-gap: calc(var(--scroll-mode-spacing) * 7px);\\r\\n      align-items: start;\\r\\n      height: 100%;\\r\\n    }\\r\\n\\r\\n:is([data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq) .img___7ajV4 {\\r\\n        width: 100%;\\r\\n        height: auto;\\r\\n      }\\r\\n\\r\\n[data-show]:is(:is([data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq) .img___7ajV4) {\\r\\n          will-change: transform;\\r\\n        }\\r\\n\\r\\n:is(:is([data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq) .img___7ajV4) > picture {\\r\\n          position: relative;\\r\\n        }\\r\\n\\r\\n@keyframes show___HzwUa {\\r\\n  0% {\\r\\n    opacity: 0;\\r\\n  }\\r\\n\\r\\n  90% {\\r\\n    opacity: 0;\\r\\n  }\\r\\n\\r\\n  100% {\\r\\n    opacity: 1;\\r\\n  }\\r\\n}\\r\\n\\r\\n.endPage___iOZmk,\\r\\n.endPageBody___g-dz- {\\r\\n  z-index: 10;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n}\\r\\n\\r\\n.endPage___iOZmk {\\r\\n  pointer-events: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 0;\\r\\n  left: 0;\\r\\n\\r\\n  color: white;\\r\\n\\r\\n  opacity: 0;\\r\\n  background-color: #333d;\\r\\n\\r\\n  transition: opacity 500ms;\\r\\n}\\r\\n\\r\\n.endPage___iOZmk[data-show] {\\r\\n    pointer-events: all;\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n.endPage___iOZmk[data-type='start'] .tip___fyxqg {\\r\\n    transform: translateY(-10em);\\r\\n  }\\r\\n\\r\\n.endPage___iOZmk[data-type='end'] .tip___fyxqg {\\r\\n    transform: translateY(10em);\\r\\n  }\\r\\n\\r\\n.endPage___iOZmk .endPageBody___g-dz- {\\r\\n    transform: translate(0, var(--drag-y, 0));\\r\\n    transition: transform 200ms;\\r\\n  }\\r\\n\\r\\n:is(.endPage___iOZmk .endPageBody___g-dz-) button {\\r\\n      cursor: pointer;\\r\\n\\r\\n      transform-origin: center;\\r\\n\\r\\n      font-size: 1.2em;\\r\\n      color: inherit;\\r\\n\\r\\n      background-color: transparent;\\r\\n\\r\\n      animation: jello___wXBLg 0.3s forwards;\\r\\n    }\\r\\n\\r\\n[data-is-end]:is(:is(.endPage___iOZmk .endPageBody___g-dz-) button) {\\r\\n        margin: 2em;\\r\\n        font-size: 3em;\\r\\n      }\\r\\n\\r\\n:is(.endPage___iOZmk .endPageBody___g-dz-) .tip___fyxqg {\\r\\n      position: absolute;\\r\\n      margin: auto;\\r\\n    }\\r\\n\\r\\n.endPage___iOZmk[data-drag] .endPageBody___g-dz- {\\r\\n    transition: transform 00ms;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-mobile] .endPage___iOZmk > button {\\r\\n  width: 1em;\\r\\n}\\r\\n\\r\\n.comments___9ITQv {\\r\\n  position: absolute;\\r\\n  right: 1em;\\r\\n\\r\\n  overflow: auto;\\r\\n  display: flex;\\r\\n  flex-direction: column;\\r\\n  align-items: flex-end;\\r\\n\\r\\n  width: 20em;\\r\\n  max-height: 80%;\\r\\n  padding-right: 0.5em;\\r\\n\\r\\n  opacity: 0.3;\\r\\n}\\r\\n\\r\\n.comments___9ITQv > p {\\r\\n    margin: 0.5em 0.1em;\\r\\n    padding: 0.2em 0.5em;\\r\\n    border-radius: 0.5em;\\r\\n    background-color: #333b;\\r\\n  }\\r\\n\\r\\n.comments___9ITQv:hover {\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-mobile] .comments___9ITQv {\\r\\n  bottom: 0;\\r\\n  max-height: 15em;\\r\\n  opacity: 0.8;\\r\\n}\\r\\n\\r\\n@keyframes jello___wXBLg {\\r\\n  0%,\\r\\n  11.1%,\\r\\n  100% {\\r\\n    transform: translate3d(0, 0, 0);\\r\\n  }\\r\\n\\r\\n  22.2% {\\r\\n    transform: skewX(-12.5deg) skewY(-12.5deg);\\r\\n  }\\r\\n\\r\\n  33.3% {\\r\\n    transform: skewX(6.25deg) skewY(6.25deg);\\r\\n  }\\r\\n\\r\\n  44.4% {\\r\\n    transform: skewX(-3.125deg) skewY(-3.125deg);\\r\\n  }\\r\\n\\r\\n  55.5% {\\r\\n    transform: skewX(1.5625deg) skewY(1.5625deg);\\r\\n  }\\r\\n\\r\\n  66.6% {\\r\\n    transform: skewX(-0.7812deg) skewY(-0.7812deg);\\r\\n  }\\r\\n\\r\\n  77.7% {\\r\\n    transform: skewX(0.3906deg) skewY(0.3906deg);\\r\\n  }\\r\\n\\r\\n  88.8% {\\r\\n    transform: skewX(-0.1953deg) skewY(-0.1953deg);\\r\\n  }\\r\\n}\\r\\n\\r\\n.toolbar___RMjHL {\\r\\n  position: fixed;\\r\\n  z-index: 9;\\r\\n  top: 0;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: flex-start;\\r\\n\\r\\n  height: 100%;\\r\\n}\\r\\n\\r\\n/* 宸ュ叿鏍忛潰鏉?*/\\r\\n\\r\\n.toolbarPanel___XYjgc {\\r\\n  position: relative;\\r\\n  transform: translateX(-100%);\\r\\n\\r\\n  display: flex;\\r\\n  flex-direction: column;\\r\\n\\r\\n  padding: 0.5em;\\r\\n\\r\\n  transition: transform 200ms;\\r\\n}\\r\\n\\r\\n.toolbarPanel___XYjgc > hr {\\r\\n    height: 1em;\\r\\n    margin: 0;\\r\\n    border: none;\\r\\n    visibility: hidden;\\r\\n  }\\r\\n\\r\\n:is(.toolbar___RMjHL[data-show], .toolbar___RMjHL:hover) .toolbarPanel___XYjgc {\\r\\n  transform: none;\\r\\n}\\r\\n\\r\\n.toolbar___RMjHL[data-close] .toolbarPanel___XYjgc {\\r\\n  transform: translateX(-100%);\\r\\n  visibility: hidden;\\r\\n}\\r\\n\\r\\n.toolbarBg___i4oTA {\\r\\n  position: absolute;\\r\\n  top: 0;\\r\\n  right: 0;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n  border-top-right-radius: 1em;\\r\\n  border-bottom-right-radius: 1em;\\r\\n\\r\\n  background-color: var(--page-bg);\\r\\n  filter: opacity(0.8);\\r\\n}\\r\\n\\r\\n/* 绉诲姩绔紭鍖?*/\\r\\n\\r\\n/* 璋冨ぇ鏍峰紡 */\\r\\n\\r\\n.root___Hf5H2[data-mobile] .toolbar___RMjHL {\\r\\n    font-size: 1.3em;\\r\\n  }\\r\\n\\r\\n/* 鍙兘閫氳繃鐐瑰嚮涓績鏉ュ敜鍑哄伐鍏锋爮锛岄槻姝㈣瑙?*/\\r\\n\\r\\n.root___Hf5H2[data-mobile] .toolbar___RMjHL:not([data-show]) {\\r\\n    pointer-events: none;\\r\\n  }\\r\\n\\r\\n/* 鍑忓皯鑳屾櫙鐨勯€忔槑搴︼紝鏂逛究杈ㄨ瘑 */\\r\\n\\r\\n.root___Hf5H2[data-mobile] .toolbarBg___i4oTA {\\r\\n    filter: opacity(0.8);\\r\\n  }\\r\\n\\r\\n/* 璁剧疆闈㈡澘鎵€鍦ㄧ殑鎮诞妗嗘牱寮?*/\\r\\n\\r\\n.SettingPanelPopper___uEBz3 {\\r\\n  pointer-events: unset !important;\\r\\n  transform: none !important;\\r\\n  height: 0 !important;\\r\\n  padding: 0 !important;\\r\\n}\\r\\n\\r\\n.SettingPanel___ZRvFB {\\r\\n  -webkit-user-select: text;\\r\\n          user-select: text;\\r\\n\\r\\n  position: fixed;\\r\\n  z-index: 1;\\r\\n  top: 0;\\r\\n  bottom: 0;\\r\\n\\r\\n  overflow: auto;\\r\\n\\r\\n  max-width: calc(100% - 5em);\\r\\n  height: fit-content;\\r\\n  max-height: 95%;\\r\\n  margin: auto;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 1.2em;\\r\\n  color: var(--text);\\r\\n\\r\\n  background-color: var(--page-bg);\\r\\n  box-shadow:\\r\\n    rgb(0 0 0 / 20%) 0 3px 1px -2px,\\r\\n    rgb(0 0 0 / 14%) 0 2px 2px 0,\\r\\n    rgb(0 0 0 / 12%) 0 1px 5px 0;\\r\\n}\\r\\n\\r\\n.SettingPanel___ZRvFB hr {\\r\\n    margin: 0.5em 0;\\r\\n    color: white;\\r\\n  }\\r\\n\\r\\n.SettingPanel___ZRvFB > hr {\\r\\n    margin: 0;\\r\\n  }\\r\\n\\r\\n.SettingBlock___qxNyt {\\r\\n  display: grid;\\r\\n  grid-template-rows: max-content 1fr;\\r\\n  transition: grid-template-rows 200ms ease-out;\\r\\n}\\r\\n\\r\\n.SettingBlock___qxNyt .SettingBlockBody___Wirnd {\\r\\n    z-index: 0;\\r\\n    overflow: hidden;\\r\\n    padding: 0 0.5em;\\r\\n    padding-bottom: 1em;\\r\\n  }\\r\\n\\r\\n:is(.SettingBlock___qxNyt .SettingBlockBody___Wirnd) > div + :is(.SettingBlock___qxNyt .SettingBlockBody___Wirnd) > div {\\r\\n      margin-top: 1em;\\r\\n    }\\r\\n\\r\\n:is(.SettingBlock___qxNyt .SettingBlockBody___Wirnd) input,:is(.SettingBlock___qxNyt .SettingBlockBody___Wirnd) textarea {\\r\\n      width: 97%;\\r\\n      margin-top: 0.3em;\\r\\n    }\\r\\n\\r\\n.SettingBlock___qxNyt[data-show='false'] {\\r\\n    grid-template-rows: max-content 0fr;\\r\\n    padding-bottom: unset;\\r\\n  }\\r\\n\\r\\n.SettingBlock___qxNyt[data-show='false'] .SettingBlockBody___Wirnd {\\r\\n      padding: unset;\\r\\n    }\\r\\n\\r\\n.SettingBlockSubtitle___cv0Ji {\\r\\n  cursor: pointer;\\r\\n\\r\\n  position: sticky;\\r\\n  z-index: 1;\\r\\n  top: 0;\\r\\n\\r\\n  height: 3em;\\r\\n  margin-bottom: 0.1em;\\r\\n\\r\\n  font-size: 0.7em;\\r\\n  line-height: 3em;\\r\\n  color: var(--text-secondary);\\r\\n  text-align: center;\\r\\n\\r\\n  background-color: var(--page-bg);\\r\\n}\\r\\n\\r\\n.SettingBlockBody___Wirnd .SettingBlockSubtitle___cv0Ji {\\r\\n  position: unset;\\r\\n  height: 1em;\\r\\n  line-height: 1em;\\r\\n}\\r\\n\\r\\n.SettingsItem___aJhRD {\\r\\n  position: relative;\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: space-between;\\r\\n}\\r\\n\\r\\n:is(.SettingsItem___aJhRD,.SettingsShowItem___l-D2E) + .SettingsItem___aJhRD {\\r\\n    margin-top: 1em;\\r\\n  }\\r\\n\\r\\n.SettingsItem___aJhRD[data-disabled] {\\r\\n    opacity: 0.5;\\r\\n  }\\r\\n\\r\\n.SettingsItem___aJhRD[data-disabled] button {\\r\\n      cursor: not-allowed;\\r\\n    }\\r\\n\\r\\n.SettingsItemName___UP6zJ {\\r\\n  max-width: calc(100% - 4em);\\r\\n\\r\\n  font-size: 0.9em;\\r\\n  text-align: start;\\r\\n  overflow-wrap: anywhere;\\r\\n  white-space: pre-wrap;\\r\\n}\\r\\n\\r\\n/* 寮€鍏冲紡璁剧疆椤?*/\\r\\n\\r\\n.SettingsItemSwitch___LVGr9 {\\r\\n  cursor: pointer;\\r\\n\\r\\n  display: inline-flex;\\r\\n  align-items: center;\\r\\n\\r\\n  width: 2.3em;\\r\\n  height: 0.8em;\\r\\n  margin: 0.3em;\\r\\n  padding: 0;\\r\\n  border: 0;\\r\\n  border-radius: 1em;\\r\\n\\r\\n  background-color: var(--switch-bg);\\r\\n}\\r\\n\\r\\n/* 寮€鍏抽噷鐨勫渾褰㈡寜閽?*/\\r\\n\\r\\n.SettingsItemSwitchRound___Ds0B8 {\\r\\n  transform: translateX(-10%);\\r\\n\\r\\n  width: 1.15em;\\r\\n  height: 1.15em;\\r\\n  border-radius: 100%;\\r\\n\\r\\n  background: var(--switch);\\r\\n  box-shadow:\\r\\n    0 2px 1px -1px rgb(0 0 0 / 20%),\\r\\n    0 1px 1px 0 rgb(0 0 0 / 14%),\\r\\n    0 1px 3px 0 rgb(0 0 0 / 12%);\\r\\n\\r\\n  transition: transform 100ms;\\r\\n}\\r\\n\\r\\n.SettingsItemSwitch___LVGr9[data-checked='true'] {\\r\\n  background: var(--secondary-bg);\\r\\n}\\r\\n\\r\\n.SettingsItemSwitch___LVGr9[data-checked='true'] .SettingsItemSwitchRound___Ds0B8 {\\r\\n    transform: translateX(110%);\\r\\n    background: var(--secondary);\\r\\n  }\\r\\n\\r\\n/* 鍥炬爣鎸夐挳寮忚缃」 */\\r\\n\\r\\n.SettingsItemIconButton___Cs7BQ {\\r\\n  cursor: pointer;\\r\\n\\r\\n  position: absolute;\\r\\n  right: 0;\\r\\n\\r\\n  height: 1em;\\r\\n  border: none;\\r\\n\\r\\n  font-size: 1.5em;\\r\\n  color: var(--text);\\r\\n\\r\\n  background-color: transparent;\\r\\n}\\r\\n\\r\\n/* 閫夋嫨鍣ㄨ缃」 */\\r\\n\\r\\n.SettingsItemSelect___CvFKx {\\r\\n  cursor: pointer;\\r\\n\\r\\n  max-width: 6.5em;\\r\\n  margin: 0;\\r\\n  padding: 0.3em;\\r\\n  border: none;\\r\\n  border-radius: 5px;\\r\\n\\r\\n  font-size: 0.9em;\\r\\n\\r\\n  background-color: var(--hover-bg-color);\\r\\n  outline: none;\\r\\n}\\r\\n\\r\\n/* 鍏抽棴璁剧疆寮圭獥鐨勯伄缃?*/\\r\\n\\r\\n.closeCover___qLIp5 {\\r\\n  position: fixed;\\r\\n  top: 0;\\r\\n  left: 0;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n}\\r\\n\\r\\n.SettingsShowItem___l-D2E {\\r\\n  display: grid;\\r\\n  transition: grid-template-rows 200ms ease-out;\\r\\n}\\r\\n\\r\\n.SettingsShowItem___l-D2E > .SettingsShowItemBody___bgxxq {\\r\\n    overflow: hidden;\\r\\n    display: flex;\\r\\n    flex-direction: column;\\r\\n  }\\r\\n\\r\\n:is(.SettingsShowItem___l-D2E > .SettingsShowItemBody___bgxxq) > .SettingsItem___aJhRD {\\r\\n      margin-top: 1em;\\r\\n    }\\r\\n\\r\\n:is(.SettingsShowItem___l-D2E > .SettingsShowItemBody___bgxxq) > :is(textarea,input) {\\r\\n      margin: 0.4em 0.2em 0;\\r\\n      line-height: 1.2;\\r\\n    }\\r\\n\\r\\n[data-only-number] {\\r\\n  padding: 0 0.2em;\\r\\n}\\r\\n\\r\\n[data-only-number] + span {\\r\\n    margin-left: -0.1em;\\r\\n  }\\r\\n\\r\\n.hotkeys___uu-Xe {\\r\\n  position: relative;\\r\\n  z-index: 1;\\r\\n\\r\\n  display: flex;\\r\\n  flex-grow: 1;\\r\\n  flex-wrap: wrap;\\r\\n  align-items: center;\\r\\n\\r\\n  padding: 0.2em;\\r\\n  padding-top: 2em;\\r\\n  border-bottom: 1px solid var(--secondary-bg);\\r\\n\\r\\n  font-size: 0.9em;\\r\\n  color: var(--text);\\r\\n}\\r\\n\\r\\n.hotkeys___uu-Xe + .hotkeys___uu-Xe {\\r\\n    margin-top: 0.5em;\\r\\n  }\\r\\n\\r\\n.hotkeys___uu-Xe:last-child {\\r\\n    border-bottom: none;\\r\\n  }\\r\\n\\r\\n.hotkeysItem___d9IKS {\\r\\n  cursor: pointer;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  box-sizing: content-box;\\r\\n  height: 1em;\\r\\n  margin: 0.3em;\\r\\n  padding: 0.2em 1.2em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-family: serif;\\r\\n\\r\\n  outline: 1px solid;\\r\\n  outline-color: var(--secondary-bg);\\r\\n}\\r\\n\\r\\n.hotkeysItem___d9IKS > svg {\\r\\n    display: none;\\r\\n\\r\\n    height: 1em;\\r\\n    margin-left: 0.4em;\\r\\n    border-radius: 1em;\\r\\n\\r\\n    color: var(--page-bg);\\r\\n\\r\\n    opacity: 0.5;\\r\\n    background-color: var(--text);\\r\\n  }\\r\\n\\r\\n:is(.hotkeysItem___d9IKS > svg):hover {\\r\\n      opacity: 0.9;\\r\\n    }\\r\\n\\r\\n.hotkeysItem___d9IKS:hover {\\r\\n    padding: 0.2em 0.5em;\\r\\n  }\\r\\n\\r\\n.hotkeysItem___d9IKS:hover > svg {\\r\\n      display: unset;\\r\\n    }\\r\\n\\r\\n.hotkeysItem___d9IKS:focus,.hotkeysItem___d9IKS:focus-visible {\\r\\n    outline: var(--text) solid 2px;\\r\\n  }\\r\\n\\r\\n.hotkeysHeader___jU7vr {\\r\\n  position: absolute;\\r\\n  top: 0;\\r\\n  left: 0;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  box-sizing: border-box;\\r\\n  width: 100%;\\r\\n  padding: 0 0.5em;\\r\\n}\\r\\n\\r\\n.hotkeysHeader___jU7vr > p {\\r\\n    line-height: 1em;\\r\\n    text-align: start;\\r\\n    overflow-wrap: anywhere;\\r\\n    white-space: pre-wrap;\\r\\n\\r\\n    background-color: var(--page-bg);\\r\\n  }\\r\\n\\r\\n.hotkeysHeader___jU7vr > div[title] {\\r\\n    cursor: pointer;\\r\\n\\r\\n    transform: scale(0);\\r\\n\\r\\n    display: flex;\\r\\n\\r\\n    background-color: var(--page-bg);\\r\\n\\r\\n    transition: transform 100ms;\\r\\n  }\\r\\n\\r\\n:is(.hotkeysHeader___jU7vr > div[title]) > svg {\\r\\n      width: 1.6em;\\r\\n    }\\r\\n\\r\\n.hotkeys___uu-Xe:hover div[title] {\\r\\n  transform: scale(1);\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV {\\r\\n  --arrow-y: clamp(\\r\\n    0.45em,\\r\\n    calc(var(--slider-midpoint)),\\r\\n    calc(var(--scroll-length) - 0.45em)\\r\\n  );\\r\\n\\r\\n  touch-action: none;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  z-index: 9;\\r\\n  top: 1%;\\r\\n  right: 3px;\\r\\n\\r\\n  display: flex;\\r\\n  flex-direction: column;\\r\\n\\r\\n  width: 5px;\\r\\n  height: 98%;\\r\\n\\r\\n  /* 鎵╁ぇ瑙﹀彂鑼冨洿 */\\r\\n  border-left: max(6vw, 1em) solid transparent;\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV > div {\\r\\n    pointer-events: none;\\r\\n\\r\\n    display: flex;\\r\\n    flex-direction: column;\\r\\n    flex-grow: 1;\\r\\n    align-items: center;\\r\\n    justify-content: center;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs {\\r\\n  transform-origin: bottom;\\r\\n  transform: scaleY(1);\\r\\n\\r\\n  flex-grow: 1;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  background-color: var(--secondary);\\r\\n\\r\\n  transition: transform 1s;\\r\\n}\\r\\n\\r\\n.scrollbarPage___qghUs[data-type='loaded'] {\\r\\n    transform: scaleY(0);\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-upscale] {\\r\\n    transform: scaleY(1);\\r\\n    background-color: #b39ddb;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-upscale='loading'] {\\r\\n    background-color: #d1c4e9;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-translation-type] {\\r\\n    transform-origin: top;\\r\\n    transform: scaleY(1);\\r\\n    background-color: transparent;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-translation-type='wait'] {\\r\\n    background-color: #81c784;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-translation-type='show'] {\\r\\n    background-color: #4caf50;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-translation-type='error'] {\\r\\n    background-color: #f005;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-type='wait'] {\\r\\n    opacity: 0.4;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-type='error'] {\\r\\n    background-color: #f005;\\r\\n  }\\r\\n\\r\\n/* 婊氬姩鏉℃粦鍧?*/\\r\\n\\r\\n.scrollbarSlider___r1fWf {\\r\\n  position: absolute;\\r\\n  z-index: 1;\\r\\n  transform: translateY(var(--slider-top));\\r\\n\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 100%;\\r\\n  height: var(--slider-height);\\r\\n  border-radius: 1em;\\r\\n\\r\\n  opacity: 1;\\r\\n  background-color: #fff5;\\r\\n\\r\\n  transition:\\r\\n    transform 150ms,\\r\\n    opacity 150ms;\\r\\n}\\r\\n\\r\\n/* 鎮诞妗?*/\\r\\n\\r\\n.scrollbarPoper___XK5Rk {\\r\\n  --poper-top: clamp(\\r\\n    0%,\\r\\n    calc(var(--slider-midpoint) - 50%),\\r\\n    calc(var(--scroll-length) - 100%)\\r\\n  );\\r\\n\\r\\n  position: absolute;\\r\\n  right: 2em;\\r\\n  transform: translateY(var(--poper-top));\\r\\n\\r\\n  width: fit-content;\\r\\n  min-width: 1em;\\r\\n  min-height: 1.5em;\\r\\n  padding: 0.2em 0.5em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 0.8em;\\r\\n  line-height: 1.5em;\\r\\n  color: white;\\r\\n  text-align: center;\\r\\n  white-space: pre;\\r\\n\\r\\n  background-color: #303030;\\r\\n}\\r\\n\\r\\n/* 鎮诞妗嗙澶?*/\\r\\n\\r\\n.scrollbar___hLToV::before {\\r\\n  content: '';\\r\\n\\r\\n  position: absolute;\\r\\n  right: 2em;\\r\\n  transform: translate(140%, calc(var(--arrow-y) - 50%));\\r\\n\\r\\n  border: 0.4em solid transparent;\\r\\n  border-left: 0.5em solid #303030;\\r\\n\\r\\n  background-color: transparent;\\r\\n}\\r\\n\\r\\n/*\\r\\n * 婊氬姩鏉￠儴浠剁殑鏄鹃殣\\r\\n */\\r\\n\\r\\n/* 鎮诞鎻愮ず榛樿闅愯棌 */\\r\\n\\r\\n.scrollbar___hLToV::before,\\r\\n.scrollbarPoper___XK5Rk {\\r\\n  opacity: 0;\\r\\n  transition:\\r\\n    opacity 150ms,\\r\\n    transform 150ms;\\r\\n}\\r\\n\\r\\n/* 鎺у埗婊氬姩鏉℃偓娴彁绀虹殑鏄剧ず */\\r\\n\\r\\n:is(.scrollbar___hLToV:hover,.scrollbar___hLToV[data-force-show]) .scrollbarPoper___XK5Rk,:is(.scrollbar___hLToV:hover,.scrollbar___hLToV[data-force-show]) .scrollbarSlider___r1fWf,:is(.scrollbar___hLToV:hover,.scrollbar___hLToV[data-force-show])::before {\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n/* 鎷栧姩婊氬姩鏉℃椂鍙栨秷绉诲姩杩囨浮鍔ㄧ敾锛岀‘淇濊窡鎵?*/\\r\\n\\r\\n.scrollbar___hLToV[data-drag]::before,.scrollbar___hLToV[data-drag] .scrollbarPoper___XK5Rk,.scrollbar___hLToV[data-drag] .scrollbarSlider___r1fWf {\\r\\n    transition: opacity 150ms;\\r\\n  }\\r\\n\\r\\n/* 瀹炵幇鑷姩闅愯棌 */\\r\\n\\r\\n.scrollbar___hLToV[data-auto-hidden]:not([data-force-show]) .scrollbarSlider___r1fWf {\\r\\n    opacity: 0;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-auto-hidden]:not([data-force-show]):hover .scrollbarSlider___r1fWf {\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n/*\\r\\n * 婊氬姩鏉′綅缃甛\r\\n */\\r\\n\\r\\n.scrollbar___hLToV[data-position='hidden'] {\\r\\n  display: none;\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV[data-position='top'] {\\r\\n  top: 1px;\\r\\n\\r\\n  /* 鎵╁ぇ瑙﹀彂鑼冨洿 */\\r\\n  border-bottom: max(6vh, 1em) solid transparent;\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV[data-position='top']::before {\\r\\n    top: 1.2em;\\r\\n    right: 0;\\r\\n    transform: translate(var(--arrow-x), -120%);\\r\\n    border-bottom: 0.5em solid #303030;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-position='top'] .scrollbarPoper___XK5Rk {\\r\\n    top: 1.2em;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-position='bottom'] {\\r\\n  top: unset;\\r\\n  bottom: 1px;\\r\\n\\r\\n  /* 鎵╁ぇ瑙﹀彂鑼冨洿 */\\r\\n  border-top: max(6vh, 1em) solid transparent;\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV[data-position='bottom']::before {\\r\\n    right: 0;\\r\\n    bottom: 1.2em;\\r\\n    transform: translate(var(--arrow-x), 120%);\\r\\n    border-top: 0.5em solid #303030;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-position='bottom'] .scrollbarPoper___XK5Rk {\\r\\n    bottom: 1.2em;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-position='top'],\\r\\n.scrollbar___hLToV[data-position='bottom'] {\\r\\n  --arrow-x: calc(var(--arrow-y) * -1 + 50%);\\r\\n\\r\\n  right: 1%;\\r\\n\\r\\n  flex-direction: row-reverse;\\r\\n\\r\\n  width: 98%;\\r\\n  height: 5px;\\r\\n  border-left: none;\\r\\n}\\r\\n\\r\\n:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom'])::before {\\r\\n    border-left: 0.4em solid transparent;\\r\\n  }\\r\\n\\r\\n/* stylelint-disable-next-line no-descending-specificity */\\r\\n\\r\\n:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarSlider___r1fWf {\\r\\n    transform: translateX(calc(var(--slider-top) * -1));\\r\\n    width: var(--slider-height);\\r\\n    height: 100%;\\r\\n  }\\r\\n\\r\\n:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPoper___XK5Rk {\\r\\n    right: unset;\\r\\n    transform: translateX(calc(var(--poper-top) * -1));\\r\\n    padding: 0.1em 0.3em;\\r\\n  }\\r\\n\\r\\n[data-dir='ltr']:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) {\\r\\n    --arrow-x: calc(var(--arrow-y) - 50%);\\r\\n\\r\\n    flex-direction: row;\\r\\n  }\\r\\n\\r\\n[data-dir='ltr']:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom'])::before {\\r\\n      right: unset;\\r\\n      left: 0;\\r\\n    }\\r\\n\\r\\n/* stylelint-disable-next-line no-descending-specificity */\\r\\n\\r\\n[data-dir='ltr']:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarSlider___r1fWf {\\r\\n      transform: translateX(var(--top));\\r\\n    }\\r\\n\\r\\n[data-dir='ltr']:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPoper___XK5Rk {\\r\\n      transform: translateX(var(--poper-top));\\r\\n    }\\r\\n\\r\\n/* 灏?scaleY 鏀规垚 scaleX */\\r\\n\\r\\n:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPage___qghUs {\\r\\n    transform: scaleX(1);\\r\\n  }\\r\\n\\r\\n[data-type='loaded']:is(:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPage___qghUs) {\\r\\n      transform: scaleX(0);\\r\\n    }\\r\\n\\r\\n[data-translation-type]:is(:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPage___qghUs) {\\r\\n      transform: scaleX(1);\\r\\n    }\\r\\n\\r\\n/* stylelint-disable-next-line no-descending-specificity */\\r\\n\\r\\n.scrollbar___hLToV[data-is-abreast-mode] .scrollbarPoper___XK5Rk {\\r\\n    writing-mode: vertical-rl;\\r\\n    line-height: 1.5em;\\r\\n    text-orientation: upright;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-is-abreast-mode][data-dir='ltr'] .scrollbarPoper___XK5Rk {\\r\\n    writing-mode: vertical-lr;\\r\\n  }\\r\\n\\r\\n/* 鍗疯酱妯″紡涓嬪彇娑堟粴鍔ㄦ潯鐨勪綅绉诲姩鐢?*/\\r\\n\\r\\n.root___Hf5H2[data-scroll-mode] .scrollbar___hLToV::before,\\r\\n.root___Hf5H2[data-scroll-mode] :is(.scrollbarSlider___r1fWf, .scrollbarPoper___XK5Rk) {\\r\\n  transition: opacity 150ms;\\r\\n}\\r\\n\\r\\n/* 绉诲姩绔笅绂佺敤鎮诞鏄剧ず */\\r\\n\\r\\n:is(.root___Hf5H2[data-mobile] .scrollbar___hLToV:hover)::before,:is(.root___Hf5H2[data-mobile] .scrollbar___hLToV:hover) .scrollbarPoper___XK5Rk {\\r\\n      opacity: 0;\\r\\n    }\\r\\n\\r\\n.touchAreaRoot___UN-W1 {\\r\\n  pointer-events: none;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 0;\\r\\n\\r\\n  display: grid;\\r\\n  grid-template-columns: 1fr min(30%, 10em) 1fr;\\r\\n  grid-template-rows: 1fr min(20%, 10em) 1fr;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  font-size: 3em;\\r\\n  color: white;\\r\\n  letter-spacing: 0.5em;\\r\\n\\r\\n  opacity: 0;\\r\\n\\r\\n  transition: opacity 400ms;\\r\\n}\\r\\n\\r\\n.touchAreaRoot___UN-W1[data-show] {\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n.touchAreaRoot___UN-W1 .touchArea___F6Hkh {\\r\\n    display: flex;\\r\\n    align-items: center;\\r\\n    justify-content: center;\\r\\n    text-align: center;\\r\\n  }\\r\\n\\r\\n[data-area='prev']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh),[data-area='PREV']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh) {\\r\\n      background-color: #95e1d3e6;\\r\\n    }\\r\\n\\r\\n[data-area='menu']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh),[data-area='MENU']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh) {\\r\\n      background-color: #fce38ae6;\\r\\n    }\\r\\n\\r\\n[data-area='next']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh),[data-area='NEXT']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh) {\\r\\n      background-color: #f38181e6;\\r\\n    }\\r\\n\\r\\n[data-area='PREV']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh)::after {\\r\\n      content: var(--i18n-touch-area-prev);\\r\\n    }\\r\\n\\r\\n[data-area='MENU']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh)::after {\\r\\n      content: var(--i18n-touch-area-menu);\\r\\n    }\\r\\n\\r\\n[data-area='NEXT']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh)::after {\\r\\n      content: var(--i18n-touch-area-next);\\r\\n    }\\r\\n\\r\\n.touchAreaRoot___UN-W1[data-vert='true'] {\\r\\n    flex-direction: column !important;\\r\\n  }\\r\\n\\r\\n.touchAreaRoot___UN-W1:not([data-turn-page]) .touchArea___F6Hkh[data-area='next'],.touchAreaRoot___UN-W1:not([data-turn-page]) .touchArea___F6Hkh[data-area='NEXT'],.touchAreaRoot___UN-W1:not([data-turn-page]) .touchArea___F6Hkh[data-area='prev'],.touchAreaRoot___UN-W1:not([data-turn-page]) .touchArea___F6Hkh[data-area='PREV'] {\\r\\n      visibility: hidden;\\r\\n    }\\r\\n\\r\\n.touchAreaRoot___UN-W1[data-shrink-menu] {\\r\\n    grid-template-columns: 1fr 2em 1fr;\\r\\n  }\\r\\n\\r\\n.touchAreaRoot___UN-W1[data-shrink-menu] .touchArea___F6Hkh[data-area='MENU'] {\\r\\n      letter-spacing: 0;\\r\\n    }\\r\\n\\r\\n.root___Hf5H2[data-mobile] .touchAreaRoot___UN-W1 {\\r\\n    flex-direction: column !important;\\r\\n    letter-spacing: 0;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-mobile] [data-area]::after {\\r\\n    font-size: 0.8em;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2 {\\r\\n  position: relative;\\r\\n\\r\\n  overflow: hidden;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  font-size: 1em;\\r\\n\\r\\n  background-color: var(--bg);\\r\\n  outline: 0;\\r\\n}\\r\\n\\r\\n.root___Hf5H2 a {\\r\\n    color: var(--text-secondary);\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-mobile] {\\r\\n    font-size: 0.8em;\\r\\n  }\\r\\n\\r\\n.hidden___rxU-6 {\\r\\n  display: none !important;\\r\\n}\\r\\n\\r\\n.invisible___cO-hs {\\r\\n  visibility: hidden !important;\\r\\n}\\r\\n\\r\\n.beautifyScrollbar___lb6kJ {\\r\\n  /* 鐏嫄鐨勬粴鍔ㄦ潯鏍峰紡 */\\r\\n  scrollbar-color: var(--scrollbar-slider) transparent;\\r\\n  scrollbar-width: thin;\\r\\n\\r\\n  /* chrome 鐨勬粴鍔ㄦ潯鏍峰紡 */\\r\\n}\\r\\n\\r\\n.beautifyScrollbar___lb6kJ::-webkit-scrollbar {\\r\\n    width: 5px;\\r\\n    height: 10px;\\r\\n  }\\r\\n\\r\\n.beautifyScrollbar___lb6kJ::-webkit-scrollbar-track {\\r\\n    background: transparent;\\r\\n  }\\r\\n\\r\\n.beautifyScrollbar___lb6kJ::-webkit-scrollbar-thumb {\\r\\n    background: var(--scrollbar-slider);\\r\\n  }\\r\\n\\r\\np,\\r\\nimg {\\r\\n  margin: 0;\\r\\n}\\r\\n\\r\\n:where(div, div:focus, div:focus-within, div:focus-visible, button) {\\r\\n  border: none;\\r\\n  outline: none;\\r\\n}\\r\\n\\r\\nblockquote {\\r\\n  margin: 0.5em 0;\\r\\n  padding: 0;\\r\\n  padding-left: 1em;\\r\\n  border-left: 0.25em solid var(--text-secondary, #607d8b);\\r\\n\\r\\n  font-size: 0.9em;\\r\\n  font-style: italic;\\r\\n  line-height: 1.2em;\\r\\n  color: var(--text-secondary);\\r\\n  text-align: start;\\r\\n  overflow-wrap: anywhere;\\r\\n  white-space: pre-wrap;\\r\\n}\\r\\n\\r\\nsvg {\\r\\n  width: 1em;\\r\\n}\\r\\n";
+var index_module_default = ".img___7ajV4 img {\\r\\n  display: block;\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n  object-fit: contain;\\r\\n}\\r\\n\\r\\n.img___7ajV4 {\\r\\n  content-visibility: hidden;\\r\\n\\r\\n  position: relative;\\r\\n\\r\\n  display: none;\\r\\n  align-content: center;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n  margin-right: auto;\\r\\n  margin-left: auto;\\n}\\r\\n\\r\\n.img___7ajV4[data-show] {\\r\\n    content-visibility: visible;\\r\\n    display: block;\\r\\n  }\\r\\n\\r\\n.img___7ajV4 > picture {\\r\\n    position: absolute;\\r\\n    inset: 0;\\r\\n\\r\\n    display: block;\\r\\n\\r\\n    width: auto;\\r\\n    max-width: 100%;\\r\\n    height: auto;\\r\\n    max-height: 100%;\\r\\n    margin-top: auto;\\r\\n    margin-right: inherit;\\r\\n    margin-bottom: auto;\\r\\n    margin-left: inherit;\\r\\n  }\\r\\n\\r\\n.img___7ajV4 > picture,.img___7ajV4 > picture::after {\\r\\n    background-color: var(--hover-bg-color, #fff3);\\r\\n    background-image: var(--md-photo);\\r\\n    background-repeat: no-repeat;\\r\\n    background-position: center;\\r\\n    background-size: 30%;\\r\\n  }\\r\\n\\r\\n/* 遮住默认的出错图片标识 */\\r\\n\\r\\n.img___7ajV4[data-load-type='error'] > picture::after {\\r\\n    pointer-events: none;\\r\\n    content: '';\\r\\n\\r\\n    position: absolute;\\r\\n    top: 0;\\r\\n    right: 0;\\r\\n\\r\\n    width: 100%;\\r\\n    height: 100%;\\r\\n\\r\\n    background-color: #eee;\\r\\n    background-image: var(--md-image-not-supported);\\r\\n  }\\r\\n\\r\\n.img___7ajV4[data-load-type='loading'] > picture {\\r\\n    background-image: var(--md-cloud-download);\\r\\n\\r\\n    /* 加载中的图片先隐藏一下，避免出错图片的元素被直接显示出来 */\\r\\n  }\\r\\n\\r\\n:is(.img___7ajV4[data-load-type='loading'] > picture) img {\\r\\n      animation: show___HzwUa 100ms forwards;\\r\\n    }\\r\\n\\r\\n.img___7ajV4[data-load-type='error'] > picture {\\n    cursor: pointer;\\n  }\\r\\n\\r\\n.img___7ajV4[data-reline-upscale-type='wait']::after,.img___7ajV4[data-reline-upscale-type='processing']::after,.img___7ajV4[data-reline-upscale-type='error']::after {\\n    pointer-events: none;\\n    content: attr(data-reline-upscale-message);\\n\\n    position: absolute;\\n    right: 0.5em;\\n    bottom: 0.5em;\\n\\n    padding: 0.25em 0.5em;\\n    border-radius: 0.25em;\\n\\n    color: #fff;\\n    font-size: 0.8em;\\n\\n    background: #0009;\\n  }\\r\\n\\r\\n.img___7ajV4[data-reline-upscale-type='error']::after {\\n    background: #b00020cc;\\n  }\\r\\n\\r\\n.mangaFlow___jMZgq[dir='ltr'] .img___7ajV4[data-show='1'],\\r\\n.mangaFlow___jMZgq[dir='rtl'] .img___7ajV4[data-show='0'] {\\r\\n  margin-right: auto;\\r\\n  margin-left: 0;\\r\\n}\\r\\n\\r\\n.mangaFlow___jMZgq[dir='ltr'] .img___7ajV4[data-show='0'],\\r\\n.mangaFlow___jMZgq[dir='rtl'] .img___7ajV4[data-show='1'] {\\r\\n  margin-right: 0;\\r\\n  margin-left: auto;\\r\\n}\\r\\n\\r\\n.mangaFlow___jMZgq {\\r\\n  touch-action: none;\\r\\n  will-change: left, top;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  transform-origin: 0 0;\\r\\n\\r\\n  contain: layout;\\r\\n  overflow: visible;\\r\\n  display: grid;\\r\\n  grid-auto-columns: 100%;\\r\\n  grid-auto-flow: column;\\r\\n  grid-auto-rows: 100%;\\r\\n  row-gap: 0;\\r\\n  place-items: center;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  color: var(--text);\\r\\n\\r\\n  backface-visibility: hidden;\\r\\n}\\r\\n\\r\\n.mangaFlow___jMZgq[data-disable-zoom] .img___7ajV4 > picture {\\r\\n    width: fit-content;\\r\\n    height: fit-content;\\r\\n  }\\r\\n\\r\\n.mangaFlow___jMZgq[data-hidden-mouse='true'] {\\r\\n    cursor: none;\\r\\n  }\\r\\n\\r\\n.mangaFlow___jMZgq[data-vertical] {\\r\\n    grid-auto-flow: row;\\r\\n  }\\r\\n\\r\\n.mangaBox___48Jek {\\r\\n  transform-origin: 0 0;\\r\\n\\r\\n  contain: layout style;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  transition-duration: 0ms;\\r\\n}\\r\\n\\r\\n.mangaBox___48Jek[data-animation='page'] .mangaFlow___jMZgq,.mangaBox___48Jek[data-animation='zoom'] {\\r\\n    transition-duration: 300ms;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2:not([data-grid-mode]) .mangaBox___48Jek {\\r\\n  /* 隐藏滚动条但不影响滚动 */\\r\\n  scrollbar-width: none;\\r\\n\\r\\n  /* 隐藏滚动条但不影响滚动 */\\r\\n}\\r\\n\\r\\n:is(.root___Hf5H2:not([data-grid-mode]) .mangaBox___48Jek)::-webkit-scrollbar {\\r\\n    display: none;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq {\\r\\n  overflow: auto;\\r\\n  grid-auto-columns: 1fr;\\r\\n  grid-auto-flow: row;\\r\\n  grid-auto-rows: max-content;\\r\\n  grid-template-rows: unset;\\r\\n  row-gap: 1.5em;\\r\\n  align-items: end;\\r\\n\\r\\n  box-sizing: border-box;\\r\\n}\\r\\n\\r\\n:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4 {\\r\\n    cursor: pointer;\\r\\n    margin-right: auto;\\r\\n    margin-left: auto;\\r\\n  }\\r\\n\\r\\n:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4) > picture {\\r\\n      position: relative;\\r\\n    }\\r\\n\\r\\n:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4) > .gridModeTip___DgsOa {\\r\\n      cursor: auto;\\r\\n\\r\\n      position: absolute;\\r\\n      bottom: -1.5em;\\r\\n\\r\\n      direction: ltr;\\r\\n      overflow: hidden;\\r\\n\\r\\n      width: 100%;\\r\\n\\r\\n      line-height: 1.5em;\\r\\n      text-align: center;\\r\\n      text-overflow: ellipsis;\\r\\n      white-space: nowrap;\\r\\n\\r\\n      opacity: 0.5;\\r\\n    }\\r\\n\\r\\n[data-load-type='error']:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4),[data-load-type='wait']:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4),[src='']:is(:is(.root___Hf5H2[data-grid-mode] .mangaFlow___jMZgq) .img___7ajV4) {\\r\\n      height: 100%;\\r\\n    }\\r\\n\\r\\n.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek {\\r\\n  overflow: auto;\\r\\n}\\r\\n\\r\\n:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq {\\r\\n    touch-action: pan-y;\\r\\n    row-gap: calc(var(--scroll-mode-spacing) * 7px);\\r\\n    height: fit-content;\\r\\n  }\\r\\n\\r\\n[data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) {\\r\\n    touch-action: none;\\r\\n    overflow: hidden;\\r\\n  }\\r\\n\\r\\n[data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq {\\r\\n      column-gap: calc(var(--scroll-mode-spacing) * 7px);\\r\\n      align-items: start;\\r\\n      height: 100%;\\r\\n    }\\r\\n\\r\\n:is([data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq) .img___7ajV4 {\\r\\n        width: 100%;\\r\\n        height: auto;\\r\\n      }\\r\\n\\r\\n[data-show]:is(:is([data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq) .img___7ajV4) {\\r\\n          will-change: transform;\\r\\n        }\\r\\n\\r\\n:is(:is([data-abreast-scroll]:is(.root___Hf5H2[data-scroll-mode]:not([data-grid-mode]) .mangaBox___48Jek) .mangaFlow___jMZgq) .img___7ajV4) > picture {\\r\\n          position: relative;\\r\\n        }\\r\\n\\r\\n@keyframes show___HzwUa {\\r\\n  0% {\\r\\n    opacity: 0;\\r\\n  }\\r\\n\\r\\n  90% {\\r\\n    opacity: 0;\\r\\n  }\\r\\n\\r\\n  100% {\\r\\n    opacity: 1;\\r\\n  }\\r\\n}\\r\\n\\r\\n.endPage___iOZmk,\\r\\n.endPageBody___g-dz- {\\r\\n  z-index: 10;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n}\\r\\n\\r\\n.endPage___iOZmk {\\r\\n  pointer-events: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 0;\\r\\n  left: 0;\\r\\n\\r\\n  color: white;\\r\\n\\r\\n  opacity: 0;\\r\\n  background-color: #333d;\\r\\n\\r\\n  transition: opacity 500ms;\\r\\n}\\r\\n\\r\\n.endPage___iOZmk[data-show] {\\r\\n    pointer-events: all;\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n.endPage___iOZmk[data-type='start'] .tip___fyxqg {\\r\\n    transform: translateY(-10em);\\r\\n  }\\r\\n\\r\\n.endPage___iOZmk[data-type='end'] .tip___fyxqg {\\r\\n    transform: translateY(10em);\\r\\n  }\\r\\n\\r\\n.endPage___iOZmk .endPageBody___g-dz- {\\r\\n    transform: translate(0, var(--drag-y, 0));\\r\\n    transition: transform 200ms;\\r\\n  }\\r\\n\\r\\n:is(.endPage___iOZmk .endPageBody___g-dz-) button {\\r\\n      cursor: pointer;\\r\\n\\r\\n      transform-origin: center;\\r\\n\\r\\n      font-size: 1.2em;\\r\\n      color: inherit;\\r\\n\\r\\n      background-color: transparent;\\r\\n\\r\\n      animation: jello___wXBLg 0.3s forwards;\\r\\n    }\\r\\n\\r\\n[data-is-end]:is(:is(.endPage___iOZmk .endPageBody___g-dz-) button) {\\r\\n        margin: 2em;\\r\\n        font-size: 3em;\\r\\n      }\\r\\n\\r\\n:is(.endPage___iOZmk .endPageBody___g-dz-) .tip___fyxqg {\\r\\n      position: absolute;\\r\\n      margin: auto;\\r\\n    }\\r\\n\\r\\n.endPage___iOZmk[data-drag] .endPageBody___g-dz- {\\r\\n    transition: transform 00ms;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-mobile] .endPage___iOZmk > button {\\r\\n  width: 1em;\\r\\n}\\r\\n\\r\\n.comments___9ITQv {\\r\\n  position: absolute;\\r\\n  right: 1em;\\r\\n\\r\\n  overflow: auto;\\r\\n  display: flex;\\r\\n  flex-direction: column;\\r\\n  align-items: flex-end;\\r\\n\\r\\n  width: 20em;\\r\\n  max-height: 80%;\\r\\n  padding-right: 0.5em;\\r\\n\\r\\n  opacity: 0.3;\\r\\n}\\r\\n\\r\\n.comments___9ITQv > p {\\r\\n    margin: 0.5em 0.1em;\\r\\n    padding: 0.2em 0.5em;\\r\\n    border-radius: 0.5em;\\r\\n    background-color: #333b;\\r\\n  }\\r\\n\\r\\n.comments___9ITQv:hover {\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-mobile] .comments___9ITQv {\\r\\n  bottom: 0;\\r\\n  max-height: 15em;\\r\\n  opacity: 0.8;\\r\\n}\\r\\n\\r\\n@keyframes jello___wXBLg {\\r\\n  0%,\\r\\n  11.1%,\\r\\n  100% {\\r\\n    transform: translate3d(0, 0, 0);\\r\\n  }\\r\\n\\r\\n  22.2% {\\r\\n    transform: skewX(-12.5deg) skewY(-12.5deg);\\r\\n  }\\r\\n\\r\\n  33.3% {\\r\\n    transform: skewX(6.25deg) skewY(6.25deg);\\r\\n  }\\r\\n\\r\\n  44.4% {\\r\\n    transform: skewX(-3.125deg) skewY(-3.125deg);\\r\\n  }\\r\\n\\r\\n  55.5% {\\r\\n    transform: skewX(1.5625deg) skewY(1.5625deg);\\r\\n  }\\r\\n\\r\\n  66.6% {\\r\\n    transform: skewX(-0.7812deg) skewY(-0.7812deg);\\r\\n  }\\r\\n\\r\\n  77.7% {\\r\\n    transform: skewX(0.3906deg) skewY(0.3906deg);\\r\\n  }\\r\\n\\r\\n  88.8% {\\r\\n    transform: skewX(-0.1953deg) skewY(-0.1953deg);\\r\\n  }\\r\\n}\\r\\n\\r\\n.toolbar___RMjHL {\\r\\n  position: fixed;\\r\\n  z-index: 9;\\r\\n  top: 0;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: flex-start;\\r\\n\\r\\n  height: 100%;\\r\\n}\\r\\n\\r\\n/* 工具栏面板 */\\r\\n\\r\\n.toolbarPanel___XYjgc {\\r\\n  position: relative;\\r\\n  transform: translateX(-100%);\\r\\n\\r\\n  display: flex;\\r\\n  flex-direction: column;\\r\\n\\r\\n  padding: 0.5em;\\r\\n\\r\\n  transition: transform 200ms;\\r\\n}\\r\\n\\r\\n.toolbarPanel___XYjgc > hr {\\r\\n    height: 1em;\\r\\n    margin: 0;\\r\\n    border: none;\\r\\n    visibility: hidden;\\r\\n  }\\r\\n\\r\\n:is(.toolbar___RMjHL[data-show], .toolbar___RMjHL:hover) .toolbarPanel___XYjgc {\\r\\n  transform: none;\\r\\n}\\r\\n\\r\\n.toolbar___RMjHL[data-close] .toolbarPanel___XYjgc {\\r\\n  transform: translateX(-100%);\\r\\n  visibility: hidden;\\r\\n}\\r\\n\\r\\n.toolbarBg___i4oTA {\\r\\n  position: absolute;\\r\\n  top: 0;\\r\\n  right: 0;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n  border-top-right-radius: 1em;\\r\\n  border-bottom-right-radius: 1em;\\r\\n\\r\\n  background-color: var(--page-bg);\\r\\n  filter: opacity(0.8);\\r\\n}\\r\\n\\r\\n/* 移动端优化 */\\r\\n\\r\\n/* 调大样式 */\\r\\n\\r\\n.root___Hf5H2[data-mobile] .toolbar___RMjHL {\\r\\n    font-size: 1.3em;\\r\\n  }\\r\\n\\r\\n/* 只能通过点击中心来唤出工具栏，防止误触 */\\r\\n\\r\\n.root___Hf5H2[data-mobile] .toolbar___RMjHL:not([data-show]) {\\r\\n    pointer-events: none;\\r\\n  }\\r\\n\\r\\n/* 减少背景的透明度，方便辨识 */\\r\\n\\r\\n.root___Hf5H2[data-mobile] .toolbarBg___i4oTA {\\r\\n    filter: opacity(0.8);\\r\\n  }\\r\\n\\r\\n/* 设置面板所在的悬浮框样式 */\\r\\n\\r\\n.SettingPanelPopper___uEBz3 {\\r\\n  pointer-events: unset !important;\\r\\n  transform: none !important;\\r\\n  height: 0 !important;\\r\\n  padding: 0 !important;\\r\\n}\\r\\n\\r\\n.SettingPanel___ZRvFB {\\r\\n  -webkit-user-select: text;\\r\\n          user-select: text;\\r\\n\\r\\n  position: fixed;\\r\\n  z-index: 1;\\r\\n  top: 0;\\r\\n  bottom: 0;\\r\\n\\r\\n  overflow: auto;\\r\\n\\r\\n  max-width: calc(100% - 5em);\\r\\n  height: fit-content;\\r\\n  max-height: 95%;\\r\\n  margin: auto;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 1.2em;\\r\\n  color: var(--text);\\r\\n\\r\\n  background-color: var(--page-bg);\\r\\n  box-shadow:\\r\\n    rgb(0 0 0 / 20%) 0 3px 1px -2px,\\r\\n    rgb(0 0 0 / 14%) 0 2px 2px 0,\\r\\n    rgb(0 0 0 / 12%) 0 1px 5px 0;\\r\\n}\\r\\n\\r\\n.SettingPanel___ZRvFB hr {\\r\\n    margin: 0.5em 0;\\r\\n    color: white;\\r\\n  }\\r\\n\\r\\n.SettingPanel___ZRvFB > hr {\\r\\n    margin: 0;\\r\\n  }\\r\\n\\r\\n.SettingBlock___qxNyt {\\r\\n  display: grid;\\r\\n  grid-template-rows: max-content 1fr;\\r\\n  transition: grid-template-rows 200ms ease-out;\\r\\n}\\r\\n\\r\\n.SettingBlock___qxNyt .SettingBlockBody___Wirnd {\\r\\n    z-index: 0;\\r\\n    overflow: hidden;\\r\\n    padding: 0 0.5em;\\r\\n    padding-bottom: 1em;\\r\\n  }\\r\\n\\r\\n:is(.SettingBlock___qxNyt .SettingBlockBody___Wirnd) > div + :is(.SettingBlock___qxNyt .SettingBlockBody___Wirnd) > div {\\r\\n      margin-top: 1em;\\r\\n    }\\r\\n\\r\\n:is(.SettingBlock___qxNyt .SettingBlockBody___Wirnd) input,:is(.SettingBlock___qxNyt .SettingBlockBody___Wirnd) textarea {\\r\\n      width: 97%;\\r\\n      margin-top: 0.3em;\\r\\n    }\\r\\n\\r\\n.SettingBlock___qxNyt[data-show='false'] {\\r\\n    grid-template-rows: max-content 0fr;\\r\\n    padding-bottom: unset;\\r\\n  }\\r\\n\\r\\n.SettingBlock___qxNyt[data-show='false'] .SettingBlockBody___Wirnd {\\r\\n      padding: unset;\\r\\n    }\\r\\n\\r\\n.SettingBlockSubtitle___cv0Ji {\\r\\n  cursor: pointer;\\r\\n\\r\\n  position: sticky;\\r\\n  z-index: 1;\\r\\n  top: 0;\\r\\n\\r\\n  height: 3em;\\r\\n  margin-bottom: 0.1em;\\r\\n\\r\\n  font-size: 0.7em;\\r\\n  line-height: 3em;\\r\\n  color: var(--text-secondary);\\r\\n  text-align: center;\\r\\n\\r\\n  background-color: var(--page-bg);\\r\\n}\\r\\n\\r\\n.SettingBlockBody___Wirnd .SettingBlockSubtitle___cv0Ji {\\r\\n  position: unset;\\r\\n  height: 1em;\\r\\n  line-height: 1em;\\r\\n}\\r\\n\\r\\n.SettingsItem___aJhRD {\\r\\n  position: relative;\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: space-between;\\r\\n}\\r\\n\\r\\n:is(.SettingsItem___aJhRD,.SettingsShowItem___l-D2E) + .SettingsItem___aJhRD {\\r\\n    margin-top: 1em;\\r\\n  }\\r\\n\\r\\n.SettingsItem___aJhRD[data-disabled] {\\r\\n    opacity: 0.5;\\r\\n  }\\r\\n\\r\\n.SettingsItem___aJhRD[data-disabled] button {\\r\\n      cursor: not-allowed;\\r\\n    }\\r\\n\\r\\n.SettingsItemName___UP6zJ {\\r\\n  max-width: calc(100% - 4em);\\r\\n\\r\\n  font-size: 0.9em;\\r\\n  text-align: start;\\r\\n  overflow-wrap: anywhere;\\r\\n  white-space: pre-wrap;\\r\\n}\\r\\n\\r\\n/* 开关式设置项 */\\r\\n\\r\\n.SettingsItemSwitch___LVGr9 {\\r\\n  cursor: pointer;\\r\\n\\r\\n  display: inline-flex;\\r\\n  align-items: center;\\r\\n\\r\\n  width: 2.3em;\\r\\n  height: 0.8em;\\r\\n  margin: 0.3em;\\r\\n  padding: 0;\\r\\n  border: 0;\\r\\n  border-radius: 1em;\\r\\n\\r\\n  background-color: var(--switch-bg);\\r\\n}\\r\\n\\r\\n/* 开关里的圆形按钮 */\\r\\n\\r\\n.SettingsItemSwitchRound___Ds0B8 {\\r\\n  transform: translateX(-10%);\\r\\n\\r\\n  width: 1.15em;\\r\\n  height: 1.15em;\\r\\n  border-radius: 100%;\\r\\n\\r\\n  background: var(--switch);\\r\\n  box-shadow:\\r\\n    0 2px 1px -1px rgb(0 0 0 / 20%),\\r\\n    0 1px 1px 0 rgb(0 0 0 / 14%),\\r\\n    0 1px 3px 0 rgb(0 0 0 / 12%);\\r\\n\\r\\n  transition: transform 100ms;\\r\\n}\\r\\n\\r\\n.SettingsItemSwitch___LVGr9[data-checked='true'] {\\r\\n  background: var(--secondary-bg);\\r\\n}\\r\\n\\r\\n.SettingsItemSwitch___LVGr9[data-checked='true'] .SettingsItemSwitchRound___Ds0B8 {\\r\\n    transform: translateX(110%);\\r\\n    background: var(--secondary);\\r\\n  }\\r\\n\\r\\n/* 图标按钮式设置项 */\\r\\n\\r\\n.SettingsItemIconButton___Cs7BQ {\\r\\n  cursor: pointer;\\r\\n\\r\\n  position: absolute;\\r\\n  right: 0;\\r\\n\\r\\n  height: 1em;\\r\\n  border: none;\\r\\n\\r\\n  font-size: 1.5em;\\r\\n  color: var(--text);\\r\\n\\r\\n  background-color: transparent;\\r\\n}\\r\\n\\r\\n/* 选择器设置项 */\\r\\n\\r\\n.SettingsItemSelect___CvFKx {\\r\\n  cursor: pointer;\\r\\n\\r\\n  max-width: 6.5em;\\r\\n  margin: 0;\\r\\n  padding: 0.3em;\\r\\n  border: none;\\r\\n  border-radius: 5px;\\r\\n\\r\\n  font-size: 0.9em;\\r\\n\\r\\n  background-color: var(--hover-bg-color);\\r\\n  outline: none;\\r\\n}\\r\\n\\r\\n/* 关闭设置弹窗的遮罩 */\\r\\n\\r\\n.closeCover___qLIp5 {\\r\\n  position: fixed;\\r\\n  top: 0;\\r\\n  left: 0;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n}\\r\\n\\r\\n.SettingsShowItem___l-D2E {\\r\\n  display: grid;\\r\\n  transition: grid-template-rows 200ms ease-out;\\r\\n}\\r\\n\\r\\n.SettingsShowItem___l-D2E > .SettingsShowItemBody___bgxxq {\\r\\n    overflow: hidden;\\r\\n    display: flex;\\r\\n    flex-direction: column;\\r\\n  }\\r\\n\\r\\n:is(.SettingsShowItem___l-D2E > .SettingsShowItemBody___bgxxq) > .SettingsItem___aJhRD {\\r\\n      margin-top: 1em;\\r\\n    }\\r\\n\\r\\n:is(.SettingsShowItem___l-D2E > .SettingsShowItemBody___bgxxq) > :is(textarea,input) {\\r\\n      margin: 0.4em 0.2em 0;\\r\\n      line-height: 1.2;\\r\\n    }\\r\\n\\r\\n[data-only-number] {\\r\\n  padding: 0 0.2em;\\r\\n}\\r\\n\\r\\n[data-only-number] + span {\\r\\n    margin-left: -0.1em;\\r\\n  }\\r\\n\\r\\n.hotkeys___uu-Xe {\\r\\n  position: relative;\\r\\n  z-index: 1;\\r\\n\\r\\n  display: flex;\\r\\n  flex-grow: 1;\\r\\n  flex-wrap: wrap;\\r\\n  align-items: center;\\r\\n\\r\\n  padding: 0.2em;\\r\\n  padding-top: 2em;\\r\\n  border-bottom: 1px solid var(--secondary-bg);\\r\\n\\r\\n  font-size: 0.9em;\\r\\n  color: var(--text);\\r\\n}\\r\\n\\r\\n.hotkeys___uu-Xe + .hotkeys___uu-Xe {\\r\\n    margin-top: 0.5em;\\r\\n  }\\r\\n\\r\\n.hotkeys___uu-Xe:last-child {\\r\\n    border-bottom: none;\\r\\n  }\\r\\n\\r\\n.hotkeysItem___d9IKS {\\r\\n  cursor: pointer;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  box-sizing: content-box;\\r\\n  height: 1em;\\r\\n  margin: 0.3em;\\r\\n  padding: 0.2em 1.2em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-family: serif;\\r\\n\\r\\n  outline: 1px solid;\\r\\n  outline-color: var(--secondary-bg);\\r\\n}\\r\\n\\r\\n.hotkeysItem___d9IKS > svg {\\r\\n    display: none;\\r\\n\\r\\n    height: 1em;\\r\\n    margin-left: 0.4em;\\r\\n    border-radius: 1em;\\r\\n\\r\\n    color: var(--page-bg);\\r\\n\\r\\n    opacity: 0.5;\\r\\n    background-color: var(--text);\\r\\n  }\\r\\n\\r\\n:is(.hotkeysItem___d9IKS > svg):hover {\\r\\n      opacity: 0.9;\\r\\n    }\\r\\n\\r\\n.hotkeysItem___d9IKS:hover {\\r\\n    padding: 0.2em 0.5em;\\r\\n  }\\r\\n\\r\\n.hotkeysItem___d9IKS:hover > svg {\\r\\n      display: unset;\\r\\n    }\\r\\n\\r\\n.hotkeysItem___d9IKS:focus,.hotkeysItem___d9IKS:focus-visible {\\r\\n    outline: var(--text) solid 2px;\\r\\n  }\\r\\n\\r\\n.hotkeysHeader___jU7vr {\\r\\n  position: absolute;\\r\\n  top: 0;\\r\\n  left: 0;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  box-sizing: border-box;\\r\\n  width: 100%;\\r\\n  padding: 0 0.5em;\\r\\n}\\r\\n\\r\\n.hotkeysHeader___jU7vr > p {\\r\\n    line-height: 1em;\\r\\n    text-align: start;\\r\\n    overflow-wrap: anywhere;\\r\\n    white-space: pre-wrap;\\r\\n\\r\\n    background-color: var(--page-bg);\\r\\n  }\\r\\n\\r\\n.hotkeysHeader___jU7vr > div[title] {\\r\\n    cursor: pointer;\\r\\n\\r\\n    transform: scale(0);\\r\\n\\r\\n    display: flex;\\r\\n\\r\\n    background-color: var(--page-bg);\\r\\n\\r\\n    transition: transform 100ms;\\r\\n  }\\r\\n\\r\\n:is(.hotkeysHeader___jU7vr > div[title]) > svg {\\r\\n      width: 1.6em;\\r\\n    }\\r\\n\\r\\n.hotkeys___uu-Xe:hover div[title] {\\r\\n  transform: scale(1);\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV {\\r\\n  --arrow-y: clamp(\\r\\n    0.45em,\\r\\n    calc(var(--slider-midpoint)),\\r\\n    calc(var(--scroll-length) - 0.45em)\\r\\n  );\\r\\n\\r\\n  touch-action: none;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  z-index: 9;\\r\\n  top: 1%;\\r\\n  right: 3px;\\r\\n\\r\\n  display: flex;\\r\\n  flex-direction: column;\\r\\n\\r\\n  width: 5px;\\r\\n  height: 98%;\\r\\n\\r\\n  /* 扩大触发范围 */\\r\\n  border-left: max(6vw, 1em) solid transparent;\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV > div {\\r\\n    pointer-events: none;\\r\\n\\r\\n    display: flex;\\r\\n    flex-direction: column;\\r\\n    flex-grow: 1;\\r\\n    align-items: center;\\r\\n    justify-content: center;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs {\\r\\n  transform-origin: bottom;\\r\\n  transform: scaleY(1);\\r\\n\\r\\n  flex-grow: 1;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  background-color: var(--secondary);\\r\\n\\r\\n  transition: transform 1s;\\r\\n}\\r\\n\\r\\n.scrollbarPage___qghUs[data-type='loaded'] {\\r\\n    transform: scaleY(0);\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-upscale] {\\r\\n    transform: scaleY(1);\\r\\n    background-color: #b39ddb;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-upscale='loading'] {\\n    background-color: #d1c4e9;\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-reline-upscale] {\\n    transform: scaleY(1);\\n    background-color: #42a5f5;\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-reline-upscale='loading'] {\\n    background-color: #90caf9;\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-reline-upscale='error'] {\\n    background-color: #f005;\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-translation-type] {\\n    transform-origin: top;\\n    transform: scaleY(1);\\n    background-color: transparent;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-translation-type='wait'] {\\r\\n    background-color: #81c784;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-translation-type='show'] {\\r\\n    background-color: #4caf50;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-translation-type='error'] {\\r\\n    background-color: #f005;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-type='wait'] {\\r\\n    opacity: 0.4;\\r\\n  }\\r\\n\\r\\n.scrollbarPage___qghUs[data-type='error'] {\\r\\n    background-color: #f005;\\r\\n  }\\r\\n\\r\\n/* 滚动条滑块 */\\r\\n\\r\\n.scrollbarSlider___r1fWf {\\r\\n  position: absolute;\\r\\n  z-index: 1;\\r\\n  transform: translateY(var(--slider-top));\\r\\n\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 100%;\\r\\n  height: var(--slider-height);\\r\\n  border-radius: 1em;\\r\\n\\r\\n  opacity: 1;\\r\\n  background-color: #fff5;\\r\\n\\r\\n  transition:\\r\\n    transform 150ms,\\r\\n    opacity 150ms;\\r\\n}\\r\\n\\r\\n/* 悬浮框 */\\r\\n\\r\\n.scrollbarPoper___XK5Rk {\\r\\n  --poper-top: clamp(\\r\\n    0%,\\r\\n    calc(var(--slider-midpoint) - 50%),\\r\\n    calc(var(--scroll-length) - 100%)\\r\\n  );\\r\\n\\r\\n  position: absolute;\\r\\n  right: 2em;\\r\\n  transform: translateY(var(--poper-top));\\r\\n\\r\\n  width: fit-content;\\r\\n  min-width: 1em;\\r\\n  min-height: 1.5em;\\r\\n  padding: 0.2em 0.5em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 0.8em;\\r\\n  line-height: 1.5em;\\r\\n  color: white;\\r\\n  text-align: center;\\r\\n  white-space: pre;\\r\\n\\r\\n  background-color: #303030;\\r\\n}\\r\\n\\r\\n/* 悬浮框箭头 */\\r\\n\\r\\n.scrollbar___hLToV::before {\\r\\n  content: '';\\r\\n\\r\\n  position: absolute;\\r\\n  right: 2em;\\r\\n  transform: translate(140%, calc(var(--arrow-y) - 50%));\\r\\n\\r\\n  border: 0.4em solid transparent;\\r\\n  border-left: 0.5em solid #303030;\\r\\n\\r\\n  background-color: transparent;\\r\\n}\\r\\n\\r\\n/*\\r\\n * 滚动条部件的显隐\\r\\n */\\r\\n\\r\\n/* 悬浮提示默认隐藏 */\\r\\n\\r\\n.scrollbar___hLToV::before,\\r\\n.scrollbarPoper___XK5Rk {\\r\\n  opacity: 0;\\r\\n  transition:\\r\\n    opacity 150ms,\\r\\n    transform 150ms;\\r\\n}\\r\\n\\r\\n/* 控制滚动条悬浮提示的显示 */\\r\\n\\r\\n:is(.scrollbar___hLToV:hover,.scrollbar___hLToV[data-force-show]) .scrollbarPoper___XK5Rk,:is(.scrollbar___hLToV:hover,.scrollbar___hLToV[data-force-show]) .scrollbarSlider___r1fWf,:is(.scrollbar___hLToV:hover,.scrollbar___hLToV[data-force-show])::before {\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n/* 拖动滚动条时取消移动过渡动画，确保跟手 */\\r\\n\\r\\n.scrollbar___hLToV[data-drag]::before,.scrollbar___hLToV[data-drag] .scrollbarPoper___XK5Rk,.scrollbar___hLToV[data-drag] .scrollbarSlider___r1fWf {\\r\\n    transition: opacity 150ms;\\r\\n  }\\r\\n\\r\\n/* 实现自动隐藏 */\\r\\n\\r\\n.scrollbar___hLToV[data-auto-hidden]:not([data-force-show]) .scrollbarSlider___r1fWf {\\r\\n    opacity: 0;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-auto-hidden]:not([data-force-show]):hover .scrollbarSlider___r1fWf {\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n/*\\r\\n * 滚动条位置\\r\\n */\\r\\n\\r\\n.scrollbar___hLToV[data-position='hidden'] {\\r\\n  display: none;\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV[data-position='top'] {\\r\\n  top: 1px;\\r\\n\\r\\n  /* 扩大触发范围 */\\r\\n  border-bottom: max(6vh, 1em) solid transparent;\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV[data-position='top']::before {\\r\\n    top: 1.2em;\\r\\n    right: 0;\\r\\n    transform: translate(var(--arrow-x), -120%);\\r\\n    border-bottom: 0.5em solid #303030;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-position='top'] .scrollbarPoper___XK5Rk {\\r\\n    top: 1.2em;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-position='bottom'] {\\r\\n  top: unset;\\r\\n  bottom: 1px;\\r\\n\\r\\n  /* 扩大触发范围 */\\r\\n  border-top: max(6vh, 1em) solid transparent;\\r\\n}\\r\\n\\r\\n.scrollbar___hLToV[data-position='bottom']::before {\\r\\n    right: 0;\\r\\n    bottom: 1.2em;\\r\\n    transform: translate(var(--arrow-x), 120%);\\r\\n    border-top: 0.5em solid #303030;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-position='bottom'] .scrollbarPoper___XK5Rk {\\r\\n    bottom: 1.2em;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-position='top'],\\r\\n.scrollbar___hLToV[data-position='bottom'] {\\r\\n  --arrow-x: calc(var(--arrow-y) * -1 + 50%);\\r\\n\\r\\n  right: 1%;\\r\\n\\r\\n  flex-direction: row-reverse;\\r\\n\\r\\n  width: 98%;\\r\\n  height: 5px;\\r\\n  border-left: none;\\n}\\r\\n\\r\\n:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom'])::before {\\r\\n    border-left: 0.4em solid transparent;\\r\\n  }\\r\\n\\r\\n/* stylelint-disable-next-line no-descending-specificity */\\r\\n\\r\\n:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarSlider___r1fWf {\\r\\n    transform: translateX(calc(var(--slider-top) * -1));\\r\\n    width: var(--slider-height);\\r\\n    height: 100%;\\r\\n  }\\r\\n\\r\\n:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPoper___XK5Rk {\\r\\n    right: unset;\\r\\n    transform: translateX(calc(var(--poper-top) * -1));\\r\\n    padding: 0.1em 0.3em;\\r\\n  }\\r\\n\\r\\n[data-dir='ltr']:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) {\\r\\n    --arrow-x: calc(var(--arrow-y) - 50%);\\r\\n\\r\\n    flex-direction: row;\\r\\n  }\\r\\n\\r\\n[data-dir='ltr']:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom'])::before {\\r\\n      right: unset;\\r\\n      left: 0;\\r\\n    }\\r\\n\\r\\n/* stylelint-disable-next-line no-descending-specificity */\\r\\n\\r\\n[data-dir='ltr']:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarSlider___r1fWf {\\r\\n      transform: translateX(var(--top));\\r\\n    }\\r\\n\\r\\n[data-dir='ltr']:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPoper___XK5Rk {\\r\\n      transform: translateX(var(--poper-top));\\r\\n    }\\r\\n\\r\\n/* 将 scaleY 改成 scaleX */\\r\\n\\r\\n:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPage___qghUs {\\n    transform: scaleX(1);\\n  }\\r\\n\\r\\n[data-type='loaded']:is(:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPage___qghUs) {\\n      transform: scaleX(0);\\n    }\\r\\n\\r\\n[data-reline-upscale]:is(:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPage___qghUs),[data-upscale]:is(:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPage___qghUs) {\\n      transform: scaleX(1);\\n    }\\r\\n\\r\\n[data-translation-type]:is(:is(.scrollbar___hLToV[data-position='top'],.scrollbar___hLToV[data-position='bottom']) .scrollbarPage___qghUs) {\\n      transform: scaleX(1);\\n    }\\r\\n\\r\\n/* stylelint-disable-next-line no-descending-specificity */\\r\\n\\r\\n.scrollbar___hLToV[data-is-abreast-mode] .scrollbarPoper___XK5Rk {\\r\\n    writing-mode: vertical-rl;\\r\\n    line-height: 1.5em;\\r\\n    text-orientation: upright;\\r\\n  }\\r\\n\\r\\n.scrollbar___hLToV[data-is-abreast-mode][data-dir='ltr'] .scrollbarPoper___XK5Rk {\\r\\n    writing-mode: vertical-lr;\\r\\n  }\\r\\n\\r\\n/* 卷轴模式下取消滚动条的位移动画 */\\r\\n\\r\\n.root___Hf5H2[data-scroll-mode] .scrollbar___hLToV::before,\\r\\n.root___Hf5H2[data-scroll-mode] :is(.scrollbarSlider___r1fWf, .scrollbarPoper___XK5Rk) {\\r\\n  transition: opacity 150ms;\\r\\n}\\r\\n\\r\\n/* 移动端下禁用悬浮显示 */\\r\\n\\r\\n:is(.root___Hf5H2[data-mobile] .scrollbar___hLToV:hover)::before,:is(.root___Hf5H2[data-mobile] .scrollbar___hLToV:hover) .scrollbarPoper___XK5Rk {\\r\\n      opacity: 0;\\r\\n    }\\r\\n\\r\\n.touchAreaRoot___UN-W1 {\\r\\n  pointer-events: none;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 0;\\r\\n\\r\\n  display: grid;\\r\\n  grid-template-columns: 1fr min(30%, 10em) 1fr;\\r\\n  grid-template-rows: 1fr min(20%, 10em) 1fr;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  font-size: 3em;\\r\\n  color: white;\\r\\n  letter-spacing: 0.5em;\\r\\n\\r\\n  opacity: 0;\\r\\n\\r\\n  transition: opacity 400ms;\\r\\n}\\r\\n\\r\\n.touchAreaRoot___UN-W1[data-show] {\\r\\n    opacity: 1;\\r\\n  }\\r\\n\\r\\n.touchAreaRoot___UN-W1 .touchArea___F6Hkh {\\r\\n    display: flex;\\r\\n    align-items: center;\\r\\n    justify-content: center;\\r\\n    text-align: center;\\r\\n  }\\r\\n\\r\\n[data-area='prev']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh),[data-area='PREV']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh) {\\r\\n      background-color: #95e1d3e6;\\r\\n    }\\r\\n\\r\\n[data-area='menu']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh),[data-area='MENU']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh) {\\r\\n      background-color: #fce38ae6;\\r\\n    }\\r\\n\\r\\n[data-area='next']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh),[data-area='NEXT']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh) {\\r\\n      background-color: #f38181e6;\\r\\n    }\\r\\n\\r\\n[data-area='PREV']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh)::after {\\r\\n      content: var(--i18n-touch-area-prev);\\r\\n    }\\r\\n\\r\\n[data-area='MENU']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh)::after {\\r\\n      content: var(--i18n-touch-area-menu);\\r\\n    }\\r\\n\\r\\n[data-area='NEXT']:is(.touchAreaRoot___UN-W1 .touchArea___F6Hkh)::after {\\r\\n      content: var(--i18n-touch-area-next);\\r\\n    }\\r\\n\\r\\n.touchAreaRoot___UN-W1[data-vert='true'] {\\r\\n    flex-direction: column !important;\\r\\n  }\\r\\n\\r\\n.touchAreaRoot___UN-W1:not([data-turn-page]) .touchArea___F6Hkh[data-area='next'],.touchAreaRoot___UN-W1:not([data-turn-page]) .touchArea___F6Hkh[data-area='NEXT'],.touchAreaRoot___UN-W1:not([data-turn-page]) .touchArea___F6Hkh[data-area='prev'],.touchAreaRoot___UN-W1:not([data-turn-page]) .touchArea___F6Hkh[data-area='PREV'] {\\r\\n      visibility: hidden;\\r\\n    }\\r\\n\\r\\n.touchAreaRoot___UN-W1[data-shrink-menu] {\\r\\n    grid-template-columns: 1fr 2em 1fr;\\r\\n  }\\r\\n\\r\\n.touchAreaRoot___UN-W1[data-shrink-menu] .touchArea___F6Hkh[data-area='MENU'] {\\r\\n      letter-spacing: 0;\\r\\n    }\\r\\n\\r\\n.root___Hf5H2[data-mobile] .touchAreaRoot___UN-W1 {\\r\\n    flex-direction: column !important;\\r\\n    letter-spacing: 0;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-mobile] [data-area]::after {\\r\\n    font-size: 0.8em;\\r\\n  }\\r\\n\\r\\n.root___Hf5H2 {\\r\\n  position: relative;\\r\\n\\r\\n  overflow: hidden;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  font-size: 1em;\\r\\n\\r\\n  background-color: var(--bg);\\r\\n  outline: 0;\\r\\n}\\r\\n\\r\\n.root___Hf5H2 a {\\r\\n    color: var(--text-secondary);\\r\\n  }\\r\\n\\r\\n.root___Hf5H2[data-mobile] {\\r\\n    font-size: 0.8em;\\r\\n  }\\r\\n\\r\\n.hidden___rxU-6 {\\r\\n  display: none !important;\\r\\n}\\r\\n\\r\\n.invisible___cO-hs {\\r\\n  visibility: hidden !important;\\r\\n}\\r\\n\\r\\n.beautifyScrollbar___lb6kJ {\\r\\n  /* 火狐的滚动条样式 */\\r\\n  scrollbar-color: var(--scrollbar-slider) transparent;\\r\\n  scrollbar-width: thin;\\r\\n\\r\\n  /* chrome 的滚动条样式 */\\r\\n}\\r\\n\\r\\n.beautifyScrollbar___lb6kJ::-webkit-scrollbar {\\r\\n    width: 5px;\\r\\n    height: 10px;\\r\\n  }\\r\\n\\r\\n.beautifyScrollbar___lb6kJ::-webkit-scrollbar-track {\\r\\n    background: transparent;\\r\\n  }\\r\\n\\r\\n.beautifyScrollbar___lb6kJ::-webkit-scrollbar-thumb {\\r\\n    background: var(--scrollbar-slider);\\r\\n  }\\r\\n\\r\\np,\\r\\nimg {\\r\\n  margin: 0;\\r\\n}\\r\\n\\r\\n:where(div, div:focus, div:focus-within, div:focus-visible, button) {\\r\\n  border: none;\\r\\n  outline: none;\\r\\n}\\r\\n\\r\\nblockquote {\\r\\n  margin: 0.5em 0;\\r\\n  padding: 0;\\r\\n  padding-left: 1em;\\r\\n  border-left: 0.25em solid var(--text-secondary, #607d8b);\\r\\n\\r\\n  font-size: 0.9em;\\r\\n  font-style: italic;\\r\\n  line-height: 1.2em;\\r\\n  color: var(--text-secondary);\\r\\n  text-align: start;\\r\\n  overflow-wrap: anywhere;\\r\\n  white-space: pre-wrap;\\r\\n}\\r\\n\\r\\nsvg {\\r\\n  width: 1em;\\r\\n}\\r\\n";
 //#endregion
 //#region src/components/Manga/index.tsx
 var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<div>\`);
 solid_js.enableScheduling();
-/** 婕敾缁勪欢 */
+/** 漫画组件 */
 const Manga = (props) => {
 	useStyle$1(index_module_default);
 	useCssVar();
@@ -8827,11 +8978,11 @@ const classes = {
 };
 //#endregion
 //#region src/components/IconButton/index.module.css?inline
-var index_module_default = ".iconButtonItem___vTPHz {\\r\\n  position: relative;\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n}\\r\\n\\r\\n.iconButton___dhWw3 {\\r\\n  cursor: pointer;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 1.5em;\\r\\n  height: 1.5em;\\r\\n  margin: 0.1em;\\r\\n  padding: 0;\\r\\n  border-style: none;\\r\\n  border-radius: 9999px;\\r\\n\\r\\n  font-size: 1.5em;\\r\\n  color: var(--text, white);\\r\\n\\r\\n  background-color: transparent;\\r\\n  outline: none;\\r\\n}\\r\\n\\r\\n.iconButton___dhWw3:focus,.iconButton___dhWw3:hover {\\r\\n    background-color: var(--hover-bg-color, #fff3);\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj) {\\r\\n    color: var(--text-bg, #121212);\\r\\n    background-color: var(--text, white);\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):focus,.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):hover {\\r\\n      background-color: var(--hover-bg-color-enable, #fffa);\\r\\n    }\\r\\n\\r\\n.iconButton___dhWw3.disable___7C-Rj {\\r\\n    cursor: not-allowed;\\r\\n    opacity: 0.5;\\r\\n    background-color: unset;\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3 > svg {\\r\\n    width: 1em;\\r\\n  }\\r\\n\\r\\n/* 榛樿鎮诞妗嗘牱寮?*/\\r\\n\\r\\n.iconButtonPopper___dVIu- {\\r\\n  pointer-events: none;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 50%;\\r\\n  transform: translateY(-50%);\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  padding: 0.4em 0.5em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 0.8em;\\r\\n  color: white;\\r\\n  white-space: nowrap;\\r\\n\\r\\n  opacity: 0;\\r\\n  background-color: #303030;\\r\\n}\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='right'] {\\r\\n    left: calc(100% + 1.5em);\\r\\n  }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='right']::before {\\r\\n      right: calc(100% + 0.5em);\\r\\n      border-right-color: var(--switch-bg, #6e6e6e);\\r\\n      border-right-width: 0.5em;\\r\\n    }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='left'] {\\r\\n    right: calc(100% + 1.5em);\\r\\n  }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='left']::before {\\r\\n      left: calc(100% + 0.5em);\\r\\n      border-left-color: var(--switch-bg, #6e6e6e);\\r\\n      border-left-width: 0.5em;\\r\\n    }\\r\\n\\r\\n/* 宸ュ叿鏍忔寜閽殑鎮诞妗嗙殑绠ご */\\r\\n\\r\\n.iconButtonPopper___dVIu-::before {\\r\\n  pointer-events: none;\\r\\n  content: '';\\r\\n\\r\\n  position: absolute;\\r\\n\\r\\n  border-color: transparent;\\r\\n  border-style: solid;\\r\\n  border-width: 0.4em;\\r\\n\\r\\n  background-color: transparent;\\r\\n\\r\\n  transition: opacity 150ms;\\r\\n}\\r\\n\\r\\n/* 鎺у埗鎮诞妗嗙殑鏄剧ず */\\r\\n\\r\\n.iconButtonItem___vTPHz:is(:hover, :focus, [data-show='true']) .iconButtonPopper___dVIu- {\\r\\n  opacity: 1;\\r\\n}\\r\\n\\r\\n.hidden___v7N-q {\\r\\n  display: none;\\r\\n}\\r\\n";
+var index_module_default = ".iconButtonItem___vTPHz {\\r\\n  position: relative;\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n}\\r\\n\\r\\n.iconButton___dhWw3 {\\r\\n  cursor: pointer;\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 1.5em;\\r\\n  height: 1.5em;\\r\\n  margin: 0.1em;\\r\\n  padding: 0;\\r\\n  border-style: none;\\r\\n  border-radius: 9999px;\\r\\n\\r\\n  font-size: 1.5em;\\r\\n  color: var(--text, white);\\r\\n\\r\\n  background-color: transparent;\\r\\n  outline: none;\\r\\n}\\r\\n\\r\\n.iconButton___dhWw3:focus,.iconButton___dhWw3:hover {\\r\\n    background-color: var(--hover-bg-color, #fff3);\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj) {\\r\\n    color: var(--text-bg, #121212);\\r\\n    background-color: var(--text, white);\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):focus,.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):hover {\\r\\n      background-color: var(--hover-bg-color-enable, #fffa);\\r\\n    }\\r\\n\\r\\n.iconButton___dhWw3.disable___7C-Rj {\\r\\n    cursor: not-allowed;\\r\\n    opacity: 0.5;\\r\\n    background-color: unset;\\r\\n  }\\r\\n\\r\\n.iconButton___dhWw3 > svg {\\r\\n    width: 1em;\\r\\n  }\\r\\n\\r\\n/* 默认悬浮框样式 */\\r\\n\\r\\n.iconButtonPopper___dVIu- {\\r\\n  pointer-events: none;\\r\\n  -webkit-user-select: none;\\r\\n          user-select: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 50%;\\r\\n  transform: translateY(-50%);\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  padding: 0.4em 0.5em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 0.8em;\\r\\n  color: white;\\r\\n  white-space: nowrap;\\r\\n\\r\\n  opacity: 0;\\r\\n  background-color: #303030;\\r\\n}\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='right'] {\\r\\n    left: calc(100% + 1.5em);\\r\\n  }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='right']::before {\\r\\n      right: calc(100% + 0.5em);\\r\\n      border-right-color: var(--switch-bg, #6e6e6e);\\r\\n      border-right-width: 0.5em;\\r\\n    }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='left'] {\\r\\n    right: calc(100% + 1.5em);\\r\\n  }\\r\\n\\r\\n.iconButtonPopper___dVIu-[data-placement='left']::before {\\r\\n      left: calc(100% + 0.5em);\\r\\n      border-left-color: var(--switch-bg, #6e6e6e);\\r\\n      border-left-width: 0.5em;\\r\\n    }\\r\\n\\r\\n/* 工具栏按钮的悬浮框的箭头 */\\r\\n\\r\\n.iconButtonPopper___dVIu-::before {\\r\\n  pointer-events: none;\\r\\n  content: '';\\r\\n\\r\\n  position: absolute;\\r\\n\\r\\n  border-color: transparent;\\r\\n  border-style: solid;\\r\\n  border-width: 0.4em;\\r\\n\\r\\n  background-color: transparent;\\r\\n\\r\\n  transition: opacity 150ms;\\r\\n}\\r\\n\\r\\n/* 控制悬浮框的显示 */\\r\\n\\r\\n.iconButtonItem___vTPHz:is(:hover, :focus, [data-show='true']) .iconButtonPopper___dVIu- {\\r\\n  opacity: 1;\\r\\n}\\r\\n\\r\\n.hidden___v7N-q {\\r\\n  display: none;\\r\\n}\\r\\n";
 //#endregion
 //#region src/components/IconButton/index.tsx
 var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<div><button type=button tabindex=0>\`), _tmpl$2 = /* @__PURE__ */ solid_js_web.template(\`<div>\`);
-/** 鍥炬爣鎸夐挳 */
+/** 图标按钮 */
 const IconButton = (_props) => {
 	const props = solid_js.mergeProps({ placement: "right" }, _props);
 	let buttonRef;
@@ -8914,12 +9065,12 @@ const classes = {
 };
 //#endregion
 //#region src/components/Fab/index.module.css?inline
-var index_module_default = ".fabRoot___rGBDZ {\\r\\n  touch-action: none;\\r\\n  font-size: 1.1em;\\r\\n  transition: transform 200ms;\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ[data-show='false'] {\\r\\n    pointer-events: none;\\r\\n  }\\r\\n\\r\\n.fabRoot___rGBDZ[data-show='false'] > button {\\r\\n      transform: scale(0);\\r\\n    }\\r\\n\\r\\n.fabRoot___rGBDZ[data-trans='true'] {\\r\\n    opacity: 0.8;\\r\\n  }\\r\\n\\r\\n.fabRoot___rGBDZ[data-trans='true']:hover,.fabRoot___rGBDZ[data-trans='true']:focus,.fabRoot___rGBDZ[data-trans='true']:focus-visible {\\r\\n      opacity: 1;\\r\\n    }\\r\\n\\r\\n.fab___Whb2R {\\r\\n  cursor: pointer;\\r\\n\\r\\n  transform: scale(1);\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 3.6em;\\r\\n  height: 3.6em;\\r\\n  border: none;\\r\\n  border-radius: 100%;\\r\\n\\r\\n  font-size: 1em;\\r\\n  color: white;\\r\\n\\r\\n  background-color: var(--fab, #607d8b);\\r\\n  box-shadow:\\r\\n    0 3px 5px -1px rgb(0 0 0 / 20%),\\r\\n    0 6px 10px 0 rgb(0 0 0 / 14%),\\r\\n    0 1px 18px 0 rgb(0 0 0 / 12%);\\r\\n\\r\\n  transition: transform 200ms;\\r\\n}\\r\\n\\r\\n.fab___Whb2R > svg {\\r\\n    width: 1em;\\r\\n    font-size: 1.5em;\\r\\n  }\\r\\n\\r\\n.fab___Whb2R:focus,.fab___Whb2R:focus-visible {\\r\\n    outline: none;\\r\\n    box-shadow:\\r\\n      0 3px 5px -1px rgb(0 0 0 / 50%),\\r\\n      0 6px 10px 0 rgb(0 0 0 / 34%),\\r\\n      0 1px 18px 0 rgb(0 0 0 / 32%);\\r\\n  }\\r\\n\\r\\n/* 鐜舰杩涘害鏉?*/\\r\\n\\r\\n.progress___i-R0z {\\r\\n  position: absolute;\\r\\n  transform: rotate(-90deg);\\r\\n\\r\\n  display: inline-block;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  color: #b0bec5;\\r\\n\\r\\n  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;\\r\\n}\\r\\n\\r\\n.progress___i-R0z > svg {\\r\\n    stroke: currentcolor;\\r\\n    stroke-dasharray: 290%;\\r\\n    stroke-dashoffset: 100%;\\r\\n    stroke-linecap: round;\\r\\n\\r\\n    transition: stroke-dashoffset 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;\\r\\n  }\\r\\n\\r\\n.progress___i-R0z:hover {\\r\\n    color: #cfd8dc;\\r\\n  }\\r\\n\\r\\n/* 鍦ㄨ繘搴︽潯婊″悗鑷姩闅愯棌 */\\r\\n\\r\\n.progress___i-R0z[aria-valuenow='1'] {\\r\\n    opacity: 0;\\r\\n    transition: opacity 200ms 150ms;\\r\\n  }\\r\\n\\r\\n/* 榛樿鎮诞妗嗘牱寮?*/\\r\\n\\r\\n.popper___aYw7E {\\r\\n  pointer-events: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 50%;\\r\\n  right: calc(100% + 1.5em);\\r\\n  transform-origin: right;\\r\\n  transform: translateY(-50%) scale(0);\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  padding: 0.4em 0.5em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 0.8em;\\r\\n  color: white;\\r\\n  white-space: nowrap;\\r\\n\\r\\n  opacity: 0;\\r\\n  background-color: #303030;\\r\\n\\r\\n  transition:\\r\\n    transform 230ms,\\r\\n    opacity 150ms;\\r\\n  transition-delay: var(--hide-delay);\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ[data-placement='right'] .popper___aYw7E {\\r\\n  right: unset;\\r\\n  left: calc(100% + 1.5em);\\r\\n  transform-origin: left;\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ:is(:hover, [data-focus='true']) .popper___aYw7E {\\r\\n  transform: translateY(-50%) scale(1);\\r\\n  opacity: 1;\\r\\n  transition-delay: 0ms;\\r\\n}\\r\\n\\r\\n/* 蹇嵎鎷ㄥ彿 */\\r\\n\\r\\n.speedDial___bnVgX {\\r\\n  pointer-events: none;\\r\\n  touch-action: none;\\r\\n\\r\\n  position: absolute;\\r\\n  z-index: -1;\\r\\n  bottom: 0;\\r\\n\\r\\n  display: flex;\\r\\n  flex-direction: column-reverse;\\r\\n  align-items: center;\\r\\n\\r\\n  width: 100%;\\r\\n  padding-bottom: 120%;\\r\\n\\r\\n  font-size: 1.1em;\\r\\n}\\r\\n\\r\\n.speedDial___bnVgX[data-placement='bottom'] {\\r\\n    top: 0;\\r\\n    bottom: unset;\\r\\n\\r\\n    flex-direction: column;\\r\\n\\r\\n    padding-top: 120%;\\r\\n    padding-bottom: unset;\\r\\n  }\\r\\n\\r\\n.speedDialItem___KdwiZ {\\r\\n  transform: scale(0);\\r\\n\\r\\n  margin: 0.1em 0;\\r\\n\\r\\n  opacity: 0;\\r\\n\\r\\n  transition-delay: var(--hide-delay);\\r\\n  transition-duration: 230ms;\\r\\n  transition-property: transform, opacity;\\r\\n}\\r\\n\\r\\n/* 绉诲埌蹇嵎鎷ㄥ彿涓婃椂淇濇寔鏄剧ず */\\r\\n\\r\\n.speedDial___bnVgX:hover {\\r\\n  pointer-events: all;\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ:is(:hover:not([data-show='false']), [data-focus='true']) .speedDial___bnVgX {\\r\\n  pointer-events: all;\\r\\n}\\r\\n\\r\\n:is(.fabRoot___rGBDZ:is(:hover:not([data-show='false']),[data-focus='true']) .speedDial___bnVgX) > .speedDialItem___KdwiZ {\\r\\n    transform: unset;\\r\\n    opacity: unset;\\r\\n    transition-delay: var(--show-delay);\\r\\n  }\\r\\n\\r\\n/* 鑳屾櫙钂欑増 */\\r\\n\\r\\n.backdrop___4Sdu1 {\\r\\n  pointer-events: none;\\r\\n\\r\\n  position: fixed;\\r\\n  top: 0;\\r\\n  left: 0;\\r\\n\\r\\n  width: 100vw;\\r\\n  height: 100vh;\\r\\n\\r\\n  opacity: 0;\\r\\n  background: black;\\r\\n\\r\\n  transition: opacity 500ms;\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ[data-focus='true'] .backdrop___4Sdu1 {\\r\\n  pointer-events: unset;\\r\\n}\\r\\n\\r\\n:is(\\r\\n    .fabRoot___rGBDZ:hover:not([data-show='false']),\\r\\n    .fabRoot___rGBDZ[data-focus='true'],\\r\\n    .speedDial___bnVgX:hover\\r\\n  )\\r\\n  .backdrop___4Sdu1 {\\r\\n  opacity: 0.4;\\r\\n}\\r\\n";
+var index_module_default = ".fabRoot___rGBDZ {\\r\\n  touch-action: none;\\r\\n  font-size: 1.1em;\\r\\n  transition: transform 200ms;\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ[data-show='false'] {\\r\\n    pointer-events: none;\\r\\n  }\\r\\n\\r\\n.fabRoot___rGBDZ[data-show='false'] > button {\\r\\n      transform: scale(0);\\r\\n    }\\r\\n\\r\\n.fabRoot___rGBDZ[data-trans='true'] {\\r\\n    opacity: 0.8;\\r\\n  }\\r\\n\\r\\n.fabRoot___rGBDZ[data-trans='true']:hover,.fabRoot___rGBDZ[data-trans='true']:focus,.fabRoot___rGBDZ[data-trans='true']:focus-visible {\\r\\n      opacity: 1;\\r\\n    }\\r\\n\\r\\n.fab___Whb2R {\\r\\n  cursor: pointer;\\r\\n\\r\\n  transform: scale(1);\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n  justify-content: center;\\r\\n\\r\\n  width: 3.6em;\\r\\n  height: 3.6em;\\r\\n  border: none;\\r\\n  border-radius: 100%;\\r\\n\\r\\n  font-size: 1em;\\r\\n  color: white;\\r\\n\\r\\n  background-color: var(--fab, #607d8b);\\r\\n  box-shadow:\\r\\n    0 3px 5px -1px rgb(0 0 0 / 20%),\\r\\n    0 6px 10px 0 rgb(0 0 0 / 14%),\\r\\n    0 1px 18px 0 rgb(0 0 0 / 12%);\\r\\n\\r\\n  transition: transform 200ms;\\r\\n}\\r\\n\\r\\n.fab___Whb2R > svg {\\r\\n    width: 1em;\\r\\n    font-size: 1.5em;\\r\\n  }\\r\\n\\r\\n.fab___Whb2R:focus,.fab___Whb2R:focus-visible {\\r\\n    outline: none;\\r\\n    box-shadow:\\r\\n      0 3px 5px -1px rgb(0 0 0 / 50%),\\r\\n      0 6px 10px 0 rgb(0 0 0 / 34%),\\r\\n      0 1px 18px 0 rgb(0 0 0 / 32%);\\r\\n  }\\r\\n\\r\\n/* 环形进度条 */\\r\\n\\r\\n.progress___i-R0z {\\r\\n  position: absolute;\\r\\n  transform: rotate(-90deg);\\r\\n\\r\\n  display: inline-block;\\r\\n\\r\\n  width: 100%;\\r\\n  height: 100%;\\r\\n\\r\\n  color: #b0bec5;\\r\\n\\r\\n  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;\\r\\n}\\r\\n\\r\\n.progress___i-R0z > svg {\\r\\n    stroke: currentcolor;\\r\\n    stroke-dasharray: 290%;\\r\\n    stroke-dashoffset: 100%;\\r\\n    stroke-linecap: round;\\r\\n\\r\\n    transition: stroke-dashoffset 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;\\r\\n  }\\r\\n\\r\\n.progress___i-R0z:hover {\\r\\n    color: #cfd8dc;\\r\\n  }\\r\\n\\r\\n/* 在进度条满后自动隐藏 */\\r\\n\\r\\n.progress___i-R0z[aria-valuenow='1'] {\\r\\n    opacity: 0;\\r\\n    transition: opacity 200ms 150ms;\\r\\n  }\\r\\n\\r\\n/* 默认悬浮框样式 */\\r\\n\\r\\n.popper___aYw7E {\\r\\n  pointer-events: none;\\r\\n\\r\\n  position: absolute;\\r\\n  top: 50%;\\r\\n  right: calc(100% + 1.5em);\\r\\n  transform-origin: right;\\r\\n  transform: translateY(-50%) scale(0);\\r\\n\\r\\n  display: flex;\\r\\n  align-items: center;\\r\\n\\r\\n  padding: 0.4em 0.5em;\\r\\n  border-radius: 0.3em;\\r\\n\\r\\n  font-size: 0.8em;\\r\\n  color: white;\\r\\n  white-space: nowrap;\\r\\n\\r\\n  opacity: 0;\\r\\n  background-color: #303030;\\r\\n\\r\\n  transition:\\r\\n    transform 230ms,\\r\\n    opacity 150ms;\\r\\n  transition-delay: var(--hide-delay);\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ[data-placement='right'] .popper___aYw7E {\\r\\n  right: unset;\\r\\n  left: calc(100% + 1.5em);\\r\\n  transform-origin: left;\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ:is(:hover, [data-focus='true']) .popper___aYw7E {\\r\\n  transform: translateY(-50%) scale(1);\\r\\n  opacity: 1;\\r\\n  transition-delay: 0ms;\\r\\n}\\r\\n\\r\\n/* 快捷拨号 */\\r\\n\\r\\n.speedDial___bnVgX {\\r\\n  pointer-events: none;\\r\\n  touch-action: none;\\r\\n\\r\\n  position: absolute;\\r\\n  z-index: -1;\\r\\n  bottom: 0;\\r\\n\\r\\n  display: flex;\\r\\n  flex-direction: column-reverse;\\r\\n  align-items: center;\\r\\n\\r\\n  width: 100%;\\r\\n  padding-bottom: 120%;\\r\\n\\r\\n  font-size: 1.1em;\\r\\n}\\r\\n\\r\\n.speedDial___bnVgX[data-placement='bottom'] {\\r\\n    top: 0;\\r\\n    bottom: unset;\\r\\n\\r\\n    flex-direction: column;\\r\\n\\r\\n    padding-top: 120%;\\r\\n    padding-bottom: unset;\\r\\n  }\\r\\n\\r\\n.speedDialItem___KdwiZ {\\r\\n  transform: scale(0);\\r\\n\\r\\n  margin: 0.1em 0;\\r\\n\\r\\n  opacity: 0;\\r\\n\\r\\n  transition-delay: var(--hide-delay);\\r\\n  transition-duration: 230ms;\\r\\n  transition-property: transform, opacity;\\r\\n}\\r\\n\\r\\n/* 移到快捷拨号上时保持显示 */\\r\\n\\r\\n.speedDial___bnVgX:hover {\\r\\n  pointer-events: all;\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ:is(:hover:not([data-show='false']), [data-focus='true']) .speedDial___bnVgX {\\r\\n  pointer-events: all;\\r\\n}\\r\\n\\r\\n:is(.fabRoot___rGBDZ:is(:hover:not([data-show='false']),[data-focus='true']) .speedDial___bnVgX) > .speedDialItem___KdwiZ {\\r\\n    transform: unset;\\r\\n    opacity: unset;\\r\\n    transition-delay: var(--show-delay);\\r\\n  }\\r\\n\\r\\n/* 背景蒙版 */\\r\\n\\r\\n.backdrop___4Sdu1 {\\r\\n  pointer-events: none;\\r\\n\\r\\n  position: fixed;\\r\\n  top: 0;\\r\\n  left: 0;\\r\\n\\r\\n  width: 100vw;\\r\\n  height: 100vh;\\r\\n\\r\\n  opacity: 0;\\r\\n  background: black;\\r\\n\\r\\n  transition: opacity 500ms;\\r\\n}\\r\\n\\r\\n.fabRoot___rGBDZ[data-focus='true'] .backdrop___4Sdu1 {\\r\\n  pointer-events: unset;\\r\\n}\\r\\n\\r\\n:is(\\r\\n    .fabRoot___rGBDZ:hover:not([data-show='false']),\\r\\n    .fabRoot___rGBDZ[data-focus='true'],\\r\\n    .speedDial___bnVgX:hover\\r\\n  )\\r\\n  .backdrop___4Sdu1 {\\r\\n  opacity: 0.4;\\r\\n}\\r\\n";
 //#endregion
 //#region src/components/Fab/index.tsx
 var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<div><div>\`), _tmpl$2 = /* @__PURE__ */ solid_js_web.template(\`<div><button type=button tabindex=-1><span role=progressbar><svg viewBox="22 22 44 44"><circle cx=44 cy=44 r=20.2 fill=none stroke-width=3.6>\`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<div>\`);
 /**
-* Fab 鎸夐挳
+* Fab 按钮
 */
 const Fab = (_props) => {
 	const props = solid_js.mergeProps({
@@ -9107,17 +9258,17 @@ const colorMap = {
 	error: "#e45042",
 	custom: "#1f2936"
 };
-/** 鍒犻櫎 toast */
+/** 删除 toast */
 const dismissToast = (id) => setState((state) => {
 	state.map[id]?.onDismiss?.({ ...state.map[id] });
 	const i = state.list.indexOf(id);
 	if (i !== -1) state.list.splice(i, 1);
 	Reflect.deleteProperty(state.map, id);
 });
-/** 閲嶇疆 toast 鐨?update 灞炴€?*/
+/** 重置 toast 的 update 属性 */
 const resetToastUpdate = (id) => setState("map", id, "update", void 0);
 const ToastItem = (props) => {
-	/** 鏄惁瑕佹樉绀鸿繘搴?*/
+	/** 是否要显示进度 */
 	const showSchedule = solid_js.createMemo(() => props.duration === Number.POSITIVE_INFINITY && props.schedule ? true : void 0);
 	const triggerDismiss = (e) => {
 		e.stopPropagation();
@@ -9255,7 +9406,7 @@ const toast = (msg, options) => {
 		};
 		state.list.push(id);
 	});
-	/** 寮圭獥鍚庤褰曚竴涓?*/
+	/** 弹窗后记录一下 */
 	let fn = helper.log;
 	switch (options?.type) {
 		case "warn":
@@ -9339,7 +9490,7 @@ const decryptData = async (raw, key) => {
 	}, await crypto.subtle.importKey("raw", new TextEncoder().encode(key), { name: "AES-CBC" }, false, ["decrypt"]), new Uint8Array(cipher.match(/.{1,2}/g).map((byte) => Number.parseInt(byte, 16))).buffer);
 	return JSON.parse(new TextDecoder().decode(decryptedBuffer));
 };
-/** 閫氳繃瑙ｆ瀽缃戦〉鍙橀噺鑾峰彇鍥剧墖鍒楄〃 */
+/** 通过解析网页变量获取图片列表 */
 const getImglistByHtml = async (pageUrl) => {
 	return (await decryptData(...await getKeys(pageUrl))).map(({ url }) => url.replace(/(?<=(\\/|\\.))c800x/, "c1500x"));
 };
@@ -9376,7 +9527,7 @@ let request = require("request");
 let worker_detectAd = require("worker/detectAd");
 worker_detectAd = __toESM(worker_detectAd, 1);
 //#region src/userscript/detectAd.ts
-/** 鐢ㄥ父璇嗛€昏緫杩涜鍒ゆ柇锛屼互鏈熻兘鍦ㄦ娴嬪け璇椂鍑忓皬褰卞搷鑼冨洿鍜岄仐婕?*/
+/** 用常识逻辑进行判断，以期能在检测失误时减小影响范围和遗漏 */
 const getAdPage = async (list, isAdPage, adList) => {
 	let i = list.length - 1;
 	let normalNum = 0;
@@ -9418,13 +9569,13 @@ const imgToCanvas = async (img) => {
 	const imgBitmap = await createImageBitmap(blob);
 	return comlink.default.transfer(imgBitmap, [imgBitmap]);
 };
-/** 閫氳繃鏂囦欢鍚嶅垽鏂槸鍚︽槸骞垮憡 */
+/** 通过文件名判断是否是广告 */
 const getAdPageByFileName = (fileNameList, adList) => getAdPage(fileNameList, (fileName) => /^z+/i.test(fileName), adList);
 const isAdImg = (imgBitmap) => {
 	initWorker();
 	return worker_detectAd.default.isAdImg(comlink.default.transfer(imgBitmap, [imgBitmap]));
 };
-/** 閫氳繃鍥剧墖鍐呭鍒ゆ柇鏄惁鏄箍鍛?*/
+/** 通过图片内容判断是否是广告 */
 const getAdPageByContent = (imgList, adList) => getAdPage(imgList, async (img) => isAdImg(img instanceof ImageBitmap ? img : await imgToCanvas(img)), adList);
 const initWorker = helper.onec(() => {
 	const mainFn = { log: helper.log };
@@ -9736,7 +9887,7 @@ const migrationOption = async (name, editFn) => {
 		helper.log.error(\`migration \${name} option error:\`, error);
 	}
 };
-/** 閲嶅懡鍚嶉厤缃」 */
+/** 重命名配置项 */
 const renameOption = (name, list) => migrationOption(name, (option) => {
 	for (const itemText of list) {
 		const [path, newName] = itemText.split(" => ");
@@ -9747,7 +9898,7 @@ const renameOption = (name, list) => migrationOption(name, (option) => {
 		});
 	}
 });
-/** 鏃х増鏈厤缃縼绉?*/
+/** 旧版本配置迁移 */
 const migration = async (version) => {
 	await GM.deleteValue("ehTagColorizeCss");
 	await GM.deleteValue("ehTagSortCss");
@@ -9757,18 +9908,18 @@ const migration = async (version) => {
 		case "Languages": continue;
 		case "HotKeys":
 			await renameOption(key, [
-				"鍚戜笂缈婚〉 => turn_page_up",
-				"鍚戜笅缈婚〉 => turn_page_down",
-				"鍚戝彸缈婚〉 => turn_page_right",
-				"鍚戝乏缈婚〉 => turn_page_left",
-				"璺宠嚦棣栭〉 => jump_to_home",
-				"璺宠嚦灏鹃〉 => jump_to_end",
-				"閫€鍑?=> exit",
-				"鍒囨崲椤甸潰濉厖 => switch_page_fill",
-				"鍒囨崲鍗疯酱妯″紡 => switch_scroll_mode",
-				"鍒囨崲鍗曞弻椤垫ā寮?=> switch_single_double_page_mode",
-				"鍒囨崲闃呰鏂瑰悜 => switch_dir",
-				"杩涘叆闃呰妯″紡 => enter_read_mode"
+				"向上翻页 => turn_page_up",
+				"向下翻页 => turn_page_down",
+				"向右翻页 => turn_page_right",
+				"向左翻页 => turn_page_left",
+				"跳至首页 => jump_to_home",
+				"跳至尾页 => jump_to_end",
+				"退出 => exit",
+				"切换页面填充 => switch_page_fill",
+				"切换卷轴模式 => switch_scroll_mode",
+				"切换单双页模式 => switch_single_double_page_mode",
+				"切换阅读方向 => switch_dir",
+				"进入阅读模式 => enter_read_mode"
 			]);
 			break;
 		default: await renameOption(key, [
@@ -9777,12 +9928,12 @@ const migration = async (version) => {
 			"option.clickPage.overturn => reverse",
 			"option.swapTurnPage => swapPageTurnKey",
 			"option.flipToNext => jumpToNext",
-			"鍖归厤nhentai => associate_nhentai",
-			"蹇嵎閿炕椤?=> hotkeys_page_turn",
-			"鑷姩缈婚〉 => auto_page_turn",
-			"褰诲簳灞忚斀婕敾 => block_totally",
-			"鍦ㄦ柊椤甸潰涓墦寮€閾炬帴 => open_link_new_page",
-			"璁颁綇褰撳墠绔欑偣 => remember_current_site"
+			"匹配nhentai => associate_nhentai",
+			"快捷键翻页 => hotkeys_page_turn",
+			"自动翻页 => auto_page_turn",
+			"彻底屏蔽漫画 => block_totally",
+			"在新页面中打开链接 => open_link_new_page",
+			"记住当前站点 => remember_current_site"
 		]);
 	}
 	if (helper.versionLt(version, "9")) for (const key of values) switch (key) {
@@ -9853,7 +10004,7 @@ const migration = async (version) => {
 //#region src/userscript/core/useManga.tsx
 let dom;
 /**
-* 鏄剧ず婕敾闃呰绐楀彛
+* 显示漫画阅读窗口
 */
 const useManga = ({ store, setState, options, setOptions }) => {
 	helper.useStyle(\`
@@ -9884,7 +10035,7 @@ const useManga = ({ store, setState, options, setOptions }) => {
       transition: opacity 300ms, transform 100ms;
     }
 
-    /* 闃叉鍏朵粬鎵╁睍鐨勫厓绱犳樉绀哄埌婕敾涓婃潵 */
+    /* 防止其他扩展的元素显示到漫画上来 */
     #comicRead[show] ~ :not(#fab, #toast, .comicread-ignore) {
       display: none !important;
       pointer-events: none !important;
@@ -9961,8 +10112,8 @@ const useManga = ({ store, setState, options, setOptions }) => {
 };
 //#endregion
 //#region src/userscript/core/version.tsx
-var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<h2>馃コ ComicRead 宸叉洿鏂板埌 v\`), _tmpl$2 = /* @__PURE__ */ solid_js_web.template(\`<h3>鏂板\`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<ul><li>瀹炵幇鍥剧墖鏀惧ぇ鍔熻兘锛堥渶瑕佹墦寮€銆屽浘鍍忚瘑鍒€嶅姛鑳斤級</li><li>澧炲姞 ehentai 鍦ㄧ缉鐣ュ浘鍒楄〃椤甸噷灞曞紑鏍囩鍒楄〃鍔熻兘\`);
-/** 澶勭悊鐗堟湰鏇存柊鐩稿叧 */
+var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<h2>🥳 ComicRead 已更新到 v\`), _tmpl$2 = /* @__PURE__ */ solid_js_web.template(\`<h3>新增\`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<ul><li>实现图片放大功能（需要打开「图像识别」功能）</li><li>增加 ehentai 在缩略图列表页里展开标签列表功能\`);
+/** 处理版本更新相关 */
 const handleVersionUpdate = async () => {
 	const version = await helper.ensureGmValue("@Version", GM.info.script.version);
 	if (version === GM.info.script.version) return;
@@ -9975,7 +10126,7 @@ const handleVersionUpdate = async () => {
 				solid_js_web.insert(_el$, () => GM.info.script.version, null);
 				return _el$;
 			})(),
-			"<h3>鏂板</h3>\\n<h3>淇</h3>\\n",
+			"<h3>新增</h3>\\n<h3>修复</h3>\\n",
 			solid_js_web.createComponent(solid_js.Show, {
 				get when() {
 					return helper.versionLt(version, "12");
@@ -9999,7 +10150,7 @@ const handleVersionUpdate = async () => {
 };
 //#endregion
 //#region src/userscript/core/useInit.tsx
-/** 瀵瑰熀纭€鐨勫垵濮嬪寲鎿嶄綔鐨勫皝瑁?*/
+/** 对基础的初始化操作的封装 */
 const useInit = async (name, initSiteOptions = {}) => {
 	await helper.setInitLang();
 	await handleVersionUpdate();
@@ -10150,7 +10301,7 @@ const useInit = async (name, initSiteOptions = {}) => {
 	useFab(coreCtx, nowImgList);
 	useManga(coreCtx);
 	let menuId;
-	/** 鏇存柊鏄剧ず/闅愯棌鎮诞鎸夐挳鐨勮彍鍗曢」 */
+	/** 更新显示/隐藏悬浮按钮的菜单项 */
 	const updateHideFabMenu = async () => {
 		await GM.unregisterMenuCommand(menuId);
 		menuId = await GM.registerMenuCommand(options.hiddenFab ? helper.t("other.fab_show") : helper.t("other.fab_hidden"), () => {
@@ -10172,7 +10323,7 @@ const useInit = async (name, initSiteOptions = {}) => {
 };
 //#endregion
 //#region src/userscript/core/siteAdapter.ts
-/** 蹇€熼€傞厤绠€鍗曠綉绔?*/
+/** 快速适配简单网站 */
 const setup = async ({ name, initOptions, isMangaPage, getImgList, onPrev, onNext, onExit, handler: userHandler }) => {
 	await setupSiteAdapter({
 		name,
@@ -10283,11 +10434,11 @@ const mainFn = {};
 const setMainFn = (helper, keys) => {
 	for (const name of keys) Reflect.set(mainFn, name, (...args) => Reflect.apply(helper[name], helper, args));
 };
-/** 璁＄畻 rgb 鐨勭伆搴?*/
+/** 计算 rgb 的灰度 */
 const toGray = (r, g, b) => Math.round(.299 * r + .587 * g + .114 * b);
 //#endregion
 //#region src/worker/detectAd/index.ts
-/** 鍒ゆ柇涓€寮犲浘鏄惁鏄僵鍥?*/
+/** 判断一张图是否是彩图 */
 const isColorImg = (data) => {
 	for (let i = 0; i < data.length; i += 16) {
 		const r = data[i];
@@ -10297,7 +10448,7 @@ const isColorImg = (data) => {
 	}
 	return false;
 };
-/** 浜岀淮鐮佺櫧鍚嶅崟 */
+/** 二维码白名单 */
 const qrCodeWhiteList = [
 	/^https:\\/\\/[^.]+\\.fanbox\\.cc/,
 	/^https:\\/\\/twitter\\.com/,
@@ -10308,13 +10459,13 @@ const qrCodeWhiteList = [
 	/^https:\\/\\/hitomi\\.la/
 ];
 const options = { inversionAttempts: "attemptBoth" };
-/** 璇嗗埆鍥惧儚涓婄殑浜岀淮鐮?*/
+/** 识别图像上的二维码 */
 const getQrCode = (img, width, height) => {
 	try {
 		const binaryData = jsqr.default(img, width, height, options)?.binaryData;
 		if (!binaryData) return false;
 		const text = new TextDecoder().decode(Uint8Array.from(binaryData));
-		mainFn.log(\`妫€娴嬪埌浜岀淮鐮侊細 \${text}\`);
+		mainFn.log(\`检测到二维码： \${text}\`);
 		return text;
 	} catch (error) {
 		mainFn.log(error);
@@ -10376,15 +10527,15 @@ const setMainFn = (helper, keys) => {
 	for (const name of keys) Reflect.set(mainFn, name, (...args) => Reflect.apply(helper[name], helper, args));
 };
 const getEdgeScope = (width, height) => Math.min(Math.ceil((width + height) * .01), 10);
-/** 瀵规寚瀹氭暟鍊煎彇鏁?*/
+/** 对指定数值取整 */
 const round = (n, int) => {
 	if (int <= 0) return n;
 	const remainder = n % int;
 	return remainder < int / 2 ? n - remainder : n + (int - remainder);
 };
-/** 璁＄畻 rgb 鐨勭伆搴?*/
+/** 计算 rgb 的灰度 */
 const toGray = (r, g, b) => Math.round(.299 * r + .587 * g + .114 * b);
-/** 鑾峰彇鍥剧墖鐨勭伆搴﹁〃 */
+/** 获取图片的灰度表 */
 const toGrayList = (imgData, roundNum) => {
 	const grayList = new Uint8ClampedArray(/* @__PURE__ */ new ArrayBuffer(imgData.length / 4));
 	for (let i = 0, gi = 0; i < imgData.length; i += 4, gi++) {
@@ -10395,15 +10546,15 @@ const toGrayList = (imgData, roundNum) => {
 	}
 	return grayList;
 };
-/** 閬嶅巻鍥剧墖鐨勬寚瀹氳 */
+/** 遍历图片的指定行 */
 const forEachRows = (width, y, fn, start = 0, end = width) => {
 	for (let i = start; i < end; i++) fn(width * y + i);
 };
-/** 閬嶅巻鍥剧墖鐨勬寚瀹氬垪 */
+/** 遍历图片的指定列 */
 const forEachCols = (width, height, x, fn, start = 0, end = height) => {
 	for (let i = start; i < end; i++) fn(i * width + x);
 };
-/** 閬嶅巻鍥剧墖鐨勮竟缂?*/
+/** 遍历图片的边缘 */
 const forEachEdge = (width, height, scope, fn) => {
 	for (let i = 0; i < scope; i++) {
 		forEachRows(width, i, fn);
@@ -10412,7 +10563,7 @@ const forEachEdge = (width, height, scope, fn) => {
 		forEachCols(width, height, width - i - 1, fn, scope, height - scope);
 	}
 };
-/** 缂╁皬鍥惧儚 */
+/** 缩小图像 */
 const resizeImg = (rawImgData, width, height) => {
 	const scale = Math.min(200 / width, 200 / height);
 	const w = Math.floor(width * scale);
@@ -10434,14 +10585,14 @@ const resizeImg = (rawImgData, width, height) => {
 		data
 	};
 };
-/** 閫氳繃浜掔浉姣旇緝鏁扮粍椤规眰鍑烘渶缁堥」 */
+/** 通过互相比较数组项求出最终项 */
 const boil = (array, compareFunc) => {
 	if (!array || (array.length ?? 0) === 0) return null;
 	return array.reduce(compareFunc);
 };
 //#endregion
 //#region src/worker/ImageRecognition/colorArea.ts
-/** 鑾峰彇棰滆壊鍖哄煙鍦ㄨ竟缂樺尯鍩熶笂鐨勫崰姣?*/
+/** 获取颜色区域在边缘区域上的占比 */
 const getAreaEdgeRatio = (pixelList, width, height) => {
 	let size = 0;
 	const edgeScope = getEdgeScope(width, height);
@@ -10449,11 +10600,11 @@ const getAreaEdgeRatio = (pixelList, width, height) => {
 	forEachEdge(width, height, edgeScope, add);
 	return size / (width * edgeScope * 2 + (height - 2 * edgeScope) * edgeScope * 2);
 };
-/** 鏍规嵁鐏板害鍊艰幏鍙栧浘鐗囪竟缂樼浉浼奸鑹茬殑鍖哄煙 */
+/** 根据灰度值获取图片边缘相似颜色的区域 */
 const getEdgeArea = (grayList, width, height) => {
 	const maximum = width * height * .4;
 	const areaMap = /* @__PURE__ */ new Map();
-	/** 寰呮鏌ョ浉閭诲儚绱犵殑鍍忕礌 */
+	/** 待检查相邻像素的像素 */
 	const seedPixel = /* @__PURE__ */ new Set();
 	const addSeedPixel = (index) => {
 		const gray = grayList[index];
@@ -10469,7 +10620,7 @@ const getEdgeArea = (grayList, width, height) => {
 		return index;
 	};
 	forEachEdge(width, height, getEdgeScope(width, height), addSeedPixel);
-	/** 鑾峰彇鐩搁偦鍍忕礌 */
+	/** 获取相邻像素 */
 	const getAdjacentPixel = (i) => {
 		const adjacentPixel = [];
 		const x = i % width;
@@ -10506,7 +10657,7 @@ const getEdgeArea = (grayList, width, height) => {
 	}
 	return areaList;
 };
-/** 鑾峰彇鍥惧儚鎸囧畾鍖哄煙涓殑涓昏壊 */
+/** 获取图像指定区域中的主色 */
 const getAreaColor = (imgData, pixelList) => {
 	const colorMap = /* @__PURE__ */ new Map();
 	const maximum = pixelList.size * .5;
@@ -10526,7 +10677,7 @@ const getAreaColor = (imgData, pixelList) => {
 	}
 	return maxColor;
 };
-/** 鑾峰彇鍥惧儚鎸囧畾鐭╁舰鍖哄煙涓殑涓昏壊 */
+/** 获取图像指定矩形区域中的主色 */
 const getSquareAreaColor = (imgData, topLeftX, topLeftY, bottomRightX, bottomRightY) => {
 	const startX = Math.floor(topLeftX);
 	const startY = Math.floor(topLeftY);
@@ -10552,7 +10703,7 @@ const getSquareAreaColor = (imgData, topLeftX, topLeftY, bottomRightX, bottomRig
 };
 //#endregion
 //#region src/worker/ImageRecognition/background.ts
-/** 鏍规嵁杈圭紭棰滆壊鍖哄煙鑾峰彇鑳屾櫙棰滆壊 */
+/** 根据边缘颜色区域获取背景颜色 */
 const byEdgeArea = ({ data, grayList, width, height }) => {
 	const areaList = getEdgeArea(grayList, width, height);
 	if (areaList.length === 0) return;
@@ -10577,7 +10728,7 @@ const getPosAreaColor = (pos, { data, blankMargin, width: w, height: h }) => {
 		case "right": return getSquareAreaColor(data, w - blankMargin.right * w, 0, w, h);
 	}
 };
-/** 浠庤冻澶熷ぇ鐨勭┖鐧借竟缂樹腑鑾峰彇鑳屾櫙棰滆壊 */
+/** 从足够大的空白边缘中获取背景颜色 */
 const byBlankMargin = (context) => {
 	const colorMap = {};
 	for (const pos of [
@@ -10595,11 +10746,11 @@ const byBlankMargin = (context) => {
 	if (colorList.length === 0) return;
 	return boil(colorList, (a, b) => a[1] > b[1] ? a : b)?.[0];
 };
-/** 鍒ゆ柇鍥惧儚鐨勮儗鏅壊 */
+/** 判断图像的背景色 */
 const getBackground = (context) => "blankMargin" in context && byBlankMargin(context) || byEdgeArea(context);
 //#endregion
 //#region src/worker/ImageRecognition/blankMargin.ts
-/** 鑾峰彇鍥剧墖绌虹櫧杈圭紭鐨勯暱搴?*/
+/** 获取图片空白边缘的长度 */
 const getBlankMargin = ({ grayList, width, height }) => {
 	let blankColor;
 	const isBlankLine = (x, y) => {
@@ -10674,10 +10825,10 @@ const recognitionImg = (imgData, width, height, url, option) => {
 		bgColor = getBackground(context);
 		if (bgColor) mainFn.setImg(url, "background", bgColor);
 	}
-	let logText = \`\${url}\\n鑰楁椂 \${Date.now() - startTime}ms 澶勭悊瀹屾垚\`;
+	let logText = \`\${url}\\n耗时 \${Date.now() - startTime}ms 处理完成\`;
 	const resList = [];
-	if (blankMargin) resList.push(\`绌虹櫧杈圭紭锛歕${Object.entries(blankMargin).filter(([, v]) => v).map(([k, v]) => \`\${k}:\${v && (v * 100).toFixed(2)}%\`).join(" ")}\`);
-	if (bgColor) resList.push(\`鑳屾櫙鑹? \${bgColor}\`);
+	if (blankMargin) resList.push(\`空白边缘：\${Object.entries(blankMargin).filter(([, v]) => v).map(([k, v]) => \`\${k}:\${v && (v * 100).toFixed(2)}%\`).join(" ")}\`);
+	if (bgColor) resList.push(\`背景色: \${bgColor}\`);
 	if (resList.length > 0) logText += \`\\n\${resList.join("\\n")}\`;
 	mainFn.log?.(logText);
 };
@@ -10795,7 +10946,7 @@ const getModel = async () => {
 		await _tensorflow_tfjs.setBackend("webgpu");
 	} catch (error) {
 		mainFn.toast.warn(mainFn.t("upscale.webgpu_tip"));
-		mainFn.log.error("鍒囨崲 WebGPU 鍑洪敊", error);
+		mainFn.log.error("切换 WebGPU 出错", error);
 	}
 	const { buffer, base64, json } = await mainFn.getModel();
 	Reflect.set(_tensorflow_tfjs.env().platform, "fetch", () => ({
@@ -10891,7 +11042,7 @@ const upscaleImage = async (data, width, height, url) => {
 	ctx.putImageData(imgData, 0, 0);
 	const blob = await canvas.convertToBlob({ type: "image/png" });
 	mainFn.setImg(url, "upscaleUrl", URL.createObjectURL(blob));
-	mainFn.log?.(\`\${url}\\n\${width}x\${height}\\n鑰楁椂 \${Date.now() - startTime}ms 鏀惧ぇ瀹屾垚\`);
+	mainFn.log?.(\`\${url}\\n\${width}x\${height}\\n耗时 \${Date.now() - startTime}ms 放大完成\`);
 };
 //#endregion
 exports.setMainFn = setMainFn;
@@ -10901,13 +11052,13 @@ exports.upscaleImage = upscaleImage;
 let core = require("core");
 let helper = require("helper");
 //#region src/userscript/otherSite/chapterSwitch.ts
-const prevRe = /^涓婁竴?(?:[绔犺┍璇漖|绔犺妭)$|^(?:prev|previous)(?:\\s+chapter)?$|^鍓嶃伄绔?/i;
-const nextRe = /^涓嬩竴?(?:[绔犺┍璇漖|绔犺妭)$|^next(?:\\s+chapter)?$|^娆°伄绔?/i;
+const prevRe = /^上一?(?:[章話话]|章节)$|^(?:prev|previous)(?:\\s+chapter)?$|^前の章$/i;
+const nextRe = /^下一?(?:[章話话]|章节)$|^next(?:\\s+chapter)?$|^次の章$/i;
 const getChapterSwitch = () => {
 	let onPrev;
 	let onNext;
 	const checkElement = (e) => {
-		const texts = [e.textContent, e.ariaLabel].filter(Boolean).map((text) => text.replaceAll(/[<>()銆娿€嬶紙锛夈€屻€嶃€庛€廬/g, "").trim());
+		const texts = [e.textContent, e.ariaLabel].filter(Boolean).map((text) => text.replaceAll(/[<>()《》（）「」『』]/g, "").trim());
 		if (texts.length === 0) return;
 		for (const text of texts) {
 			if (!onPrev && prevRe.test(text)) {
@@ -10940,7 +11091,7 @@ const getTagText = (ele) => {
 	if (ele.id && !/\\d/.test(ele.id)) text += \`#\${ele.id}\`;
 	return text;
 };
-/** 鑾峰彇鍏冪礌浠呰褰曚簡灞傜骇缁撴瀯鍏崇郴鐨勯€夋嫨鍣?*/
+/** 获取元素仅记录了层级结构关系的选择器 */
 const getEleSelector = (ele) => {
 	const parents = [ele.nodeName];
 	const root = ele.getRootNode();
@@ -10951,7 +11102,7 @@ const getEleSelector = (ele) => {
 	}
 	return parents.toReversed().join(">");
 };
-/** 鍒ゆ柇鎸囧畾鍏冪礌鏄惁绗﹀悎閫夋嫨鍣?*/
+/** 判断指定元素是否符合选择器 */
 const isEleSelector = (ele, selector) => {
 	const parents = selector.split(">").toReversed();
 	let e = ele;
@@ -10963,7 +11114,7 @@ const isEleSelector = (ele, selector) => {
 };
 //#endregion
 //#region src/userscript/otherSite/ImageWatcher.ts
-/** 鐩戝惉缃戦〉涓婄殑鎵€鏈夊浘鐗囧厓绱犵殑鍙樺寲锛岀瓫閫夊嚭绗﹀悎鏉′欢鐨勫浘鐗?*/
+/** 监听网页上的所有图片元素的变化，筛选出符合条件的图片 */
 var ImageWatcher = class {
 	options;
 	ro;
@@ -10990,15 +11141,15 @@ var ImageWatcher = class {
 			attributeFilter: this.targetAttributes
 		});
 	}
-	/** 鍋滄鐩戝惉骞舵竻鐞嗚祫婧?*/
+	/** 停止监听并清理资源 */
 	stop() {
 		this.mo.disconnect();
 		this.ro.disconnect();
 		this.qualifiedMap.clear();
 	}
-	/** 浣跨敤 ResizeObserver 鐩戞祴鍥剧墖灏哄鍙樺寲 */
+	/** 使用 ResizeObserver 监测图片尺寸变化 */
 	observeImage = (img) => this.ro.observe(img);
-	/** 澶勭悊 ResizeObserver 鐨勫洖璋冿紝鍙湁鍦ㄥ浘鐗囧昂瀵稿彂鐢熷疄闄呭彉鍖栵紙鎴栧垵濮嬪寲锛夋椂鎵嶄細瑙﹀彂 */
+	/** 处理 ResizeObserver 的回调，只有在图片尺寸发生实际变化（或初始化）时才会触发 */
 	handleResize = (entries) => {
 		let changed = false;
 		for (const entry of entries) {
@@ -11021,13 +11172,16 @@ var ImageWatcher = class {
 		if (changed) this.options.onChanged(this.qualifiedMap);
 	};
 	/**
-	* 閬嶅巻鑺傜偣鍙婂叾瀛愭爲涓殑鎵€鏈夊浘鐗囧厓绱?	*/
+	* 遍历节点及其子树中的所有图片元素
+	*/
 	forEachImage(nodes, callback) {
 		for (const node of nodes) if (helper.isImageElement(node)) callback(node);
 		else if (helper.isHTMLElement(node)) for (const img of node.querySelectorAll("img")) callback(img);
 	}
 	/**
-	* 澶勭悊 MutationObserver 鐨勫洖璋?	* 璐熻矗鍙戠幇鏂板厓绱犲拰灞炴€у彉鍖?	*/
+	* 处理 MutationObserver 的回调
+	* 负责发现新元素和属性变化
+	*/
 	handleMutation = (mutations) => {
 		let changed = false;
 		const deleteImg = (img) => {
@@ -11059,9 +11213,9 @@ const createImgData = (oldSrc = "") => ({
 	observerTimeout: 0,
 	oldSrc
 });
-/** 鐢ㄤ簬鍒ゆ柇鏄惁鏄浘鐗?url 鐨勬鍒?*/
+/** 用于判断是否是图片 url 的正则 */
 const isImgUrlRe = /^(?:(?:(?:https?|ftp|file):)?\\/)?\\/[-\\w+&@#/%?=~|!:,.;]+[-\\w+&@#%=~|]$/;
-/** 鎵惧嚭鏍煎紡涓哄浘鐗?url 鐨勫厓绱犲睘鎬?*/
+/** 找出格式为图片 url 的元素属性 */
 const getDatasetUrl = (e) => {
 	for (const key of e.getAttributeNames()) {
 		switch (key) {
@@ -11081,9 +11235,10 @@ const getDatasetUrl = (e) => {
 };
 /**
 *
-* 閫氳繃婊氬姩鍒版寚瀹氬浘鐗囧厓绱犱綅缃苟鍋滅暀涓€浼氭潵瑙﹀彂鍥剧墖鐨勬噿鍔犺浇锛岃繑鍥炲浘鐗?src 鏄惁鍙戠敓鍙樺寲
+* 通过滚动到指定图片元素位置并停留一会来触发图片的懒加载，返回图片 src 是否发生变化
 *
-* 浼氬湪瑙﹀彂鍚庨噸鏂版粴鍥炲師浣嶏紝褰?time 涓?0 鏃讹紝鍥犱负婊氬姩閫熷害寰堝揩鎵€浠ユ槸鏃犳劅鐨?*/
+* 会在触发后重新滚回原位，当 time 为 0 时，因为滚动速度很快所以是无感的
+*/
 const triggerEleLazyLoad = async ({ e, waitTime, isLazyLoaded, runCondition }) => {
 	const nowScroll = window.scrollY;
 	e.scrollIntoView({ behavior: "instant" });
@@ -11097,7 +11252,7 @@ const triggerEleLazyLoad = async ({ e, waitTime, isLazyLoaded, runCondition }) =
 		});
 	}
 };
-/** 鍒ゆ柇涓€涓厓绱犳槸鍚﹀凡缁忔垚鍔熻Е鍙戝畬鎳掑姞杞?*/
+/** 判断一个元素是否已经成功触发完懒加载 */
 const isLazyLoaded = (e, oldSrc) => {
 	if (helper.isImageElement(e)) {
 		if (!e.src) return false;
@@ -11114,9 +11269,9 @@ const isLazyLoaded = (e, oldSrc) => {
 const imgMap = /* @__PURE__ */ new WeakMap();
 const getImg = (e) => imgMap.get(e) ?? createImgData();
 const MAX_TRIGGED_NUM = 5;
-/** 鍒ゆ柇鍥剧墖鍏冪礌鏄惁闇€瑕佽Е鍙戞噿鍔犺浇 */
+/** 判断图片元素是否需要触发懒加载 */
 const needTrigged = (e) => !isLazyLoaded(e, imgMap.get(e)?.oldSrc) && (imgMap.get(e)?.triggedNum ?? 0) < MAX_TRIGGED_NUM;
-/** 鍥剧墖鎳掑姞杞借Е鍙戝畬鍚庤皟鐢?*/
+/** 图片懒加载触发完后调用 */
 const handleTrigged = (e) => {
 	const img = getImg(e);
 	img.observerTimeout = 0;
@@ -11125,7 +11280,7 @@ const handleTrigged = (e) => {
 	imgMap.set(e, img);
 	if (!needTrigged(e)) imgShowObserver.unobserve(e);
 };
-/** 鐩戣鍥剧墖鏄惁琚樉绀虹殑 Observer */
+/** 监视图片是否被显示的 Observer */
 const imgShowObserver = new IntersectionObserver((entries) => {
 	for (const img of entries) {
 		const e = img.target;
@@ -11137,7 +11292,7 @@ const imgShowObserver = new IntersectionObserver((entries) => {
 	}
 });
 const turnPageScheduled = helper.createScheduled((fn) => helper.throttle(fn, 1e3));
-/** 瑙﹀彂缈婚〉 */
+/** 触发翻页 */
 const triggerTurnPage = async (waitTime, runCondition) => {
 	if (!turnPageScheduled()) return;
 	const nowScroll = window.scrollY;
@@ -11153,7 +11308,7 @@ const triggerTurnPage = async (waitTime, runCondition) => {
 	});
 };
 const waitTime = 300;
-/** 瑙﹀彂椤甸潰涓婂浘鐗囧厓绱犵殑鎳掑姞杞?*/
+/** 触发页面上图片元素的懒加载 */
 const triggerLazyLoad = helper.singleThreaded(async (_, targetImgList, runCondition) => {
 	for (const e of targetImgList) {
 		imgShowObserver.observe(e);
@@ -11177,7 +11332,7 @@ const triggerLazyLoad = helper.singleThreaded(async (_, targetImgList, runCondit
 //#endregion
 //#region src/userscript/otherSite/index.tsx
 var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<div><button>\`);
-/** 鎵ц鑴氭湰鎿嶄綔銆傚鏋滀腑閫斾腑鏂紝灏嗚繑鍥?true */
+/** 执行脚本操作。如果中途中断，将返回 true */
 const otherSite = async () => {
 	let laseScroll = window.scrollY;
 	const { store, setState, options, setOptions } = await core.useInit(location.hostname, {
@@ -11199,7 +11354,7 @@ const otherSite = async () => {
 	const menuId = await GM.registerMenuCommand(helper.t("site.simple.simple_read_mode"), () => setOptions({ selector: "" }));
 	await helper.wait(() => !options.selector || helper.querySelectorAll(options.selector).length >= 2);
 	await GM.unregisterMenuCommand(menuId);
-	/** 璁板綍浼犲叆鐨勫浘鐗囧厓绱犱腑鏈€甯歌鐨勯偅涓?selector */
+	/** 记录传入的图片元素中最常见的那个 selector */
 	const saveImgEleSelector = (imgEleList) => {
 		if (imgEleList.length < 7) return;
 		const selector = helper.getMostItem(imgEleList.map(getEleSelector));
@@ -11221,7 +11376,7 @@ const otherSite = async () => {
 		if (url.startsWith("http:") && location.protocol === "https:") return url.replace("http:", "https:");
 		return url;
 	};
-	/** 閲嶅鐨勫姞杞藉崰浣嶅浘 */
+	/** 重复的加载占位图 */
 	const placeholderImgList = /* @__PURE__ */ new Set();
 	helper.createEffectOn(() => store.manga.imgList.filter((url) => url && !placeholderImgList.has(url)), helper.throttle((imgList) => {
 		if (!imgList?.length || imgList.length - new Set(imgList).size <= 4) return;
@@ -11234,20 +11389,20 @@ const otherSite = async () => {
 	}));
 	const imgBlackList = ["#pagetual-preload", "noscript"];
 	const getAllImg = () => helper.querySelectorAll(\`:not(\${imgBlackList.join(",")}) > img\`);
-	/** 鑾峰彇澶ф鐜囨槸婕敾鍥剧墖鐨勫浘鐗囧厓绱?*/
+	/** 获取大概率是漫画图片的图片元素 */
 	const getExpectImgList = () => helper.querySelectorAll(options.selector).filter((e) => isLazyLoaded(e, imgMap.get(e)?.oldSrc) || !imgMap.has(e) || imgMap.get(e).triggedNum <= 5);
 	let imgEleList = [];
 	let timeout = 0;
-	/** 鍙湪\`寮€鍚簡闃呰妯″紡\`鍜孿`褰撳墠鍙樉绀哄浘鐗囨暟閲忎笉瓒砛`鏃堕€氳繃婊氬姩瑙﹀彂鎳掑姞杞?*/
+	/** 只在\`开启了阅读模式\`和\`当前可显示图片数量不足\`时通过滚动触发懒加载 */
 	const runCondition = () => store.manga.show || !timeout && store.manga.imgList.length === 0;
-	/** 瑙﹀彂澶ф鐜囨槸婕敾鍥剧墖鐨勬噿鍔犺浇 */
+	/** 触发大概率是漫画图片的懒加载 */
 	const triggerExpectImg = (num, time) => helper.wait(async () => {
 		let expectImgList = getExpectImgList().filter(needTrigged);
 		if (num) expectImgList = expectImgList.slice(0, num);
 		await triggerLazyLoad(expectImgList, runCondition);
 		return expectImgList.every((e) => !needTrigged(e));
 	}, time);
-	/** 鎸夌収鍏冪礌鐨勬樉绀洪珮搴︽潵鎺掑簭鍏冪礌 */
+	/** 按照元素的显示高度来排序元素 */
 	const sortElementsByTop = (elements) => {
 		const topMap = /* @__PURE__ */ new WeakMap();
 		for (const e of elements) topMap.set(e, e.getBoundingClientRect().top);
@@ -11281,7 +11436,7 @@ const otherSite = async () => {
 			setState("manga", getChapterSwitch());
 		}, 500)
 	});
-	/** 妫€鏌ュ厔寮熷厓绱犱腑鏄惁鏈夎冻澶熷鐨勫厓绱犱笌 parent 鍏锋湁鐩稿悓鐨?dataset */
+	/** 检查兄弟元素中是否有足够多的元素与 parent 具有相同的 dataset */
 	const hasEnoughSimilarSiblings = (parent, children, threshold) => {
 		let sameNum = 0;
 		for (const siblingDom of children) {
@@ -11657,18 +11812,18 @@ const getTagLintRules = () => {
 		combo: createRuleMap(rules.combo, true)
 	};
 };
-/** 鎷嗗垎澶氫釜鍛藉悕绌洪棿鐨勬爣绛?*/
+/** 拆分多个命名空间的标签 */
 const splitTagNamespace = (tag) => {
 	if (!tag.startsWith("(")) return [tag];
 	const [, namespaces, tagName] = /\\((.+?)\\)(.+)/.exec(tag);
 	return namespaces.split("|").map((namespace) => \`\${namespace}\${tagName}\`);
 };
-/** 鍒ゆ柇鏄惁缂哄皯鎸囧畾鍛藉悕绌洪棿涓嬬殑鏍囩 */
+/** 判断是否缺少指定命名空间下的标签 */
 const isMissingNamespace = (tagList, ...namespaces) => {
 	for (const namespace of namespaces) for (const tag of tagList) if (tag.startsWith(namespace)) return false;
 	return true;
 };
-/** 妫€鏌ユ爣绛炬槸鍚﹀瓨鍦?*/
+/** 检查标签是否存在 */
 const hasTag = (tagList, tagName) => {
 	if (tagName.startsWith("(")) {
 		for (const tag of splitTagNamespace(tagName)) if (tagList.has(tag)) return true;
@@ -11676,7 +11831,7 @@ const hasTag = (tagList, tagName) => {
 	if (tagName.endsWith(":*")) return !isMissingNamespace(tagList, tagName.split(":*")[0]);
 	return tagList.has(tagName);
 };
-/** 鍒ゆ柇鏄惁缂哄皯鎸囧畾鏍囩 */
+/** 判断是否缺少指定标签 */
 const isMissingTags = (tagList, ...tags) => {
 	for (const tag of tags) if (tagList.has(tag)) return false;
 	return true;
@@ -11694,7 +11849,7 @@ let helper = require("helper");
 let solid_js = require("solid-js");
 let userscript_copyApi = require("userscript/copyApi");
 //#region src/site/copymanga.tsx
-var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<span>\`), _tmpl$2 = /* @__PURE__ */ solid_js_web.template(\`<div class=table-default><div class=table-default-title><ul class="nav nav-tabs"role=tablist></ul><div class=table-default-right><span>鏇存柊鍏у锛?/span><a target=_blank></a><span>鏇存柊鏅傞枔锛?/span><span></span></div></div><div class=table-default-box><div class=tab-content>\`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<div class="detailsTextContentTabs van-tabs van-tabs--line">\`), _tmpl$4 = /* @__PURE__ */ solid_js_web.template(\`<div class=van-tabs__wrap><div role=tablist class="van-tabs__nav van-tabs__nav--line"style=background:transparent><div role=tab class="van-tab van-tab--active"><span class="van-tab__text van-tab__text--ellipsis"><span></span></span></div><div class=van-tabs__line style="width:0.24rem;transform:translateX(187.5px) translateX(-50%);transition-duration:0.3s">\`), _tmpl$5 = /* @__PURE__ */ solid_js_web.template(\`<div class=van-tab__pane><div class="chapterList van-grid"style=padding-left:0.24rem>\`), _tmpl$6 = /* @__PURE__ */ solid_js_web.template(\`<div class="chapterItem oneLines van-grid-item"style=flex-basis:25%;padding-right:0.24rem;margin-top:0.24rem><a class="van-grid-item__content van-grid-item__content--center"><span class=van-grid-item__text>\`), _tmpl$7 = /* @__PURE__ */ solid_js_web.template(\`<li class=nav-item><a class=nav-link data-toggle=tab role=tab aria-selected=false>\`), _tmpl$8 = /* @__PURE__ */ solid_js_web.template(\`<div role=tabpanel class="tab-pane fade"><ul>\`), _tmpl$9 = /* @__PURE__ */ solid_js_web.template(\`<a target=_blank style=display:block><li>\`), _tmpl$0 = /* @__PURE__ */ solid_js_web.template(\`<div class=card style="max-width:100em;margin:1em auto"><div class=card-body><h2 class=card-title></h2><ul>\`), _tmpl$1 = /* @__PURE__ */ solid_js_web.template(\`<a class="btn btn-outline-primary">\`);
+var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<span>\`), _tmpl$2 = /* @__PURE__ */ solid_js_web.template(\`<div class=table-default><div class=table-default-title><ul class="nav nav-tabs"role=tablist></ul><div class=table-default-right><span>更新內容：</span><a target=_blank></a><span>更新時間：</span><span></span></div></div><div class=table-default-box><div class=tab-content>\`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<div class="detailsTextContentTabs van-tabs van-tabs--line">\`), _tmpl$4 = /* @__PURE__ */ solid_js_web.template(\`<div class=van-tabs__wrap><div role=tablist class="van-tabs__nav van-tabs__nav--line"style=background:transparent><div role=tab class="van-tab van-tab--active"><span class="van-tab__text van-tab__text--ellipsis"><span></span></span></div><div class=van-tabs__line style="width:0.24rem;transform:translateX(187.5px) translateX(-50%);transition-duration:0.3s">\`), _tmpl$5 = /* @__PURE__ */ solid_js_web.template(\`<div class=van-tab__pane><div class="chapterList van-grid"style=padding-left:0.24rem>\`), _tmpl$6 = /* @__PURE__ */ solid_js_web.template(\`<div class="chapterItem oneLines van-grid-item"style=flex-basis:25%;padding-right:0.24rem;margin-top:0.24rem><a class="van-grid-item__content van-grid-item__content--center"><span class=van-grid-item__text>\`), _tmpl$7 = /* @__PURE__ */ solid_js_web.template(\`<li class=nav-item><a class=nav-link data-toggle=tab role=tab aria-selected=false>\`), _tmpl$8 = /* @__PURE__ */ solid_js_web.template(\`<div role=tabpanel class="tab-pane fade"><ul>\`), _tmpl$9 = /* @__PURE__ */ solid_js_web.template(\`<a target=_blank style=display:block><li>\`), _tmpl$0 = /* @__PURE__ */ solid_js_web.template(\`<div class=card style="max-width:100em;margin:1em auto"><div class=card-body><h2 class=card-title></h2><ul>\`), _tmpl$1 = /* @__PURE__ */ solid_js_web.template(\`<a class="btn btn-outline-primary">\`);
 const token = document.cookie.split("; ").find((cookie) => cookie.startsWith("token="))?.replace("token=", "");
 const mobileApi = new class {
 	headers = {
@@ -11736,19 +11891,19 @@ const handleLastChapter = (comicName) => {
 			a.target = "_blank";
 			tableRight.firstElementChild?.before(a);
 			const span = document.createElement("span");
-			span.textContent = "鏈€寰岄柋璁€锛?;
+			span.textContent = "最後閱讀：";
 			tableRight.firstElementChild?.before(span);
 		})();
-		a.textContent = "鐛插彇涓?;
+		a.textContent = "獲取中";
 		a.removeAttribute("href");
 		const data = (await pcApi.get(\`/api/v3/comic2/\${comicName}/query?platform=3\`)).response?.results?.browse;
 		if (!data) {
-			a.textContent = data === null ? "鐒? : "鏈繑鍥炴暩鎿?;
+			a.textContent = data === null ? "無" : "未返回數據";
 			return;
 		}
 		const lastChapterId = data.chapter_id;
 		if (!lastChapterId) {
-			a.textContent = "鎺ュ彛鐣板父";
+			a.textContent = "接口異常";
 			return;
 		}
 		await stylesheet.replace(\`ul a[href*="\${lastChapterId}"] {
@@ -11762,7 +11917,7 @@ const handleLastChapter = (comicName) => {
 	document.addEventListener("visibilitychange", updateLastChapter);
 };
 const buildChapters = async (comicName, hiddenType) => {
-	const { response: { results } } = await mobileApi.get(\`/comicdetail/\${comicName}/chapters\`, { errorText: "鍔犺級婕暙鐩寗澶辨晽" });
+	const { response: { results } } = await mobileApi.get(\`/comicdetail/\${comicName}/chapters\`, { errorText: "加載漫畫目錄失敗" });
 	const data = await userscript_copyApi.decryptData(results);
 	helper.log(data);
 	const { build: { type }, groups } = data;
@@ -11961,19 +12116,19 @@ core.setupSiteAdapter({
 			if (!comicName) return;
 			const isMobile = location.href.includes("/h5/");
 			let hiddenType;
-			if (document.title === "404 - 鎷疯矟婕暙") hiddenType = isMobile ? "mobile" : "404";
+			if (document.title === "404 - 拷貝漫畫") hiddenType = isMobile ? "mobile" : "404";
 			else if (isMobile) {
 				await helper.wait(() => helper.querySelector(".van-toast__text")?.parentElement?.style.display === "none");
 				hiddenType = await helper.wait(() => {
-					if (helper.querySelector(".isBan")?.textContent?.includes("涓嶆彁渚涢柋瑕?)) return "mobile";
+					if (helper.querySelector(".isBan")?.textContent?.includes("不提供閱覽")) return "mobile";
 					const dialog = helper.querySelector(".van-dialog__message");
-					if (dialog?.textContent?.includes("婕暙鏈壘鍒?)) {
-						dialog.textContent = "婕暙鏈壘鍒?\\n璜嬪潗鍜屾斁瀵紝绛夊緟鐩寗鐢熸垚";
+					if (dialog?.textContent?.includes("漫畫未找到")) {
+						dialog.textContent = "漫畫未找到!\\n請坐和放寬，等待目錄生成";
 						for (const element of helper.querySelectorAll(".detailsTextContentTabs")) element.remove();
 						return "mobile";
 					}
 				}, 1e3);
-			} else if (Boolean(helper.querySelector(".wargin")?.textContent?.includes("涓嶆彁渚涢柋瑕?)) || !await helper.wait(() => helper.querySelector(".upLoop .table-default-title"), 1e3)) hiddenType = helper.querySelector(".comicParticulars-title") ? "web" : "404";
+			} else if (Boolean(helper.querySelector(".wargin")?.textContent?.includes("不提供閱覽")) || !await helper.wait(() => helper.querySelector(".upLoop .table-default-title"), 1e3)) hiddenType = helper.querySelector(".comicParticulars-title") ? "web" : "404";
 			return {
 				type: "catalog",
 				comicName,
@@ -11984,21 +12139,21 @@ core.setupSiteAdapter({
 	},
 	handlers: {
 		manga: async ({ setState }, { comicName, id }) => {
-			/** 婕敾涓嶅瓨鍦ㄦ椂鎵嶄細鍑虹幇鐨勬彁绀?*/
+			/** 漫画不存在时才会出现的提示 */
 			const titleDom = helper.querySelector("main .img+.title");
-			if (titleDom) titleDom.textContent = "ComicRead 鎻愮ず鎮細浣犺í鍟忕殑鍏у鏆笉瀛樺湪锛岃珛榛為伕鍙充笅瑙掓寜閳曞槜瑭﹀姞杓夋极鐣?;
-			/** 閫氳繃缃戦〉 API 鍔犺浇婕敾锛堝彲浠ヨ幏鍙栭殣钘忔极鐢伙級 */
+			if (titleDom) titleDom.textContent = "ComicRead 提示您：你訪問的內容暫不存在，請點選右下角按鈕嘗試加載漫畫";
+			/** 通过网页 API 加载漫画（可以获取隐藏漫画） */
 			const getImglistByApi = async () => {
 				const res = await pcApi.get(\`/api/v3/comic/\${comicName}/chapter2/\${id}?platform=3\`, { noCheckCode: true });
 				if (res.status !== 200) {
-					const message = \`婕暙鍔犺級澶辨晽锛歕${res.response.message || res.status}\`;
+					const message = \`漫畫加載失敗：\${res.response.message || res.status}\`;
 					if (titleDom) titleDom.textContent = message;
 					throw new Error(message);
 				}
 				if (titleDom) {
-					titleDom.textContent = "婕暙鍔犺級鎴愬姛馃コ";
+					titleDom.textContent = "漫畫加載成功🥳";
 					const { chapter: { name: chapterName }, comic: { name } } = res.response.results;
-					document.title = \`\${name} - \${chapterName} - 鎷疯矟婕暙 鎷疯礉婕敾\`;
+					document.title = \`\${name} - \${chapterName} - 拷貝漫畫 拷贝漫画\`;
 				}
 				if (titleDom ?? !helper.querySelector(".comicContent-next")) {
 					const { chapter: { next, prev } } = res.response.results;
@@ -12020,7 +12175,7 @@ core.setupSiteAdapter({
 				if (titleDom) return getImglistByApi();
 				try {
 					const imgList = await userscript_copyApi.getImglistByHtml(\`\${location.origin}/comic/\${comicName}/chapter/\${id}\`);
-					if (imgList.length === 0) throw new Error("瑙ｆ瀽缃戦〉鍙橀噺澶辫触");
+					if (imgList.length === 0) throw new Error("解析网页变量失败");
 					return imgList;
 				} catch (error) {
 					helper.log.error(error);
@@ -12030,7 +12185,7 @@ core.setupSiteAdapter({
 			const getCommentList = async (commentList = []) => {
 				const chapter_id = location.pathname.split("/").at(-1);
 				const res = await pcApi.get(\`/api/v3/roasts?chapter_id=\${chapter_id}&limit=100&offset=\${commentList.length}&_update=true\`, {
-					errorText: "鑾峰彇婕敾璇勮澶辫触",
+					errorText: "获取漫画评论失败",
 					responseType: "blob"
 				});
 				const { list, total } = JSON.parse(await res.response.text()).results;
@@ -12045,13 +12200,13 @@ core.setupSiteAdapter({
 				const tip = helper.querySelector(".isBan, .wargin");
 				if (tip) tip.style.textDecoration = "line-through";
 				const titleDom = helper.querySelector("main .img+.title");
-				if (titleDom) titleDom.textContent = "ComicRead 鎻愮ず鎮細浣犺í鍟忕殑鍏у鏆笉瀛樺湪锛岃珛鍧愬拰鏀惧锛岀瓑寰呯洰閷勭敓鎴?;
+				if (titleDom) titleDom.textContent = "ComicRead 提示您：你訪問的內容暫不存在，請坐和放寬，等待目錄生成";
 				try {
 					await buildChapters(comicName, hiddenType);
 				} catch (error) {
 					helper.log.error(error);
-					if (titleDom) titleDom.textContent = "ComicRead 鎻愮ず鎮細鐩寗鐢熸垚澶辨晽馃槩";
-					core.toast.error("鐩寗鐢熸垚澶辨晽馃槩", { duration: Number.POSITIVE_INFINITY });
+					if (titleDom) titleDom.textContent = "ComicRead 提示您：目錄生成失敗😢";
+					core.toast.error("目錄生成失敗😢", { duration: Number.POSITIVE_INFINITY });
 				}
 			}
 			if (!isMobile && token) handleLastChapter(comicName);
@@ -12142,7 +12297,7 @@ const updateSortCss = (tagList) => {
 	for (const { title, order } of tagList) css += \`\\n.gt[title="\${title}"] { order: \${order}; }\`;
 	return GM.setValue("ehTagSortCss", css);
 };
-/** 鎸夌収 mytags 涓婇厤缃殑鏍囩椤哄簭瀵瑰叾浠栭〉闈笂鐨勬爣绛捐繘琛屾帓搴?*/
+/** 按照 mytags 上配置的标签顺序对其他页面上的标签进行排序 */
 const sortTags = async (pageCtx) => {
 	handleMyTagsChange.add(updateSortCss);
 	switch (pageCtx.type) {
@@ -12170,7 +12325,7 @@ const sortTags = async (pageCtx) => {
 //#endregion
 //#region src/site/ehentai/colorizeTag.ts
 const buildTagList = (tagList, prefix) => \`\\n\${Array.from(tagList, (tag) => \`\${prefix}\${CSS.escape(tag)}\`).join(",\\n")}\\n\`;
-/** 鑾峰彇鏈€鏂扮殑鏍囩棰滆壊鏁版嵁 */
+/** 获取最新的标签颜色数据 */
 const updateTagColor = async (tagList) => {
 	const backgroundMap = {};
 	const borderMap = {};
@@ -12198,7 +12353,7 @@ const updateTagColor = async (tagList) => {
 		css += \`{ color: \${color} !important; position: relative; }\\n\\n\`;
 	}
 	css += \`
-    /* 绂佺敤 eh 鐨勫彉鑹叉晥鏋滐紝蹇呴』浣跨敤 !important */
+    /* 禁用 eh 的变色效果，必须使用 !important */
     #taglist a[id] { color: var(--tag) !important; position: relative; }
     #taglist a[id]:hover { color: var(--tag-hover) !important; }
 
@@ -12215,13 +12370,13 @@ const updateTagColor = async (tagList) => {
     .tdn { --color: var(--tdn) }
     #taglist a[id][style="color: blue;"] { --color: blue; }
 
-    /* 閬垮厤琚笂涓€琛岀殑涓嬪垝绾跨鍒?*/
+    /* 避免被上一行的下划线碰到 */
     #taglist div:is(.gt, .gtl, .gtw) { margin-top: 1px; }
   \`;
 	await GM.setValue("ehTagColorizeCss", css);
 	return css;
 };
-/** 鏍囩鏌撹壊 */
+/** 标签染色 */
 const colorizeTag = async (_, pageCtx) => {
 	handleMyTagsChange.add(updateTagColor);
 	switch (pageCtx.type) {
@@ -12269,27 +12424,27 @@ const toImgList = (data) => data.pages.map((page) => ({
 //#endregion
 //#region src/site/ehentai/helper/context.tsx
 const featureOptions = {
-	/** 鍏宠仈澶栫珯 */
+	/** 关联外站 */
 	cross_site_link: true,
-	/** 澧炲姞蹇嵎閿搷浣?*/
+	/** 增加快捷键操作 */
 	add_hotkeys_actions: true,
-	/** 璇嗗埆骞垮憡椤?*/
+	/** 识别广告页 */
 	detect_ad: true,
-	/** 蹇嵎鏀惰棌 */
+	/** 快捷收藏 */
 	quick_favorite: true,
-	/** 鏍囩鏌撹壊 */
+	/** 标签染色 */
 	colorize_tag: false,
-	/** 蹇嵎璇勫垎 */
+	/** 快捷评分 */
 	quick_rating: true,
-	/** 蹇嵎鏌ョ湅鏍囩瀹氫箟 */
+	/** 快捷查看标签定义 */
 	quick_tag_define: true,
-	/** 鎮诞鏍囩鍒楄〃 */
+	/** 悬浮标签列表 */
 	float_tag_list: false,
-	/** 鑷姩璋冩暣閰嶇疆 */
+	/** 自动调整配置 */
 	auto_adjust_option: false,
-	/** 鏍囩妫€鏌?*/
+	/** 标签检查 */
 	tag_lint: false,
-	/** 灞曞紑鏍囩鍒楄〃 */
+	/** 展开标签列表 */
 	expand_tag_list: true,
 	autoShow: false
 };
@@ -12325,7 +12480,7 @@ const getPageContext = async () => {
 //#endregion
 //#region src/site/ehentai/helper/LoadButton.tsx
 var _tmpl$$7 = /* @__PURE__ */ solid_js_web.template(\`<a href=javascript:;>\`);
-/** 鏀惧湪鍘熺敓鍙充晶宸ュ叿鏍忓拰鏍囩閫夐」閲岀殑婕敾鍔犺浇鎸夐挳 */
+/** 放在原生右侧工具栏和标签选项里的漫画加载按钮 */
 const LoadButton = (props) => {
 	const tip = solid_js.createMemo(() => {
 		const imgList = props.context.store.comicMap[props.id]?.imgList;
@@ -12351,11 +12506,11 @@ solid_js_web.delegateEvents(["click"]);
 //#endregion
 //#region src/site/ehentai/helper/index.ts
 const escHandler = new Map([
-	"鍏抽棴鏄剧ず鏍囩瀹氫箟",
-	"鍙栨秷閫変腑褰撳墠鏍囩",
-	"鍏抽棴娴姩鏍囩鏍?
+	"关闭显示标签定义",
+	"取消选中当前标签",
+	"关闭浮动标签栏"
 ].map((name) => [name, () => true]));
-/** 鑾峰彇鎵€鏈夋爣绛?*/
+/** 获取所有标签 */
 const getTaglist = () => {
 	const lockTags = /* @__PURE__ */ new Set();
 	const weakTags = /* @__PURE__ */ new Set();
@@ -12372,7 +12527,7 @@ const handleTagName = (tag) => {
 	if (!name) return ["", ""];
 	return [namespace, name.replaceAll(/[^a-z-_ ]/gi, "")];
 };
-/** 鍛藉悕绌洪棿缂╁啓 */
+/** 命名空间缩写 */
 const namespaceAbbr = [
 	["artist", "a"],
 	[
@@ -12406,13 +12561,13 @@ const namespaceAbbr = [
 	],
 	["reclass", "r"]
 ];
-/** 鑾峰彇鏍囩鐨勫畬鏁村啓娉?*/
+/** 获取标签的完整写法 */
 const getTagNameFull = (tag) => {
 	const [namespace, name] = handleTagName(tag);
 	for (const target of namespaceAbbr) if (target.includes(namespace)) return \`\${target[0]}:\${name}\`;
 	return tag;
 };
-/** 鐢诲粖鍒嗙被鍥炬爣瀵瑰簲鐨?class銆傚湪鍒楄〃椤垫槸銆?ct2銆嶏紝鍦ㄧ敾寤婇噷鏄€?gt2銆?*/
+/** 画廊分类图标对应的 class。在列表页是「.ct2」，在画廊里是「.gt2」 */
 const categoriesMap = {
 	Western: "ta",
 	Misc: "t1",
@@ -12425,9 +12580,9 @@ const categoriesMap = {
 	"Asian Porn": "t8",
 	"Non-H": "t9"
 };
-/** 鍒ゆ柇鏄惁褰撳墠鐢诲粖鏄惁鏄寚瀹氱殑鍒嗙被 */
+/** 判断是否当前画廊是否是指定的分类 */
 const isInCategories = (...name) => Boolean(helper.querySelector(\`#gdc > .cs:is(\${name.map((c) => \`.c\${categoriesMap[c]}\`).join(", ")})\`));
-/** 鏇存柊 pagelist 閲岀殑 nl 鍙傛暟 */
+/** 更新 pagelist 里的 nl 参数 */
 const setNl = (pageCtx, i, nl) => {
 	const url = new URL(pageCtx.pageList[i]);
 	url.searchParams.set("nl", nl);
@@ -12518,7 +12673,7 @@ const hitomi = async ({ setState }, { galleryId }) => {
 	}];
 };
 hitomi.errorTip = () => helper.t("site.ehentai.hitomi_error");
-/** 鍏宠仈澶栫珯 */
+/** 关联外站 */
 const crossSiteLink = async (coreCtx, pageCtx) => {
 	if (pageCtx.type !== "gallery") return;
 	if (!pageCtx.galleryTitle) return core.toast.error(helper.t("site.ehentai.html_changed_link_failed"));
@@ -12644,11 +12799,11 @@ const loadImageBitmap = async (url) => {
 	imageBitmapCache.set(url, imageBitmap);
 	return imageBitmap;
 };
-/** 浠庨洩纰у浘涓垏鍓叉寚瀹氬尯鍩熺殑鍥剧墖 */
+/** 从雪碧图中切割指定区域的图片 */
 const extractSpriteImage = async (style) => {
 	const { width, height, backgroundImage, backgroundPositionX: backgroundX, backgroundPositionY: backgroundY } = style;
 	const urlMatch = /url\\(['"]([^)]+)['"]\\)/.exec(backgroundImage);
-	if (!urlMatch) throw new Error("瑙ｆ瀽涓嶅埌鑳屾櫙鍥剧墖URL");
+	if (!urlMatch) throw new Error("解析不到背景图片URL");
 	const [, url] = urlMatch;
 	const spriteImage = await loadImageBitmap(url);
 	const w = parseFloat(width);
@@ -12661,11 +12816,11 @@ const extractSpriteImage = async (style) => {
 	ctx.drawImage(spriteImage, sourceX, sourceY, w, h, 0, 0, w, h);
 	return canvas.transferToImageBitmap();
 };
-/** 璇嗗埆骞垮憡 */
+/** 识别广告 */
 const detectAd = ({ store, setState, options }, { imgList, pageList, fileNameList }) => {
 	if (!(options.detect_ad && document.getElementById("ta_other:extraneous_ads"))) return;
 	setState("comicMap", "", "adList", new helper.ReactiveSet());
-	/** 缂╃暐鍥惧垪琛?*/
+	/** 缩略图列表 */
 	const thumbnailList = [];
 	(async () => {
 		for (const e of helper.querySelectorAll("#gdt > a")) {
@@ -12673,7 +12828,7 @@ const detectAd = ({ store, setState, options }, { imgList, pageList, fileNameLis
 			if (Number.isNaN(index)) continue;
 			pageList[index] = e.href;
 			const thumbnail = e.querySelector("[title]");
-			[, fileNameList[index]] = thumbnail.title.split(/锛殀: /);
+			[, fileNameList[index]] = thumbnail.title.split(/：|: /);
 			if (helper.isImageElement(thumbnail)) thumbnailList[index] = thumbnail;
 			if (thumbnail.style.background.includes("url(")) thumbnailList[index] = await extractSpriteImage(thumbnail.style);
 		}
@@ -12695,7 +12850,7 @@ const detectAd = ({ store, setState, options }, { imgList, pageList, fileNameLis
 };
 //#endregion
 //#region src/site/ehentai/expandTagList.tsx
-/** 灞曞紑鏍囩鍒楄〃 */
+/** 展开标签列表 */
 const expandTagList = (_, pageCtx) => {
 	if (pageCtx.type !== "t") return;
 	helper.useStyle(\`
@@ -12715,7 +12870,7 @@ const expandTagList = (_, pageCtx) => {
     .gl1t[data-show-tag-list] .gl6t { display: none; }
     .gl1t:not([data-show-tag-list]) #taglist { display: none; }
 
-    /* 闀挎爣绛炬崲琛?*/
+    /* 长标签换行 */
     #taglist [id^=td_] a[id^=ta_] {
       text-wrap: balance;
       word-break: keep-all;
@@ -12785,7 +12940,7 @@ const floatTagList = ({ store: coreStore }, pageCtx) => {
 	if (pageCtx.type !== "gallery") return;
 	const gd4 = helper.querySelector("#gd4");
 	const gd4Style = getComputedStyle(gd4);
-	/** 鑳屾櫙棰滆壊 */
+	/** 背景颜色 */
 	let background = "rgba(0, 0, 0, 0)";
 	let dom = gd4;
 	while (background === "rgba(0, 0, 0, 0)") {
@@ -12793,7 +12948,7 @@ const floatTagList = ({ store: coreStore }, pageCtx) => {
 		dom = dom.parentElement;
 	}
 	const { borderColor } = getComputedStyle(helper.querySelector("#gdt"));
-	/** 杈规鏍峰紡 */
+	/** 边框样式 */
 	const border = \`1px solid \${borderColor}\`;
 	helper.useStyle(\`
       #comicread-tag-box {
@@ -12820,7 +12975,7 @@ const floatTagList = ({ store: coreStore }, pageCtx) => {
         border-left: \${border};
       }
 
-      /* 纭繚濮嬬粓鏄剧ず鍦ㄦ渶涓婂眰锛岄槻姝㈠拰鍏朵粬鑴氭湰鍐茬獊 */
+      /* 确保始终显示在最上层，防止和其他脚本冲突 */
       #ehs-introduce-box { z-index: 1; }
 
       #comicread-tag-box-placeholder {
@@ -12843,7 +12998,7 @@ const floatTagList = ({ store: coreStore }, pageCtx) => {
         opacity: 0.5;
       }
 
-      /* 闃叉鍦ㄧ獥鍙ｅ彉灏忔椂纭鎸夐挳琚尋鍑鸿寖鍥?*/
+      /* 防止在窗口变小时确认按钮被挤出范围 */
       #tagmenu_new {
         width: fit-content;
       }
@@ -12980,7 +13135,7 @@ const floatTagList = ({ store: coreStore }, pageCtx) => {
 		...hotkeys,
 		float_tag_list: ["q"]
 	}));
-	escHandler.set("鍏抽棴娴姩鏍囩鏍?, () => store.open ? setState("open", false) : true);
+	escHandler.set("关闭浮动标签栏", () => store.open ? setState("open", false) : true);
 	components_Manga.listenHotkey({ float_tag_list: () => {
 		setState((state) => {
 			state.open = !state.open;
@@ -12994,7 +13149,7 @@ const floatTagList = ({ store: coreStore }, pageCtx) => {
 	});
 	const { newTagField } = pageCtx.dom;
 	newTagField.addEventListener("pointerenter", () => store.open && newTagField.focus());
-	/** 鏍规嵁鏍囩閾炬帴鑾峰彇瀵瑰簲鐨勬爣绛惧悕 */
+	/** 根据标签链接获取对应的标签名 */
 	const getDropTag = (tagUrl) => {
 		const tagDom = helper.querySelector(\`a[href=\${CSS.escape(tagUrl)}]\`);
 		if (!tagDom) return;
@@ -13030,7 +13185,7 @@ const ehApi = async (data, details) => {
 	}
 	return res.response;
 };
-/** 浣跨敤 api 鑾峰彇鍥剧墖閾炬帴 */
+/** 使用 api 获取图片链接 */
 const getImgUrlByApi = async (pageCtx, i, nextLink) => {
 	const imgPageUrl = pageCtx.pageList[i];
 	const [, imgkey, gid, page, nl] = /\\/s\\/(\\S+)\\/(\\d+)-(\\d+)(?=$|\\?nl=(\\d+))/.exec(imgPageUrl);
@@ -13057,14 +13212,14 @@ const getImgUrlByApi = async (pageCtx, i, nextLink) => {
 	if (nextLink) setNl(pageCtx, i, /nl\\('(\\d+-\\d+)'\\)/.exec(res.i3)[1]);
 	return /src="(\\S+)"/.exec(res.i3)[1];
 };
-/** 妫€鏌?showkey */
+/** 检查 showkey */
 const checkShowkey = async (pageCtx, imgPageUrl) => {
 	if (pageCtx.showkey) return;
 	const res = await request.request(imgPageUrl, { fetch: true }, 10);
 	const [, showkey] = /showkey="(\\S+)"/.exec(res.responseText);
 	pageCtx.showkey = showkey;
 };
-/** 妫€鏌?mpvkey */
+/** 检查 mpvkey */
 const checkMpvKey = async (pageCtx) => {
 	if (pageCtx.mpvkey) return;
 	const mpvUrl = \`\${location.origin}\${location.pathname}\`.replace("/g/", "/mpv/");
@@ -13075,12 +13230,12 @@ const checkMpvKey = async (pageCtx) => {
 	const [, mpvkey] = reRes;
 	pageCtx.mpvkey = mpvkey;
 };
-/** 妫€鏌?IP 鏄惁琚皝绂?*/
+/** 检查 IP 是否被封禁 */
 const checkIpBanned = (text) => text.includes("IP address has been temporarily banned") && components_Toast.toast.error(helper.t("site.ehentai.ip_banned"), {
 	throw: true,
 	duration: Number.POSITIVE_INFINITY
 });
-/** 浠庡浘鐗囬〉鑾峰彇鍥剧墖鍦板潃 */
+/** 从图片页获取图片地址 */
 const getImgUrl = async (pageCtx, i) => {
 	try {
 		return await getImgUrlByApi(pageCtx, i);
@@ -13098,7 +13253,7 @@ const getImgUrl = async (pageCtx, i) => {
 		throw new Error(helper.t("site.ehentai.fetch_img_url_failed"));
 	}
 };
-/** 浠庤鎯呴〉鑾峰彇鍥剧墖椤电殑鍦板潃 */
+/** 从详情页获取图片页的地址 */
 const getImgPageUrl = async (pageNum = 0) => {
 	const res = await request.request(\`\${location.pathname}\${pageNum ? \`?p=\${pageNum}\` : ""}\`, {
 		fetch: true,
@@ -13109,7 +13264,7 @@ const getImgPageUrl = async (pageNum = 0) => {
 	if (pageList.length === 0) throw new Error(helper.t("site.ehentai.fetch_img_page_url_failed"));
 	return pageList;
 };
-/** 鑾峰彇鏂扮殑鍥剧墖椤靛湴鍧€ */
+/** 获取新的图片页地址 */
 const updatePageUrl = async (pageCtx, i) => {
 	try {
 		return await getImgUrlByApi(pageCtx, i, true);
@@ -13127,7 +13282,7 @@ const addHotkeysActions = (_, pageCtx) => {
 		scroll_right: () => helper.querySelector("#unext")?.click(),
 		scroll_left: () => helper.querySelector("#uprev")?.click()
 	});
-	escHandler.set("鍙栨秷閫変腑褰撳墠鏍囩", () => unsafeWindow.selected_tagname ? unsafeWindow.toggle_tagmenu() : true);
+	escHandler.set("取消选中当前标签", () => unsafeWindow.selected_tagname ? unsafeWindow.toggle_tagmenu() : true);
 	return components_Manga.listenHotkey({
 		ArrowUp: () => unsafeWindow.selected_tagid && unsafeWindow?.tag_vote_up(),
 		ArrowDown: () => unsafeWindow.selected_tagid && unsafeWindow?.tag_vote_down(),
@@ -13140,7 +13295,7 @@ const addHotkeysActions = (_, pageCtx) => {
 const multiSelectLoad = async (coreCtx, { imgNum, imgList, galleryId }) => {
 	const { setState, showComic } = coreCtx;
 	const [loadImgsText, setLoadImgsText] = solid_js.createSignal(\`1-\${imgNum}\`);
-	/** 闇€瑕佸姞杞界殑鍥剧墖鐨?index */
+	/** 需要加载的图片的 index */
 	const loadImgs = helper.createRootMemo(() => [...helper.extractRange(loadImgsText(), imgList.length || imgNum)]);
 	const cache = await helper.useCache({ pageRange: "id" });
 	const handleClick = async (e) => {
@@ -13314,7 +13469,7 @@ const addQuickFavorite = ({ button: favoriteButton, root, apiUrl, height, top = 
 		if (show()) await updateFavorite();
 	});
 };
-/** 蹇嵎鏀惰棌 */
+/** 快捷收藏 */
 const quickFavorite = (_, pageCtx) => {
 	if (unsafeWindow.apiuid === -1) return;
 	switch (pageCtx.type) {
@@ -13363,7 +13518,7 @@ solid_js_web.delegateEvents(["click"]);
 //#endregion
 //#region src/site/ehentai/quickRating.tsx
 var _tmpl$$4 = /* @__PURE__ */ solid_js_web.template(\`<span class=comidread-quick-rating><img src=https://ehgt.org/g/blank.gif><map>\`), _tmpl$2$3 = /* @__PURE__ */ solid_js_web.template(\`<area shape=rect>\`);
-/** 蹇嵎璇勫垎 */
+/** 快捷评分 */
 const quickRating = (_, pageCtx) => {
 	let list;
 	switch (pageCtx.type) {
@@ -13400,7 +13555,7 @@ const quickRating = (_, pageCtx) => {
 		"64,0,71,16",
 		"72,0,79,16"
 	];
-	/** 淇敼璇勫垎 */
+	/** 修改评分 */
 	const editRating = async (url, num) => {
 		try {
 			const dataRes = await core.request(url, {
@@ -13431,7 +13586,7 @@ const quickRating = (_, pageCtx) => {
 			throw new Error(helper.t("site.ehentai.change_rating_failed"));
 		}
 	};
-	/** 鏍规嵁璇勫垎淇敼鏄剧ず鏁堟灉 */
+	/** 根据评分修改显示效果 */
 	const updateRatingImage = (dom, num) => {
 		let a = Math.round(num + 1);
 		const b = -80 + 16 * Math.ceil(a / 2);
@@ -13488,7 +13643,7 @@ var launch_default = (props = {}) => (() => {
 //#endregion
 //#region src/site/ehentai/quickTagDefine.tsx
 var _tmpl$$2 = /* @__PURE__ */ solid_js_web.template(\`<h3>\`), _tmpl$2$2 = /* @__PURE__ */ solid_js_web.template(\`<h1><a target=_blank>\`), _tmpl$3$1 = /* @__PURE__ */ solid_js_web.template(\`<span id=comidread-tag-define>\`), _tmpl$4$1 = /* @__PURE__ */ solid_js_web.template(\`<h3>loading...\`);
-/** 蹇嵎鏌ョ湅鏍囩瀹氫箟 */
+/** 快捷查看标签定义 */
 const quickTagDefine = (_, pageCtx) => {
 	if (pageCtx.type !== "gallery") return;
 	const tagContent = solid_js_store.createMutable({});
@@ -13600,11 +13755,11 @@ const quickTagDefine = (_, pageCtx) => {
 		}
 	};
 	helper.hijackFn("toggle_tagmenu", () => setShow(false));
-	escHandler.set("鍏抽棴鏄剧ず鏍囩瀹氫箟", () => show() ? setShow(false) : true);
+	escHandler.set("关闭显示标签定义", () => show() ? setShow(false) : true);
 };
 //#endregion
 //#region src/site/ehentai/sidebarOverflow.ts
-/** 澶勭悊渚ц竟鏍忔孩鍑?*/
+/** 处理侧边栏溢出 */
 const sidebarOverflow = (_, pageCtx) => {
 	if (pageCtx.type !== "gallery") return;
 	const { sidebar } = pageCtx.dom;
@@ -13624,12 +13779,12 @@ const sidebarOverflow = (_, pageCtx) => {
       &::-webkit-scrollbar-track { background: transparent; }
       &::-webkit-scrollbar-thumb { background: var(--scrollbar-slider); }
     }
-    /* 鍦ㄦ樉绀?ehs 鏃堕殣钘?gd5 涓婄殑婊氬姩鏉★紝閬垮厤鍚屾椂鏄剧ず涓や釜婊氬姩鏉?*/
+    /* 在显示 ehs 时隐藏 gd5 上的滚动条，避免同时显示两个滚动条 */
     #gd5[data-long]:has(#ehs-introduce-box .ehs-content) { overflow: hidden; }
     #gmid #ehs-introduce-box { width: 100%; }
 
     /*
-      娑堥櫎 ehs 閽堝鎸夐挳澶鏃剁殑瑙ｅ喅鍔炴硶锛岀敤鑴氭湰鐨勫鐞嗘柟寮忓氨濂戒簡锛岄伩鍏嶅湪娴姩鏍囩鏍忔椂瀵艰嚧婊氬姩
+      消除 ehs 针对按钮太多时的解决办法，用脚本的处理方式就好了，避免在浮动标签栏时导致滚动
       https://github.com/EhTagTranslation/EhSyringe/commit/009054cc34ee818972d2a042990bf89bdff1895a
     */
     body #gmid #gd5 { --ehs-gap: 1; justify-content: unset; }
@@ -13637,10 +13792,10 @@ const sidebarOverflow = (_, pageCtx) => {
 };
 //#endregion
 //#region src/site/ehentai/tagLint.tsx
-var _tmpl$$1 = /* @__PURE__ */ solid_js_web.template(\`<div><a>\`), _tmpl$2$1 = /* @__PURE__ */ solid_js_web.template(\`<span>銆?!>銆峔`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<li>\`), _tmpl$4 = /* @__PURE__ */ solid_js_web.template(\`<hr>\`), _tmpl$5 = /* @__PURE__ */ solid_js_web.template(\`<ul>\`);
+var _tmpl$$1 = /* @__PURE__ */ solid_js_web.template(\`<div><a>\`), _tmpl$2$1 = /* @__PURE__ */ solid_js_web.template(\`<span>「<!>」\`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<li>\`), _tmpl$4 = /* @__PURE__ */ solid_js_web.template(\`<hr>\`), _tmpl$5 = /* @__PURE__ */ solid_js_web.template(\`<ul>\`);
 const tagLint = (_, pageCtx) => {
 	if (pageCtx.type !== "gallery") return;
-	/** 鏄惁鏄€孌oujinshi銆嶃€孧anga銆嶃€孨on-H銆?*/
+	/** 是否是「Doujinshi」「Manga」「Non-H」 */
 	const isManga = isInCategories("Doujinshi", "Manga", "Non-H");
 	const lintRules = userscript_ehTagRules.getTagLintRules();
 	const [warnList, setWarnList] = solid_js.createSignal({});
@@ -13736,7 +13891,7 @@ const tagLint = (_, pageCtx) => {
 		const newWarnList = {};
 		const [lockTags, weakTags] = getTaglist();
 		const tagList = new Set([...lockTags, ...weakTags]);
-		/** 鏍规嵁鎸囧畾瑙勫垯妫€鏌ユ爣绛惧苟璁板綍 */
+		/** 根据指定规则检查标签并记录 */
 		const checkRules = (tag, ruleName, has = false) => {
 			const rules = lintRules[ruleName];
 			if (!rules.has(tag)) return;
@@ -13990,7 +14145,7 @@ core.setupSiteAdapter({
 					return _el$3;
 				})();
 			}, sidebar);
-			/** 鍒锋柊鎸囧畾鍥剧墖 */
+			/** 刷新指定图片 */
 			const reloadImg = helper.singleThreaded(async (_, url) => {
 				const i = pageCtx.imgList.indexOf(url);
 				if (i === -1) return;
@@ -14053,7 +14208,7 @@ core.setupSiteAdapter({
 	},
 	handlers: { manga: async ({ setState }) => {
 		if (!await helper.wait(() => unsafeWindow?.onImageLoaded, 1e3 * 5)) {
-			core.toast.error("鏃犳硶鑾峰彇鍥剧墖", { duration: Number.POSITIVE_INFINITY });
+			core.toast.error("无法获取图片", { duration: Number.POSITIVE_INFINITY });
 			return;
 		}
 		setState("manga", {
@@ -14087,7 +14242,7 @@ core.setupSiteAdapter({
 			};
 			const res = await downloadImg(imgEle.dataset.original);
 			if (res.response.size === 0) {
-				core.toast.warn(\`涓嬭浇鍘熷浘鏃跺嚭閿? \${imgEle.dataset.page}\`);
+				core.toast.warn(\`下载原图时出错: \${imgEle.dataset.page}\`);
 				return "";
 			}
 			imgEle.src = \`\${URL.createObjectURL(res.response)}#\${imgEle.src}\`;
@@ -14096,7 +14251,7 @@ core.setupSiteAdapter({
 			} catch {
 				URL.revokeObjectURL(imgEle.src);
 				imgEle.src = originalUrl;
-				core.toast.warn(\`鍔犺浇鍘熷浘鏃跺嚭閿? \${imgEle.dataset.page}\`);
+				core.toast.warn(\`加载原图时出错: \${imgEle.dataset.page}\`);
 				return "";
 			}
 			try {
@@ -14104,7 +14259,7 @@ core.setupSiteAdapter({
 				unsafeWindow.onImageLoaded(imgEle);
 				const blob = await helper.canvasToBlob(imgEle.nextElementSibling, "image/webp", 1);
 				URL.revokeObjectURL(imgEle.src);
-				if (!blob) throw new Error("杞崲鍥剧墖鏃跺嚭閿?);
+				if (!blob) throw new Error("转换图片时出错");
 				const url = URL.createObjectURL(blob);
 				imgEle.dataset.imgUrl = url;
 				return {
@@ -14113,7 +14268,7 @@ core.setupSiteAdapter({
 				};
 			} catch (error) {
 				imgEle.src = originalUrl;
-				core.toast.warn(\`杞崲鍥剧墖鏃跺嚭閿? \${imgEle.dataset.page}, \${error.message}\`);
+				core.toast.warn(\`转换图片时出错: \${imgEle.dataset.page}, \${error.message}\`);
 				return "";
 			}
 		};
@@ -14262,7 +14417,7 @@ var en_default = {
 			"not_valid_url": "Not a valid URL",
 			"parse_error": "Parsing error",
 			"password_error": "Incorrect password",
-			"repeat_load": "Loading other files鈥?,
+			"repeat_load": "Loading other files…",
 			"userscript_not_installed": "ComicRead userscript not installed"
 		},
 		"button": {
@@ -14273,7 +14428,7 @@ var en_default = {
 			"select_files": "Select File",
 			"select_folder": "Select folder"
 		},
-		"install_md": "### Tired of opening this webpage every time?\\nIf you wish to:\\n1. Have an independent window, as if using local software\\n1. Add to the local compressed file opening method for easy direct opening\\n1. Use offline\\n### Welcome to install this page as a PWA app on your computer馃槂馃憤",
+		"install_md": "### Tired of opening this webpage every time?\\nIf you wish to:\\n1. Have an independent window, as if using local software\\n1. Add to the local compressed file opening method for easy direct opening\\n1. Use offline\\n### Welcome to install this page as a PWA app on your computer😃👍",
 		"message": {
 			"enter_password": "Please enter your password",
 			"parsing": "Parsing"
@@ -14312,8 +14467,8 @@ var en_default = {
 			"img_recognition": "Image Recognition",
 			"img_recognition_background": "Recognition background color",
 			"img_recognition_pageFill": "Auto switch page fill",
-			"img_recognition_warn": "鉂?The current browser does not support Web Workers. Enabling this feature may cause page lag. It's recommended to upgrade or switch browsers.",
-			"img_recognition_warn_2": "鉂?The current website does not support Web Workers. Enabling this feature may cause page lag.",
+			"img_recognition_warn": "❗ The current browser does not support Web Workers. Enabling this feature may cause page lag. It's recommended to upgrade or switch browsers.",
+			"img_recognition_warn_2": "❗ The current website does not support Web Workers. Enabling this feature may cause page lag.",
 			"paragraph_appearance": "Appearance",
 			"paragraph_dir": "Reading direction",
 			"paragraph_display": "Display",
@@ -14500,694 +14655,694 @@ var en_default = {
 //#region locales/ru.json
 var ru_default = {
 	alert: {
-		"comic_load_error": "袨褕懈斜泻邪 蟹邪谐褉褍蟹泻懈 泻芯屑懈泻褋邪",
-		"download_failed": "袨褕懈斜泻邪 蟹邪谐褉褍蟹泻懈",
-		"fetch_comic_img_failed": "袧械 褍写邪谢芯褋褜 蟹邪谐褉褍蟹懈褌褜 懈蟹芯斜褉邪卸械薪懈褟",
-		"img_load_failed": "袧械 褍写邪谢芯褋褜 蟹邪谐褉褍蟹懈褌褜 懈蟹芯斜褉邪卸械薪懈械",
-		"no_img_download": "袧械褌 写芯褋褌褍锌薪褘褏 泻邪褉褌懈薪芯泻 写谢褟 蟹邪谐褉褍蟹泻懈",
-		"repeat_load": "袟邪谐褉褍蟹泻邪 懈蟹芯斜褉邪卸械薪懈褟, 锌芯卸邪谢褍泄褋褌邪 锌芯写芯卸写懈褌械",
-		"retry_get_img_url": "袩芯胁褌芯褉薪芯 锌芯谢褍褔懈褌褜 邪写褉械褋 懈蟹芯斜褉邪卸械薪懈褟 薪邪 褋褌褉邪薪懈褑械 {{i}}",
-		"server_connect_failed": "袧械 褍写邪谢芯褋褜 锌芯写泻谢褞褔懈褌褜褋褟 泻 褋械褉胁械褉褍"
+		"comic_load_error": "Ошибка загрузки комикса",
+		"download_failed": "Ошибка загрузки",
+		"fetch_comic_img_failed": "Не удалось загрузить изображения",
+		"img_load_failed": "Не удалось загрузить изображение",
+		"no_img_download": "Нет доступных картинок для загрузки",
+		"repeat_load": "Загрузка изображения, пожалуйста подождите",
+		"retry_get_img_url": "Повторно получить адрес изображения на странице {{i}}",
+		"server_connect_failed": "Не удалось подключиться к серверу"
 	},
 	button: {
-		"auto_scroll": "袗胁褌芯锌褉芯泻褉褍褌泻邪",
-		"close_current_page_translation": "小泻褉褘褌褜 锌械褉械胁芯写 褌械泻褍褖械泄 褋褌褉邪薪懈褑褘",
-		"download_completed": "袟邪谐褉褍蟹泻邪 蟹邪胁械褉褕械薪邪",
-		"download_completed_error": "袟邪谐褉褍蟹泻邪 蟹邪胁械褉褕械薪邪, 薪芯 {{errorNum}} 懈蟹芯斜褉邪卸械薪懈泄 薪械 褍写邪谢芯褋褜 蟹邪谐褉褍蟹懈褌褜",
-		"downloading": "小泻邪褔懈胁邪薪懈械",
-		"fullscreen": "锌芯谢薪芯褝泻褉邪薪薪褘泄",
-		"fullscreen_exit": "胁褘泄褌懈 懈蟹 锌芯谢薪芯褝泻褉邪薪薪芯谐芯 褉械卸懈屑邪",
-		"grid_mode": "袪械卸懈屑 褋械褌泻懈",
-		"packaging": "校锌邪泻芯胁泻邪",
-		"page_fill": "袟邪锌芯谢薪懈褌褜 褋褌褉邪薪懈褑褍",
-		"page_mode_double": "袛胁褍褏褔邪褋褌懈褔薪褘泄 褉械卸懈屑",
-		"page_mode_single": "袨写薪芯褋褌褉邪薪懈褔薪褘泄 褉械卸懈屑",
-		"scroll_mode": "袪械卸懈屑 锌褉芯泻褉褍褌泻懈",
-		"translate_current_page": "袩械褉械胁械褋褌懈 褌械泻褍褖褍褞 褋褌褉邪薪懈褑褍",
-		"zoom_in": "袩褉懈斜谢懈蟹懈褌褜",
-		"zoom_out": "校屑械薪褜褕懈褌褜"
+		"auto_scroll": "Автопрокрутка",
+		"close_current_page_translation": "Скрыть перевод текущей страницы",
+		"download_completed": "Загрузка завершена",
+		"download_completed_error": "Загрузка завершена, но {{errorNum}} изображений не удалось загрузить",
+		"downloading": "Скачивание",
+		"fullscreen": "полноэкранный",
+		"fullscreen_exit": "выйти из полноэкранного режима",
+		"grid_mode": "Режим сетки",
+		"packaging": "Упаковка",
+		"page_fill": "Заполнить страницу",
+		"page_mode_double": "Двухчастичный режим",
+		"page_mode_single": "Одностраничный режим",
+		"scroll_mode": "Режим прокрутки",
+		"translate_current_page": "Перевести текущую страницу",
+		"zoom_in": "Приблизить",
+		"zoom_out": "Уменьшить"
 	},
-	description: "袛芯斜邪胁谢褟械褌 褉邪褋褕懈褉械薪薪褘械 褎褍薪泻褑懈懈 写谢褟 褍写芯斜褋褌胁邪 薪邪 褋邪泄褌, 褌邪泻懈械 泻邪泻 写胁褍褏褋褌褉邪薪懈褔薪褘泄 褉械卸懈屑 懈 锌械褉械胁芯写.",
+	description: "Добавляет расширенные функции для удобства на сайт, такие как двухстраничный режим и перевод.",
 	eh_tag_lint: {
-		"combo": "[褌械谐]: 袙 斜芯谢褜褕懈薪褋褌胁械 褋谢褍褔邪械胁 写芯谢卸械薪 褋芯褋褍褖械褋褌胁芯胁邪褌褜 褋 [褌械谐芯屑]",
-		"conflict": "[tag]: 袧械 写芯谢卸械薪 褋芯褋褍褖械褋褌胁芯胁邪褌褜 褋 [tag]",
-		"correct_tag": "袛芯谢卸械薪 斜褘褌褜 锌褉邪胁懈谢褜薪褘泄 褌械谐",
-		"miss_female": "袨褌褋褍褌褋褌胁褍械褌 屑褍卸褋泻芯泄 褌械谐, 胁芯蟹屑芯卸薪芯, 锌芯薪邪写芯斜懈褌褋褟",
-		"miss_parody": "袨褌褋褍褌褋褌胁褍械褌 褌械谐 锌邪褉芯写懈懈, 胁芯蟹屑芯卸薪芯, 锌芯薪邪写芯斜懈褌褋褟",
-		"possible_conflict": "[tag]: 袙 斜芯谢褜褕懈薪褋褌胁械 褋谢褍褔邪械胁 薪械 写芯谢卸械薪 褋芯褋褍褖械褋褌胁芯胁邪褌褜 褋 [tag]",
-		"prerequisite": "[tag]: 袩褉械写胁邪褉懈褌械谢褜薪褘泄 褌械谐 [tag] 薪械 褋褍褖械褋褌胁褍械褌"
+		"combo": "[тег]: В большинстве случаев должен сосуществовать с [тегом]",
+		"conflict": "[tag]: Не должен сосуществовать с [tag]",
+		"correct_tag": "Должен быть правильный тег",
+		"miss_female": "Отсутствует мужской тег, возможно, понадобится",
+		"miss_parody": "Отсутствует тег пародии, возможно, понадобится",
+		"possible_conflict": "[tag]: В большинстве случаев не должен сосуществовать с [tag]",
+		"prerequisite": "[tag]: Предварительный тег [tag] не существует"
 	},
 	end_page: {
-		"next_button": "小谢械写褍褞褖邪褟 谐谢邪胁邪",
-		"prev_button": "袩褉械写褘写褍褖邪褟 谐谢邪胁邪",
+		"next_button": "Следующая глава",
+		"prev_button": "Предыдущая глава",
 		"tip": {
-			"end_jump": "袩芯褋谢械写薪褟褟 褋褌褉邪薪懈褑邪, 褋谢械写褍褞褖邪褟 谐谢邪胁邪 薪懈卸械",
-			"exit": "袩芯褋谢械写薪褟褟 褋褌褉邪薪懈褑邪, 薪懈卸械 泻芯屑懈泻褋 斜褍写械褌 蟹邪泻褉褘褌",
-			"start_jump": "袩械褉胁邪褟 褋褌褉邪薪懈褑邪, 胁褘褕械 斜褍写械褌 蟹邪谐褉褍卸械薪邪 锌褉械写褘写褍褖邪褟 谐谢邪胁邪"
+			"end_jump": "Последняя страница, следующая глава ниже",
+			"exit": "Последняя страница, ниже комикс будет закрыт",
+			"start_jump": "Первая страница, выше будет загружена предыдущая глава"
 		}
 	},
 	hotkeys: {
-		"enter_read_mode": "袪械卸懈屑 褔褌械薪懈褟",
-		"float_tag_list": "袩谢邪胁邪褞褖懈泄 褋锌懈褋芯泻 褌械谐芯胁",
-		"jump_next": "袩械褉械泄褌懈 泻 褋谢械写褍褞褖械泄 谐谢邪胁械",
-		"jump_prev": "袩械褉械泄褌懈 泻 锌褉械写褘写褍褖械泄 谐谢邪胁械",
-		"jump_to_end": "袩械褉械泄褌懈 泻 锌芯褋谢械写薪械泄 褋褌褉邪薪懈褑械",
-		"jump_to_home": "袩械褉械泄褌懈 泻 锌械褉胁芯泄 褋褌褉邪薪懈褑械",
-		"multi_select_load": "袦薪芯卸械褋褌胁械薪薪邪褟 蟹邪谐褉褍蟹泻邪",
-		"page_down": "袩械褉械谢懈褋褌薪褍褌褜 褋褌褉邪薪懈褑褍 胁薪懈蟹",
-		"page_up": "袩械褉械谢懈褋褌薪褍褌褜 褋褌褉邪薪懈褑褍 胁胁械褉褏",
-		"reload_current_error_img": "袩械褉械蟹邪谐褉褍蟹懈褌褜 褌械泻褍褖械械 芯褕懈斜芯褔薪芯械 懈蟹芯斜褉邪卸械薪懈械",
-		"repeat_tip": "协褌邪 谐芯褉褟褔邪褟 泻谢邪胁懈褕邪 斜褘谢邪 薪邪蟹薪邪褔械薪邪 薪邪 \\"{{hotkey}}\\"",
-		"scroll_down": "袩褉芯泻褉褍褌懈褌褜 胁薪懈蟹",
-		"scroll_left": "袩褉芯泻褉褍褌懈褌褜 胁谢械胁芯",
-		"scroll_right": "袩褉芯泻褉褍褌懈褌械 胁锌褉邪胁芯",
-		"scroll_up": "袩褉芯泻褉褍褌懈褌械 胁胁械褉褏",
-		"switch_auto_enlarge": "袗胁褌芯屑邪褌懈褔械褋泻芯械 锌褉懈斜谢懈卸械薪懈械",
-		"switch_dir": "袧邪锌褉邪胁谢械薪懈械 褔褌械薪懈褟",
-		"switch_grid_mode": "袪械卸懈屑 褋械褌泻懈",
-		"switch_page_fill": "袟邪锌芯谢薪械薪懈械 褋褌褉邪薪懈褑褘",
-		"switch_scroll_mode": "袪械卸懈屑 锌褉芯泻褉褍褌泻懈",
-		"switch_single_double_page_mode": "袨写薪芯褋褌褉邪薪懈褔薪褘泄/袛胁褍褏褋褌褉邪薪懈褔薪褘泄 褉械卸懈屑"
+		"enter_read_mode": "Режим чтения",
+		"float_tag_list": "Плавающий список тегов",
+		"jump_next": "Перейти к следующей главе",
+		"jump_prev": "Перейти к предыдущей главе",
+		"jump_to_end": "Перейти к последней странице",
+		"jump_to_home": "Перейти к первой странице",
+		"multi_select_load": "Множественная загрузка",
+		"page_down": "Перелистнуть страницу вниз",
+		"page_up": "Перелистнуть страницу вверх",
+		"reload_current_error_img": "Перезагрузить текущее ошибочное изображение",
+		"repeat_tip": "Эта горячая клавиша была назначена на \\"{{hotkey}}\\"",
+		"scroll_down": "Прокрутить вниз",
+		"scroll_left": "Прокрутить влево",
+		"scroll_right": "Прокрутите вправо",
+		"scroll_up": "Прокрутите вверх",
+		"switch_auto_enlarge": "Автоматическое приближение",
+		"switch_dir": "Направление чтения",
+		"switch_grid_mode": "Режим сетки",
+		"switch_page_fill": "Заполнение страницы",
+		"switch_scroll_mode": "Режим прокрутки",
+		"switch_single_double_page_mode": "Одностраничный/Двухстраничный режим"
 	},
 	img_status: {
-		"error": "袨褕懈斜泻邪 蟹邪谐褉褍蟹泻懈",
-		"loading": "袟邪谐褉褍蟹泻邪",
-		"wait": "袨卸懈写邪薪懈械 蟹邪谐褉褍蟹泻懈"
+		"error": "Ошибка загрузки",
+		"loading": "Загрузка",
+		"wait": "Ожидание загрузки"
 	},
 	other: {
-		"auto": "袗胁褌芯",
+		"auto": "Авто",
 		"custom": "Custom",
-		"disable": "袨褌泻谢褞褔懈褌褜",
-		"distance": "褉邪褋褋褌芯褟薪懈械",
-		"download": "小泻邪褔邪褌褜",
-		"enabled": "袙泻谢褞褔械薪芯",
-		"enter_comic_read_mode": "袪械卸懈屑 褔褌械薪懈褟 泻芯屑懈泻褋芯胁",
-		"exit": "袙褘褏芯写",
-		"fab_hidden": "小泻褉褘褌褜 锌谢邪胁邪褞褖褍褞 泻薪芯锌泻褍",
-		"fab_show": "袩芯泻邪蟹邪褌褜 锌谢邪胁邪褞褖褍褞 泻薪芯锌泻褍",
-		"fill_page": "袟邪锌芯谢薪懈褌褜 褋褌褉邪薪懈褑褍",
-		"hotkeys": "袚芯褉褟褔懈械 泻谢邪胁懈褕懈",
-		"img_loading": "袠蟹芯斜褉邪卸械薪懈械 蟹邪谐褉褍卸邪械褌褋褟",
-		"interval": "懈薪褌械褉胁邪谢",
-		"loading_img": "袟邪谐褉褍蟹泻邪 懈蟹芯斜褉邪卸械薪懈褟",
-		"multi_select_mode": "袪械卸懈屑 屑薪芯卸械褋褌胁械薪薪芯谐芯 胁褘斜芯褉邪",
-		"none": "袨褌褋褍褌褋褌胁褍械褌",
-		"or": "懈谢懈",
-		"other": "袛褉褍谐芯械",
-		"page_range": "袙胁械写懈褌械 写懈邪锌邪蟹芯薪 褋褌褉邪薪懈褑.:\\n (薪邪锌褉懈屑械褉, 1, 3-5, 9-)",
-		"read_mode": "袪械卸懈屑 褔褌械薪懈褟",
-		"selected": "袙褘斜褉邪薪芯",
-		"setting": "袧邪褋褌褉芯泄泻懈",
-		"clear": "袨褔懈褋褌懈褌褜"
+		"disable": "Отключить",
+		"distance": "расстояние",
+		"download": "Скачать",
+		"enabled": "Включено",
+		"enter_comic_read_mode": "Режим чтения комиксов",
+		"exit": "Выход",
+		"fab_hidden": "Скрыть плавающую кнопку",
+		"fab_show": "Показать плавающую кнопку",
+		"fill_page": "Заполнить страницу",
+		"hotkeys": "Горячие клавиши",
+		"img_loading": "Изображение загружается",
+		"interval": "интервал",
+		"loading_img": "Загрузка изображения",
+		"multi_select_mode": "Режим множественного выбора",
+		"none": "Отсутствует",
+		"or": "или",
+		"other": "Другое",
+		"page_range": "Введите диапазон страниц.:\\n (например, 1, 3-5, 9-)",
+		"read_mode": "Режим чтения",
+		"selected": "Выбрано",
+		"setting": "Настройки",
+		"clear": "Очистить"
 	},
 	pwa: {
 		"alert": {
-			"img_data_error": "袨褕懈斜泻邪 写邪薪薪褘褏 懈蟹芯斜褉邪卸械薪懈褟",
-			"img_not_found": "袠蟹芯斜褉邪卸械薪懈械 薪械 薪邪泄写械薪芯",
-			"img_not_found_files": "袩芯卸邪谢褍泄褋褌邪 胁褘斜械褉懈褌械 褎邪泄谢 懈谢懈 邪褉褏懈胁 褋 懈蟹芯斜褉邪卸械薪懈褟屑懈",
-			"img_not_found_folder": "袙 锌邪锌泻械 薪械 薪邪泄写械薪褘 懈蟹芯斜褉邪卸械薪懈褟 懈谢懈 邪褉褏懈胁褘 褋 懈蟹芯斜褉邪卸械薪懈褟屑懈",
-			"not_valid_url": "袧械胁邪谢懈写薪褘泄 URL",
-			"parse_error": "袨褕懈斜泻邪 邪薪邪谢懈蟹邪",
-			"password_error": "袧械胁械褉薪褘泄 锌邪褉芯谢褜",
-			"repeat_load": "袟邪谐褉褍蟹泻邪 写褉褍谐懈褏 褎邪泄谢芯胁鈥?,
-			"userscript_not_installed": "ComicRead 薪械 褍褋褌邪薪芯胁谢械薪"
+			"img_data_error": "Ошибка данных изображения",
+			"img_not_found": "Изображение не найдено",
+			"img_not_found_files": "Пожалуйста выберите файл или архив с изображениями",
+			"img_not_found_folder": "В папке не найдены изображения или архивы с изображениями",
+			"not_valid_url": "Невалидный URL",
+			"parse_error": "Ошибка анализа",
+			"password_error": "Неверный пароль",
+			"repeat_load": "Загрузка других файлов…",
+			"userscript_not_installed": "ComicRead не установлен"
 		},
 		"button": {
-			"enter_url": "袙胁械褋褌懈 URL",
-			"install": "校褋褌邪薪芯胁懈褌褜",
-			"no_more_prompt": "袘芯谢褜褕械 薪械 锌芯泻邪蟹褘胁邪褌褜",
-			"resume_read": "袩褉芯写芯谢卸懈褌褜 褔褌械薪懈械",
-			"select_files": "袙褘斜褉邪褌褜 褎邪泄谢",
-			"select_folder": "袙褘斜褉邪褌褜 锌邪锌泻褍"
+			"enter_url": "Ввести URL",
+			"install": "Установить",
+			"no_more_prompt": "Больше не показывать",
+			"resume_read": "Продолжить чтение",
+			"select_files": "Выбрать файл",
+			"select_folder": "Выбрать папку"
 		},
-		"install_md": "### 校褋褌邪谢懈 芯褌泻褉褘胁邪褌褜 褝褌褍 褋褌褉邪薪懈褑褍 泻邪卸写褘泄 褉邪蟹?\\n袝褋谢懈 胁褘 褏芯褌懈褌械:\\n1. 袠屑械褌褜 芯褌写械谢褜薪芯械 芯泻薪芯, 泻邪泻 械褋谢懈 斜褘 胁褘 懈褋锌芯谢褜蟹芯胁邪谢懈 芯斜褘褔薪芯械 锌褉芯谐褉邪屑屑薪芯械 芯斜械褋锌械褔械薪懈械\\n1. 袨褌泻褉褘胁邪褌褜 邪褉褏懈胁褘 薪邪锌褉褟屑褍褞\\n1. 袩芯谢褜蟹芯胁邪褌褜褋褟 芯褎褎谢邪泄薪\\n### 校褋褌邪薪芯胁懈褌械 褝褌褍 褋褌褉邪薪懈褑褍 胁 泻邪褔械褋褌胁械 [PWA](https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B5%D1%81%D1%81%D0%B8%D0%B2%D0%BD%D0%BE%D0%B5_%D0%B2%D0%B5%D0%B1-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5) 薪邪 褋胁芯泄 泻芯屑锌褜褞褌械褉 馃惡鈽濓笍",
+		"install_md": "### Устали открывать эту страницу каждый раз?\\nЕсли вы хотите:\\n1. Иметь отдельное окно, как если бы вы использовали обычное программное обеспечение\\n1. Открывать архивы напрямую\\n1. Пользоваться оффлайн\\n### Установите эту страницу в качестве [PWA](https://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D0%B3%D1%80%D0%B5%D1%81%D1%81%D0%B8%D0%B2%D0%BD%D0%BE%D0%B5_%D0%B2%D0%B5%D0%B1-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5) на свой компьютер 🐺☝️",
 		"message": {
-			"enter_password": "袩芯卸邪谢褍泄褋褌邪 胁胁械写懈褌械 锌邪褉芯谢褜",
-			"parsing": "袪邪蟹斜芯褉"
+			"enter_password": "Пожалуйста введите пароль",
+			"parsing": "Разбор"
 		},
-		"tip_enter_url": "袙胁械写懈褌械 URL 邪褉褏懈胁邪",
-		"tip_md": "# ComicRead PWA\\n袠褋锌芯谢褜蟹褍泄褌械 [ComicRead](https://github.com/hymbz/ComicReadScript) 写谢褟 褔褌械薪懈褟 泻芯屑懈泻褋芯胁 **谢芯泻邪谢褜薪芯**.\\n---\\n### 袩械褉械褌邪褖懈褌械 懈蟹芯斜褉邪卸械薪懈褟, 锌邪锌泻懈 懈谢懈 邪褉褏懈胁褘 褔褌芯斜褘 薪邪褔邪褌褜 褔懈褌邪褌褜\\n*袙褘 褌邪泻 卸械 屑芯卸械褌械 **芯褌泻褉褘褌褜** 懈谢懈 **胁褋褌邪胁懈褌褜** URL 邪褉褏懈胁邪 薪邪 薪邪锌褉褟屑褍褞*"
+		"tip_enter_url": "Введите URL архива",
+		"tip_md": "# ComicRead PWA\\nИспользуйте [ComicRead](https://github.com/hymbz/ComicReadScript) для чтения комиксов **локально**.\\n---\\n### Перетащите изображения, папки или архивы чтобы начать читать\\n*Вы так же можете **открыть** или **вставить** URL архива на напрямую*"
 	},
 	setting: {
 		"hotkeys": {
-			"add": "袛芯斜邪胁懈褌褜 谐芯褉褟褔懈械 泻谢邪胁懈褕懈",
-			"restore": "袙芯褋褋褌邪薪芯胁懈褌褜 谐芯褉褟褔懈械 泻谢邪胁懈褕懈 锌芯 褍屑芯谢褔邪薪懈褞"
+			"add": "Добавить горячие клавиши",
+			"restore": "Восстановить горячие клавиши по умолчанию"
 		},
-		"language": "携蟹褘泻",
+		"language": "Язык",
 		"option": {
-			"abreast_duplicate": "袣芯褝褎褎懈褑懈械薪褌 写褍斜谢懈褉芯胁邪薪懈褟 褋褌芯谢斜褑芯胁",
-			"abreast_mode": "袪械卸懈屑 锌褉芯泻褉褍褌泻懈 胁 褉褟写",
-			"adjust_to_width": "袗写邪锌褌懈胁薪邪褟 褕懈褉懈薪邪",
-			"align_edge": "袙褘褉邪胁薪懈胁邪薪懈械 锌芯 泻褉邪褞 锌褉懈 锌械褉械谢懈褋褌褘胁邪薪懈懈 褋褌褉邪薪懈褑褘",
-			"always_load_all_img": "袙褋械谐写邪 蟹邪谐褉褍卸邪褌褜 胁褋械 懈蟹芯斜褉邪卸械薪懈褟",
-			"autoFullscreen": "袗胁褌芯 锌芯谢薪褘泄 褝泻褉邪薪",
-			"autoHiddenMouse": "袗胁褌芯屑邪褌懈褔械褋泻懈 褋泻褉褘胁邪褌褜 泻褍褉褋芯褉 屑褘褕懈",
-			"auto_scale": "袗胁褌芯 屑邪褋褕褌邪斜",
-			"auto_scroll_trigger_end": "袩褉芯写芯谢卸懈褌褜 锌褉芯泻褉褍褌泻褍 薪邪 泻芯薪械褔薪芯泄 褋褌褉邪薪懈褑械",
-			"auto_switch_page_mode": "袗胁褌芯屑邪褌懈褔械褋泻芯械 锌械褉械泻谢褞褔械薪懈械 褉械卸懈屑邪 芯写薪芯泄/写胁芯泄薪芯泄 褋褌褉邪薪懈褑褘 胁 蟹邪胁懈褋懈屑芯褋褌懈 芯褌 褋芯芯褌薪芯褕械薪懈褟 褋褌芯褉芯薪",
-			"background_color": "笑胁械褌 褎芯薪邪",
-			"click_page_turn_area": "袨斜谢邪褋褌褜 薪邪卸邪褌懈褟",
-			"click_page_turn_enabled": "袩械褉械谢懈褋褌褘胁邪褌褜 锌芯 泻谢懈泻褍",
-			"click_page_turn_swap_area": "袩芯屑械薪褟褌褜 屑械褋褌邪屑懈 锌褉邪胁褍褞 懈 谢械胁褍褞 芯斜谢邪褋褌懈 锌械褉械泻谢褞褔械薪懈褟 褋褌褉邪薪懈褑",
-			"dark_mode": "孝褢屑薪邪褟 褌械屑邪",
-			"dark_mode_auto": "孝褢屑薪褘泄 褉械卸懈屑 褋谢械写褍械褌 蟹邪 褋懈褋褌械屑芯泄",
-			"dir_ltr": "效褌械薪懈械 褋谢械胁邪 薪邪锌褉邪胁芯 (袗屑械褉懈泻邪薪褋泻懈械 泻芯屑懈泻褋褘)",
-			"dir_rtl": "效褌械薪懈械 褋锌褉邪胁邪 薪邪谢械胁芯 (携锌芯薪褋泻邪褟 屑邪薪谐邪)",
-			"disable_auto_enlarge": "袨褌泻谢褞褔懈褌褜 邪胁褌芯屑邪褌懈褔械褋泻芯械 屑邪褋褕褌邪斜懈褉芯胁邪薪懈械 懈蟹芯斜褉邪卸械薪懈泄",
-			"first_page_fill": "袙泻谢褞褔懈褌褜 蟹邪锌芯谢薪械薪懈械 锌械褉胁芯泄 褋褌褉邪薪懈褑褘 锌芯 褍屑芯谢褔邪薪懈褞",
-			"full_width": "楔懈褉懈薪邪 芯泻薪邪 锌褉芯褋屑芯褌褉邪",
-			"img_recognition": "褉邪褋锌芯蟹薪邪胁邪薪懈械 懈蟹芯斜褉邪卸械薪懈泄",
-			"img_recognition_background": "袨锌褉械写械谢懈褌褜 褑胁械褌 褎芯薪邪",
-			"img_recognition_pageFill": "袗胁褌芯屑邪褌懈褔械褋泻芯械 锌械褉械泻谢褞褔械薪懈械 蟹邪锌芯谢薪械薪懈褟 褋褌褉邪薪懈褑褘",
-			"img_recognition_warn": "鉂?孝械泻褍褖懈泄 斜褉邪褍蟹械褉 薪械 锌芯写写械褉卸懈胁邪械褌 Web Workers. 袙泻谢褞褔械薪懈械 褝褌芯泄 褎褍薪泻褑懈懈 屑芯卸械褌 胁褘蟹胁邪褌褜 蟹邪写械褉卸泻褍 褋褌褉邪薪懈褑褘. 袪械泻芯屑械薪写褍械褌褋褟 芯斜薪芯胁懈褌褜 懈谢懈 褋屑械薪懈褌褜 斜褉邪褍蟹械褉.",
-			"img_recognition_warn_2": "鉂?孝械泻褍褖懈泄 胁械斜-褋邪泄褌 薪械 锌芯写写械褉卸懈胁邪械褌 Web Workers. 袙泻谢褞褔械薪懈械 褝褌芯泄 褎褍薪泻褑懈懈 屑芯卸械褌 锌褉懈胁械褋褌懈 泻 蟹邪写械褉卸泻械 褋褌褉邪薪懈褑褘.",
-			"paragraph_appearance": "袙薪械褕薪芯褋褌褜",
-			"paragraph_dir": "袧邪锌褉邪胁谢械薪懈械 褔褌械薪懈褟",
-			"paragraph_display": "袨褌芯斜褉邪卸械薪懈械",
-			"paragraph_scrollbar": "袩芯谢芯褋邪 锌褉芯泻褉褍褌泻懈",
-			"paragraph_translation": "袩械褉械胁芯写",
-			"preload_page_num": "袩褉械写蟹邪谐褉褍卸邪褌褜 褋褌褉邪薪懈褑",
-			"scroll_end": "袩芯褋谢械 写芯褋褌懈卸械薪懈褟 泻芯薪褑邪",
-			"scroll_end_auto": "小薪邪褔邪谢邪 锌械褉械褏芯写 泻 锌褉械写褘写褍褖械泄/褋谢械写褍褞褖械泄 谐谢邪胁械, 懈薪邪褔械 胁褘褏芯写",
-			"scroll_mode_img_scale": "袣芯褝褎褎懈褑懈械薪褌 屑邪褋褕褌邪斜懈褉芯胁邪薪懈褟 懈蟹芯斜褉邪卸械薪懈褟 胁 褉械卸懈屑械 褋泻褉芯谢谢懈薪谐邪",
-			"scroll_mode_img_spacing": "袪邪褋褋褌芯褟薪懈械 屑械卸写褍 褋褌褉邪薪懈褑邪屑懈 胁 褉械卸懈屑械 褋泻褉芯谢谢懈薪谐邪",
-			"scrollbar_auto_hidden": "袗胁褌芯屑邪褌懈褔械褋泻懈 褋泻褉褘胁邪褌褜",
-			"scrollbar_easy_scroll": "袥褢谐泻邪褟 锌褉芯泻褉褍褌泻邪",
-			"scrollbar_position": "袩芯蟹懈褑懈褟",
-			"scrollbar_position_bottom": "小薪懈蟹褍",
-			"scrollbar_position_hidden": "小锌褉褟褌邪薪芯",
-			"scrollbar_position_right": "小锌褉邪胁邪",
-			"scrollbar_position_top": "小胁械褉褏褍",
-			"scrollbar_show_img_status": "袩芯泻邪蟹褘胁邪褌褜 褋褌邪褌褍褋 蟹邪谐褉褍蟹泻懈 懈蟹芯斜褉邪卸械薪懈褟",
-			"show_clickable_area": "袩芯泻邪蟹褘胁邪褌褜 泻谢懈泻邪斜械谢褜薪褘械 芯斜谢邪褋褌懈",
-			"show_comments": "袩芯泻邪蟹褘胁邪褌褜 泻芯屑屑械薪褌邪褉懈懈 薪邪 锌芯褋谢械写薪械泄 褋褌褉邪薪懈褑械",
-			"shrink_menu": "袙泻谢褞褔懈褌褜 芯斜谢邪褋褌褜 屑械薪褞",
-			"swap_page_turn_key": "袩芯屑械薪褟褌褜 屑械褋褌邪屑懈 泻谢邪胁懈褕懈 锌械褉械泻谢褞褔械薪懈褟 褋褌褉邪薪懈褑",
-			"zoom": "袣芯褝褎褎懈褑懈械薪褌 屑邪褋褕褌邪斜懈褉芯胁邪薪懈褟 懈蟹芯斜褉邪卸械薪懈褟"
+			"abreast_duplicate": "Коэффициент дублирования столбцов",
+			"abreast_mode": "Режим прокрутки в ряд",
+			"adjust_to_width": "Адаптивная ширина",
+			"align_edge": "Выравнивание по краю при перелистывании страницы",
+			"always_load_all_img": "Всегда загружать все изображения",
+			"autoFullscreen": "Авто полный экран",
+			"autoHiddenMouse": "Автоматически скрывать курсор мыши",
+			"auto_scale": "Авто масштаб",
+			"auto_scroll_trigger_end": "Продолжить прокрутку на конечной странице",
+			"auto_switch_page_mode": "Автоматическое переключение режима одной/двойной страницы в зависимости от соотношения сторон",
+			"background_color": "Цвет фона",
+			"click_page_turn_area": "Область нажатия",
+			"click_page_turn_enabled": "Перелистывать по клику",
+			"click_page_turn_swap_area": "Поменять местами правую и левую области переключения страниц",
+			"dark_mode": "Тёмная тема",
+			"dark_mode_auto": "Тёмный режим следует за системой",
+			"dir_ltr": "Чтение слева направо (Американские комиксы)",
+			"dir_rtl": "Чтение справа налево (Японская манга)",
+			"disable_auto_enlarge": "Отключить автоматическое масштабирование изображений",
+			"first_page_fill": "Включить заполнение первой страницы по умолчанию",
+			"full_width": "Ширина окна просмотра",
+			"img_recognition": "распознавание изображений",
+			"img_recognition_background": "Определить цвет фона",
+			"img_recognition_pageFill": "Автоматическое переключение заполнения страницы",
+			"img_recognition_warn": "❗ Текущий браузер не поддерживает Web Workers. Включение этой функции может вызвать задержку страницы. Рекомендуется обновить или сменить браузер.",
+			"img_recognition_warn_2": "❗ Текущий веб-сайт не поддерживает Web Workers. Включение этой функции может привести к задержке страницы.",
+			"paragraph_appearance": "Внешность",
+			"paragraph_dir": "Направление чтения",
+			"paragraph_display": "Отображение",
+			"paragraph_scrollbar": "Полоса прокрутки",
+			"paragraph_translation": "Перевод",
+			"preload_page_num": "Предзагружать страниц",
+			"scroll_end": "После достижения конца",
+			"scroll_end_auto": "Сначала переход к предыдущей/следующей главе, иначе выход",
+			"scroll_mode_img_scale": "Коэффициент масштабирования изображения в режиме скроллинга",
+			"scroll_mode_img_spacing": "Расстояние между страницами в режиме скроллинга",
+			"scrollbar_auto_hidden": "Автоматически скрывать",
+			"scrollbar_easy_scroll": "Лёгкая прокрутка",
+			"scrollbar_position": "Позиция",
+			"scrollbar_position_bottom": "Снизу",
+			"scrollbar_position_hidden": "Спрятано",
+			"scrollbar_position_right": "Справа",
+			"scrollbar_position_top": "Сверху",
+			"scrollbar_show_img_status": "Показывать статус загрузки изображения",
+			"show_clickable_area": "Показывать кликабельные области",
+			"show_comments": "Показывать комментарии на последней странице",
+			"shrink_menu": "Включить область меню",
+			"swap_page_turn_key": "Поменять местами клавиши переключения страниц",
+			"zoom": "Коэффициент масштабирования изображения"
 		},
-		"sync_options_other_site": "小懈薪褏褉芯薪懈蟹懈褉芯胁邪褌褜 薪邪褋褌褉芯泄泻懈 褔褌械薪懈褟 褋 写褉褍谐懈屑懈 褋邪泄褌邪屑懈",
+		"sync_options_other_site": "Синхронизировать настройки чтения с другими сайтами",
 		"translation": {
-			"cotrans_tip": "<p>袠褋锌芯谢褜蟹褍械褌 写谢褟 锌械褉械胁芯写邪 <a href=\\"https://cotrans.touhou.ai\\" target=\\"_blank\\">Cotrans API</a>, 褉邪斜芯褌邪褞褖懈泄 懈褋泻谢褞褔懈褌械谢褜薪芯 蟹邪 褋褔褢褌 褋胁芯械谐芯 褋芯蟹写邪褌械谢褟.</p>\\n<p>袟邪锌褉芯褋褘 芯斜褉邪斜邪褌褘胁邪褞褌褋褟 锌芯 芯写薪芯屑褍 胁 锌芯褉褟写泻械 褋懈薪褏褉芯薪薪芯泄 芯褔械褉械写懈. 袣芯谐写邪 芯褔械褉械写褜 锌褉械胁褘褕邪械褌 谢懈屑懈褌 薪芯胁褘械 蟹邪锌褉芯褋褘 斜褍写褍褌 锌褉懈胁芯写懈褌褜 泻 芯褕懈斜泻械. 袝褋谢懈 褌邪泻芯械 褋谢褍褔懈谢芯褋褜 锌芯锌褉芯斜褍泄褌械 锌芯蟹卸械.</p>\\n<p>孝邪泻 褔褌芯 锌芯卸邪谢褍泄褋褌邪 <b>褍褔懈褌褘胁邪泄褌械 蟹邪谐褉褍卸械薪薪芯褋褌褜 锌褉懈 胁褘斜芯褉械</b></p>\\n<p>袧邪褋褌芯褟褌械谢褜薪芯 褉械泻芯屑械薪写芯胁邪薪芯 谢芯泻邪谢褜薪芯 褉邪蟹胁械褉薪褍褌褜 Manga Image Translator 褌.泻. 褝褌芯 薪械 锌芯褌褉械斜谢褟械褌 褋械褉胁械褉薪褘械 褉械褋褍褉褋褘 懈 胁褘 薪械 芯谐褉邪薪懈褔械薪褘 芯褔械褉械写褜褞.</p>",
+			"cotrans_tip": "<p>Использует для перевода <a href=\\"https://cotrans.touhou.ai\\" target=\\"_blank\\">Cotrans API</a>, работающий исключительно за счёт своего создателя.</p>\\n<p>Запросы обрабатываются по одному в порядке синхронной очереди. Когда очередь превышает лимит новые запросы будут приводить к ошибке. Если такое случилось попробуйте позже.</p>\\n<p>Так что пожалуйста <b>учитывайте загруженность при выборе</b></p>\\n<p>Настоятельно рекомендовано локально развернуть Manga Image Translator т.к. это не потребляет серверные ресурсы и вы не ограничены очередью.</p>",
 			"options": {
-				"box_threshold": "袩芯褉芯谐 泻芯褉芯斜泻懈",
-				"detection_resolution": "袪邪蟹褉械褕械薪懈械 褉邪褋锌芯蟹薪邪胁邪薪懈褟 褌械泻褋褌邪",
-				"direction": "袨褉懈械褌薪邪褑懈褟 褌械泻褋褌邪",
-				"direction_auto": "小谢械写芯胁邪薪懈械 芯褉懈谐懈薪邪谢褍",
-				"direction_horizontal": "孝芯谢褜泻芯 谐芯褉懈蟹芯薪褌邪谢褜薪芯",
-				"direction_vertical": "孝芯谢褜泻芯 胁械褉褌懈泻邪谢褜薪芯",
-				"force_retry": "袩褉懈薪褍写懈褌械谢褜薪褘泄 锌芯胁褌芯褉(袠谐薪芯褉懈褉芯胁邪褌褜 泻褝褕)",
-				"inpainter": "袠薪锌械泄薪褌械褉",
-				"inpainting_size": "袠薪锌械泄薪褌懈薪谐 褉邪蟹屑械褉 芯斜谢邪褋褌懈",
-				"local_url": "袧邪褋褌褉芯懈褌褜 URL 褋械褉胁械褉邪",
-				"mask_dilation_offset": "袦邪褋泻懈褉芯胁芯褔薪芯械 褋屑械褖械薪懈械 写懈谢邪褌邪褑懈懈",
-				"only_download_translated": "小泻邪褔邪褌褜 褌芯谢褜泻芯 锌械褉械胁械写褢薪薪褘械 懈蟹芯斜褉邪卸械薪懈褟",
-				"target_language": "笑械谢械胁芯泄 褟蟹褘泻",
-				"text_detector": "袛械褌械泻褌芯褉 褌械泻褋褌邪",
-				"translator": "袩械褉械胁芯写褔懈泻",
-				"unclip_ratio": "袧械芯斜褉械蟹邪薪薪芯械 褋芯芯褌薪芯褕械薪懈械"
+				"box_threshold": "Порог коробки",
+				"detection_resolution": "Разрешение распознавания текста",
+				"direction": "Ориетнация текста",
+				"direction_auto": "Следование оригиналу",
+				"direction_horizontal": "Только горизонтально",
+				"direction_vertical": "Только вертикально",
+				"force_retry": "Принудительный повтор(Игнорировать кэш)",
+				"inpainter": "Инпейнтер",
+				"inpainting_size": "Инпейнтинг размер области",
+				"local_url": "Настроить URL сервера",
+				"mask_dilation_offset": "Маскировочное смещение дилатации",
+				"only_download_translated": "Скачать только переведённые изображения",
+				"target_language": "Целевой язык",
+				"text_detector": "Детектор текста",
+				"translator": "Переводчик",
+				"unclip_ratio": "Необрезанное соотношение"
 			},
-			"range": "袨斜褗械屑 锌械褉械胁芯写邪",
-			"provider": "袩械褉械胁芯写褔懈泻",
-			"translate_all": "袩械褉械胁械褋褌懈 胁褋械 懈蟹芯斜褉邪卸械薪懈褟",
-			"translate_to_end": "袩械褉械胁芯写懈褌褜 褋褌褉邪薪懈褑褍 写芯 泻芯薪褑邪"
+			"range": "Объем перевода",
+			"provider": "Переводчик",
+			"translate_all": "Перевести все изображения",
+			"translate_to_end": "Переводить страницу до конца"
 		}
 	},
 	site: {
 		"add_feature": {
-			"add_hotkeys_actions": "袛芯斜邪胁懈褌褜 芯锌械褉邪褑懈懈 褋 谐芯褉褟褔懈屑懈 泻谢邪胁懈褕邪屑懈",
-			"auto_adjust_option": "袗胁褌芯屑邪褌懈褔械褋泻邪褟 薪邪褋褌褉芯泄泻邪 锌邪褉邪屑械褌褉邪 褔褌械薪懈褟",
-			"auto_page_turn": "袘械褋泻芯薪械褔薪邪褟 锌褉芯泻褉褍褌泻邪",
-			"auto_show": "袗胁褌芯屑邪褌懈褔械褋泻懈 胁泻谢褞褔邪褌褜 褉械卸懈屑 褔褌械薪懈褟",
-			"block_totally": "袚谢芯斜邪谢褜薪芯 蟹邪斜谢芯泻懈褉芯胁邪褌褜 泻芯屑懈泻褋褘",
-			"colorize_tag": "笑胁械褌薪褘械 薪邪蟹胁邪薪懈褟",
-			"cross_site_link": "袣褉芯褋褋-褋邪泄褌芯胁邪褟 褋褋褘谢泻邪",
+			"add_hotkeys_actions": "Добавить операции с горячими клавишами",
+			"auto_adjust_option": "Автоматическая настройка параметра чтения",
+			"auto_page_turn": "Бесконечная прокрутка",
+			"auto_show": "Автоматически включать режим чтения",
+			"block_totally": "Глобально заблокировать комиксы",
+			"colorize_tag": "Цветные названия",
+			"cross_site_link": "Кросс-сайтовая ссылка",
 			"detect_ad": "Detect advertise page",
-			"expand_tag_list": "袪邪蟹胁械褉薪褍褌褜 褋锌懈褋芯泻 褌械谐芯胁",
-			"float_tag_list": "袩谢邪胁邪褞褖懈泄 褋锌懈褋芯泻 褌械谐芯胁",
-			"load_original_image": "袟邪谐褉褍卸邪褌褜 芯褉懈谐懈薪邪谢褜薪芯械 懈蟹芯斜褉邪卸械薪懈械",
-			"lock_option": "袘谢芯泻懈褉芯胁泻邪 芯锌褑懈懈 褋邪泄褌邪",
-			"open_link_new_page": "袨褌泻褉褘胁邪褌褜 褋褋褘谢泻懈 胁 薪芯胁芯泄 胁泻谢邪写泻械",
-			"quick_favorite": "袘褘褋褌褉褘泄 褎邪胁芯褉懈褌",
-			"quick_rating": "袘褘褋褌褉褘泄 褉械泄褌懈薪谐",
-			"quick_tag_define": "袨锌褉械写械谢械薪懈械 褌械谐邪 斜褘褋褌褉芯谐芯 锌褉芯褋屑芯褌褉邪",
-			"remember_current_site": "袟邪锌芯屑薪懈褌褜 褌械泻褍褖懈泄 褋邪泄褌",
-			"tag_lint": "孝褝谐 袥懈薪褌"
+			"expand_tag_list": "Развернуть список тегов",
+			"float_tag_list": "Плавающий список тегов",
+			"load_original_image": "Загружать оригинальное изображение",
+			"lock_option": "Блокировка опции сайта",
+			"open_link_new_page": "Открывать ссылки в новой вкладке",
+			"quick_favorite": "Быстрый фаворит",
+			"quick_rating": "Быстрый рейтинг",
+			"quick_tag_define": "Определение тега быстрого просмотра",
+			"remember_current_site": "Запомнить текущий сайт",
+			"tag_lint": "Тэг Линт"
 		},
-		"changed_load_failed": "小褌褉邪薪懈褑邪 懈蟹屑械薪懈谢邪褋褜, 薪械胁芯蟹屑芯卸薪芯 蟹邪谐褉褍蟹懈褌褜 泻芯屑懈泻褋",
+		"changed_load_failed": "Страница изменилась, невозможно загрузить комикс",
 		"ehentai": {
-			"change_favorite_failed": "袧械 褍写邪谢芯褋褜 懈蟹屑械薪懈褌褜 懈蟹斜褉邪薪薪芯械",
-			"change_favorite_success": "袠蟹斜褉邪薪薪芯械 褍褋锌械褕薪芯 懈蟹屑械薪械薪芯",
-			"change_rating_failed": "袧械 褍写邪谢芯褋褜 懈蟹屑械薪懈褌褜 芯褑械薪泻褍",
-			"change_rating_success": "校褋锌械褕薪芯 懈蟹屑械薪械薪 褉械泄褌懈薪谐",
-			"fetch_favorite_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 懈薪褎芯褉屑邪褑懈褞 芯 懈蟹斜褉邪薪薪芯屑",
-			"fetch_img_page_source_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 懈褋褏芯写薪褘泄 泻芯写 褋褌褉邪薪懈褑褘 褋 懈蟹芯斜褉邪卸械薪懈褟屑懈",
-			"fetch_img_page_url_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 邪写褉械褋 褋褌褉邪薪懈褑褘 懈蟹芯斜褉邪卸械薪懈泄 懈蟹 写械褌邪谢械泄",
-			"fetch_img_url_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 邪写褉械褋 懈蟹芯斜褉邪卸械薪懈褟",
-			"hitomi_error": "袨褕懈斜泻邪 褋芯锌芯褋褌邪胁谢械薪懈褟 hitomi",
-			"html_changed_link_failed": "小褌褉褍泻褌褍褉邪 褋褌褉邪薪懈褑褘 懈蟹屑械薪懈谢邪褋褜, 懈 褋胁褟蟹邪薪薪褘械 褎褍薪泻褑懈懈 胁薪械褕薪械谐芯 褋邪泄褌邪 薪械 褉邪斜芯褌邪褞褌 写芯谢卸薪褘屑 芯斜褉邪蟹芯屑",
-			"ip_banned": "IP 邪写褉械褋 蟹邪斜邪薪械薪",
-			"nhentai_error": "袨褕懈斜泻邪 褋芯锌芯褋褌邪胁谢械薪懈褟 nhentai",
-			"nhentai_failed": "袨褕懈斜泻邪 褋芯锌芯褋褌芯胁谢械薪懈褟. 袩芯卸邪谢褍泄褋褌邪 锌械褉械蟹邪谐褉褍蟹懈褌械 褋褌褉邪薪懈褑褍 锌芯褋谢械 胁褏芯写邪 薪邪 {{nhentai}}"
+			"change_favorite_failed": "Не удалось изменить избранное",
+			"change_favorite_success": "Избранное успешно изменено",
+			"change_rating_failed": "Не удалось изменить оценку",
+			"change_rating_success": "Успешно изменен рейтинг",
+			"fetch_favorite_failed": "Не удалось получить информацию о избранном",
+			"fetch_img_page_source_failed": "Не удалось получить исходный код страницы с изображениями",
+			"fetch_img_page_url_failed": "Не удалось получить адрес страницы изображений из деталей",
+			"fetch_img_url_failed": "Не удалось получить адрес изображения",
+			"hitomi_error": "Ошибка сопоставления hitomi",
+			"html_changed_link_failed": "Структура страницы изменилась, и связанные функции внешнего сайта не работают должным образом",
+			"ip_banned": "IP адрес забанен",
+			"nhentai_error": "Ошибка сопоставления nhentai",
+			"nhentai_failed": "Ошибка сопостовления. Пожалуйста перезагрузите страницу после входа на {{nhentai}}"
 		},
 		"nhentai": {
-			"fetch_next_page_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 褋谢械写褍褞褖褍褞 褋褌褉邪薪懈褑褍",
-			"tag_blacklist_fetch_failed": "袧械 褍写邪谢芯褋褜 锌芯谢褍褔懈褌褜 蟹邪斜谢芯泻懈褉芯胁邪薪薪褘械 褌械谐懈"
+			"fetch_next_page_failed": "Не удалось получить следующую страницу",
+			"tag_blacklist_fetch_failed": "Не удалось получить заблокированные теги"
 		},
-		"show_settings_menu": "袩芯泻邪蟹邪褌褜 屑械薪褞 薪邪褋褌褉芯械泻",
+		"show_settings_menu": "Показать меню настроек",
 		"simple": {
-			"auto_read_mode_message": "\\"袗胁褌芯屑邪褌懈褔械褋泻懈 胁泻谢褞褔邪褌褜 褉械卸懈屑 褔褌械薪懈褟\\" 锌芯 褍屑芯谢褔邪薪懈褞",
-			"no_img": "袧械 薪邪泄写械薪芯 锌芯写褏芯写褟褖懈褏 懈蟹芯斜褉邪卸械薪懈泄. 袧邪卸屑懈褌械 褌褍褌 褔褌芯 斜褘 胁褘泻谢褞褔懈褌褜 褉械卸懈屑 锌褉芯褋褌芯谐芯 褔褌械薪懈褟.",
-			"simple_read_mode": "袙泻谢褞褔懈褌褜 锌褉芯褋褌芯泄 褉械卸懈屑 褔褌械薪懈褟"
+			"auto_read_mode_message": "\\"Автоматически включать режим чтения\\" по умолчанию",
+			"no_img": "Не найдено подходящих изображений. Нажмите тут что бы выключить режим простого чтения.",
+			"simple_read_mode": "Включить простой режим чтения"
 		}
 	},
 	touch_area: {
-		"menu": "袦械薪褞",
+		"menu": "Меню",
 		"type": {
-			"edge": "袚褉邪薪褜",
+			"edge": "Грань",
 			"l": "L",
-			"left_right": "袥械胁芯 袩褉邪胁芯",
-			"up_down": "袙械褉褏 袧懈蟹"
+			"left_right": "Лево Право",
+			"up_down": "Верх Низ"
 		}
 	},
 	translation: {
 		"status": {
-			"after-translating": "袩芯褋褌芯斜褉邪斜芯褌泻邪 锌械褉械胁芯写邪",
-			"cancelled": "袩械褉械胁芯写 芯褌屑械薪褢薪",
-			"colorizing": "袪邪褋泻褉邪褕懈胁邪薪懈械",
-			"default": "袧械懈蟹胁械褋褌薪褘泄 褋褌邪褌褍褋",
-			"detection": "袪邪褋锌芯蟹薪邪胁邪薪懈械 褌械泻褋褌邪",
-			"downloading": "袟邪谐褉褍蟹泻邪",
-			"downscaling": "校屑械薪褜褕械薪懈械 屑邪褋褕褌邪斜邪",
-			"error": "袨褕懈斜泻邪 锌械褉械胁芯写邪",
-			"error-download": "袨褕懈斜泻邪 蟹邪谐褉褍蟹泻懈",
-			"error-lang": "笑械谢械胁芯泄 褟蟹褘泻 薪械 锌芯写写械褉卸懈胁邪械褌褋褟 胁褘斜褉邪薪薪褘屑 锌械褉械胁芯写褔懈泻芯屑",
-			"error-translating": "袨褕懈斜泻邪 锌械褉械胁芯写邪(锌褍褋褌芯泄 芯褌胁械褌)",
-			"error-too-large": "袪邪蟹屑械褉 懈蟹芯斜褉邪卸械薪懈褟 褋谢懈褕泻芯屑 斜芯谢褜褕芯泄 (斜芯谢械械 8000x8000 锌懈泻褋械谢械泄)",
-			"error-upload": "袨褕懈斜泻邪 芯褌锌褉邪胁泻懈",
-			"error-disconnect": "袩芯褌械褉褟薪芯 褋芯械写懈薪械薪懈械 褋 褋械褉胁械褉芯屑",
-			"error-with-id": "袨褕懈斜泻邪 胁芯 胁褉械屑褟 锌械褉械胁芯写邪",
-			"finished": "袟邪胁械褉褕械薪懈械",
-			"inpainting": "袧邪谢芯卸械薪懈械",
-			"mask-generation": "袚械薪械褉邪褑懈褟 屑邪褋泻懈",
-			"ocr": "袪邪褋锌芯蟹薪邪胁邪薪懈械 褌械泻褋褌邪",
-			"pending": "袨卸懈写邪薪懈械",
-			"pending-pos": "袨卸懈写邪薪懈械",
-			"preparing": "袨卸懈写邪薪懈械 芯泻薪邪 斜械蟹写械泄褋褌胁懈褟",
-			"rendering": "袨褌褉懈褋芯胁泻邪",
-			"running_pre_translation_hooks": "袙褘锌芯谢薪械薪懈械 锌褉械写芯斜褉邪斜芯褌泻懈 锌械褉械胁芯写邪",
-			"saved": "小芯褏褉邪薪械薪芯",
-			"saving": "小芯褏褉邪薪械薪懈械",
-			"skip-no-regions": "袧邪 懈蟹芯斜褉邪卸械薪懈懈 薪械 芯斜薪邪褉褍卸械薪芯 褌械泻褋褌芯胁褘褏 芯斜谢邪褋褌械泄.",
-			"skip-no-text": "孝械泻褋褌 薪邪 懈蟹芯斜褉邪卸械薪懈懈 薪械 芯斜薪邪褉褍卸械薪",
-			"textline_merge": "袨斜褜械写懈薪械薪懈械 褌械泻褋褌邪",
-			"translating": "袩械褉械胁芯写懈褌褋褟",
-			"upload": "袨褌锌褉邪胁泻邪",
-			"upscaling": "校胁械谢懈褔械薪懈械 懈蟹芯斜褉邪卸械薪懈褟",
-			"uploading": "袨褌锌褉邪胁泻邪"
+			"after-translating": "Постобработка перевода",
+			"cancelled": "Перевод отменён",
+			"colorizing": "Раскрашивание",
+			"default": "Неизвестный статус",
+			"detection": "Распознавание текста",
+			"downloading": "Загрузка",
+			"downscaling": "Уменьшение масштаба",
+			"error": "Ошибка перевода",
+			"error-download": "Ошибка загрузки",
+			"error-lang": "Целевой язык не поддерживается выбранным переводчиком",
+			"error-translating": "Ошибка перевода(пустой ответ)",
+			"error-too-large": "Размер изображения слишком большой (более 8000x8000 пикселей)",
+			"error-upload": "Ошибка отправки",
+			"error-disconnect": "Потеряно соединение с сервером",
+			"error-with-id": "Ошибка во время перевода",
+			"finished": "Завершение",
+			"inpainting": "Наложение",
+			"mask-generation": "Генерация маски",
+			"ocr": "Распознавание текста",
+			"pending": "Ожидание",
+			"pending-pos": "Ожидание",
+			"preparing": "Ожидание окна бездействия",
+			"rendering": "Отрисовка",
+			"running_pre_translation_hooks": "Выполнение предобработки перевода",
+			"saved": "Сохранено",
+			"saving": "Сохранение",
+			"skip-no-regions": "На изображении не обнаружено текстовых областей.",
+			"skip-no-text": "Текст на изображении не обнаружен",
+			"textline_merge": "Обьединение текста",
+			"translating": "Переводится",
+			"upload": "Отправка",
+			"upscaling": "Увеличение изображения",
+			"uploading": "Отправка"
 		},
 		"tip": {
-			"check_img_status_failed": "袧械 褍写邪谢芯褋褜 锌褉芯胁械褉懈褌褜 褋褌邪褌褍褋 懈蟹芯斜褉邪卸械薪懈褟",
-			"download_img_failed": "袧械 褍写邪谢芯褋褜 褋泻邪褔邪褌褜 懈蟹芯斜褉邪卸械薪懈械",
-			"get_translator_list_error": "袩褉芯懈蟹芯褕谢邪 芯褕懈斜泻邪 胁芯 胁褉械屑褟 锌芯谢褍褔械薪懈褟 褋锌懈褋泻邪 写芯褋褌褍锌薪褘褏 锌械褉械胁芯写褔懈泻芯胁",
-			"id_not_returned": "ID 薪械 胁械褉薪褍谢懈(",
-			"img_downloading": "小泻邪褔邪褌褜",
-			"img_not_fully_loaded": "袠蟹芯斜褉邪卸械薪懈械 胁褋褢 械褖褢 蟹邪谐褉褍卸邪械褌褋褟",
-			"pending": "袨卸懈写械薪懈械, 锌芯蟹懈褑懈褟 胁 芯褔械褉械写懈 {{pos}}",
-			"resize_img_failed": "袧械 褍写邪谢芯褋褜 懈蟹屑械薪懈褌褜 褉邪蟹屑械褉 懈蟹芯斜褉邪卸械薪懈褟",
-			"translating": "袠蟹芯斜褉邪卸械薪懈械 锌械褉械胁芯写懈褌褋褟",
-			"translation_completed": "袩械褉械胁芯写 蟹邪胁械褉褕褢薪",
-			"upload": "袟邪谐褉褍蟹泻邪 懈蟹芯斜褉邪卸械薪懈褟",
-			"upload_error": "袨褕懈斜泻邪 芯褌锌褉邪胁泻懈 懈蟹芯斜褉邪卸械薪懈褟",
-			"upload_return_error": "袨褕懈斜泻邪 锌械褉械胁芯写邪 薪邪 褋械褉胁械褉械",
-			"wait_translation": "袨卸懈写邪薪懈械 锌械褉械胁芯写邪"
+			"check_img_status_failed": "Не удалось проверить статус изображения",
+			"download_img_failed": "Не удалось скачать изображение",
+			"get_translator_list_error": "Произошла ошибка во время получения списка доступных переводчиков",
+			"id_not_returned": "ID не вернули(",
+			"img_downloading": "Скачать",
+			"img_not_fully_loaded": "Изображение всё ещё загружается",
+			"pending": "Ожидение, позиция в очереди {{pos}}",
+			"resize_img_failed": "Не удалось изменить размер изображения",
+			"translating": "Изображение переводится",
+			"translation_completed": "Перевод завершён",
+			"upload": "Загрузка изображения",
+			"upload_error": "Ошибка отправки изображения",
+			"upload_return_error": "Ошибка перевода на сервере",
+			"wait_translation": "Ожидание перевода"
 		},
 		"translator": {
 			"baidu": "baidu",
 			"deepl": "DeepL",
 			"google": "Google",
 			"gpt3.5": "GPT-3.5",
-			"none": "校斜褉邪褌褜 褌械泻褋褌",
-			"offline": "袨褎褎谢邪泄薪 锌械褉械胁芯写褔懈泻",
-			"original": "袨褉懈谐懈薪邪谢",
+			"none": "Убрать текст",
+			"offline": "Оффлайн переводчик",
+			"original": "Оригинал",
 			"papago": "Papago",
 			"youdao": "youdao"
 		}
 	},
 	upscale: {
-		"module_download_complete": "袟邪谐褉褍蟹泻邪 屑芯写械谢懈 褍胁械谢懈褔械薪懈褟 懈蟹芯斜褉邪卸械薪懈泄 蟹邪胁械褉褕械薪邪",
-		"module_download_failed": "小斜芯泄 蟹邪谐褉褍蟹泻懈 屑芯写械谢懈 褍胁械谢懈褔械薪懈褟 懈蟹芯斜褉邪卸械薪懈泄",
-		"module_downloading": "袟邪谐褉褍蟹泻邪 屑芯写械谢懈 褍胁械谢懈褔械薪懈褟 懈蟹芯斜褉邪卸械薪懈泄...",
-		"title": "校胁械谢懈褔械薪懈械 懈蟹芯斜褉邪卸械薪懈褟",
-		"upscaled": "校胁械谢懈褔械薪薪褘泄",
-		"upscaling": "校胁械谢懈褔懈胁邪械褌褋褟",
-		"webgpu_tip": "袧械胁芯蟹屑芯卸薪芯 褍胁械谢懈褔懈褌褜 懈蟹芯斜褉邪卸械薪懈褟 褋 锌芯屑芯褖褜褞 WebGPU, 芯斜褉邪斜芯褌泻邪 斜褍写械褌 屑械写谢械薪薪械械"
+		"module_download_complete": "Загрузка модели увеличения изображений завершена",
+		"module_download_failed": "Сбой загрузки модели увеличения изображений",
+		"module_downloading": "Загрузка модели увеличения изображений...",
+		"title": "Увеличение изображения",
+		"upscaled": "Увеличенный",
+		"upscaling": "Увеличивается",
+		"webgpu_tip": "Невозможно увеличить изображения с помощью WebGPU, обработка будет медленнее"
 	}
 };
 //#endregion
 //#region locales/zh.json
 var zh_default = {
 	alert: {
-		"comic_load_error": "婕敾鍔犺浇鍑洪敊",
-		"download_failed": "涓嬭浇澶辫触",
-		"fetch_comic_img_failed": "鑾峰彇婕敾鍥剧墖澶辫触",
-		"img_load_failed": "鍥剧墖鍔犺浇澶辫触",
-		"no_img_download": "娌℃湁鑳戒笅杞界殑鍥剧墖",
-		"repeat_load": "鍔犺浇鍥剧墖涓紝璇风◢鍊?,
-		"retry_get_img_url": "閲嶆柊鑾峰彇绗?{{i}} 椤靛浘鐗囩殑鍦板潃",
-		"server_connect_failed": "鏃犳硶杩炴帴鍒版湇鍔″櫒"
+		"comic_load_error": "漫画加载出错",
+		"download_failed": "下载失败",
+		"fetch_comic_img_failed": "获取漫画图片失败",
+		"img_load_failed": "图片加载失败",
+		"no_img_download": "没有能下载的图片",
+		"repeat_load": "加载图片中，请稍候",
+		"retry_get_img_url": "重新获取第 {{i}} 页图片的地址",
+		"server_connect_failed": "无法连接到服务器"
 	},
 	button: {
-		"auto_scroll": "鑷姩婊氬姩",
-		"close_current_page_translation": "鍏抽棴褰撳墠椤电殑缈昏瘧",
-		"download_completed": "涓嬭浇瀹屾垚",
-		"download_completed_error": "涓嬭浇瀹屾垚锛屼絾鏈?{{errorNum}} 寮犲浘鐗囦笅杞藉け璐?,
-		"downloading": "涓嬭浇涓?,
-		"fullscreen": "鍏ㄥ睆",
-		"fullscreen_exit": "閫€鍑哄叏灞?,
-		"grid_mode": "缃戞牸妯″紡",
-		"packaging": "鎵撳寘涓?,
-		"page_fill": "椤甸潰濉厖",
-		"page_mode_double": "鍙岄〉妯″紡",
-		"page_mode_single": "鍗曢〉妯″紡",
-		"scroll_mode": "鍗疯酱妯″紡",
-		"translate_current_page": "缈昏瘧褰撳墠椤?,
-		"zoom_in": "鏀惧ぇ",
-		"zoom_out": "缂╁皬"
+		"auto_scroll": "自动滚动",
+		"close_current_page_translation": "关闭当前页的翻译",
+		"download_completed": "下载完成",
+		"download_completed_error": "下载完成，但有 {{errorNum}} 张图片下载失败",
+		"downloading": "下载中",
+		"fullscreen": "全屏",
+		"fullscreen_exit": "退出全屏",
+		"grid_mode": "网格模式",
+		"packaging": "打包中",
+		"page_fill": "页面填充",
+		"page_mode_double": "双页模式",
+		"page_mode_single": "单页模式",
+		"scroll_mode": "卷轴模式",
+		"translate_current_page": "翻译当前页",
+		"zoom_in": "放大",
+		"zoom_out": "缩小"
 	},
-	description: "涓烘极鐢荤珯澧炲姞鍙岄〉闃呰銆佺炕璇戠瓑浼樺寲浣撻獙鐨勫寮哄姛鑳姐€?,
+	description: "为漫画站增加双页阅读、翻译等优化体验的增强功能。",
 	eh_tag_lint: {
-		"combo": "瀛樺湪 [tag] 鏃讹紝涓€鑸篃瀛樺湪 [tag]",
-		"conflict": "瀛樺湪 [tag] 鏃讹紝涓嶅簲璇ュ瓨鍦?[tag]",
-		"correct_tag": "搴旇鏄纭殑鏍囩",
-		"miss_female": "缂哄皯鐢锋€ф爣绛撅紝鍙兘闇€瑕?,
-		"miss_parody": "缂哄皯鍘熶綔鏍囩锛屽彲鑳介渶瑕?,
-		"possible_conflict": "瀛樺湪 [tag] 鏃讹紝涓€鑸笉搴旇瀛樺湪 [tag]",
-		"prerequisite": "[tag] 鐨勫墠缃爣绛?[tag] 涓嶅瓨鍦?
+		"combo": "存在 [tag] 时，一般也存在 [tag]",
+		"conflict": "存在 [tag] 时，不应该存在 [tag]",
+		"correct_tag": "应该是正确的标签",
+		"miss_female": "缺少男性标签，可能需要",
+		"miss_parody": "缺少原作标签，可能需要",
+		"possible_conflict": "存在 [tag] 时，一般不应该存在 [tag]",
+		"prerequisite": "[tag] 的前置标签 [tag] 不存在"
 	},
 	end_page: {
-		"next_button": "涓嬩竴璇?,
-		"prev_button": "涓婁竴璇?,
+		"next_button": "下一话",
+		"prev_button": "上一话",
 		"tip": {
-			"end_jump": "宸插埌缁撳熬锛岀户缁悜涓嬬炕椤靛皢璺宠嚦涓嬩竴璇?,
-			"exit": "宸插埌缁撳熬锛岀户缁炕椤靛皢閫€鍑?,
-			"start_jump": "宸插埌寮€澶达紝缁х画鍚戜笂缈婚〉灏嗚烦鑷充笂涓€璇?
+			"end_jump": "已到结尾，继续向下翻页将跳至下一话",
+			"exit": "已到结尾，继续翻页将退出",
+			"start_jump": "已到开头，继续向上翻页将跳至上一话"
 		}
 	},
 	hotkeys: {
-		"enter_read_mode": "杩涘叆闃呰妯″紡",
-		"float_tag_list": "鎮诞鏍囩鍒楄〃",
-		"jump_next": "璺宠嚦涓嬩竴璇?,
-		"jump_prev": "璺宠嚦涓婁竴璇?,
-		"jump_to_end": "璺宠嚦灏鹃〉",
-		"jump_to_home": "璺宠嚦棣栭〉",
-		"multi_select_load": "澶氶€夊姞杞?,
-		"page_down": "鍚戜笅缈婚〉",
-		"page_up": "鍚戜笂缈婚〉",
-		"reload_current_error_img": "閲嶈浇褰撳墠閿欒鍥剧墖",
-		"repeat_tip": "姝ゅ揩鎹烽敭宸茶缁戝畾鑷炽€寋{hotkey}}銆?,
-		"scroll_down": "鍚戜笅婊氬姩",
-		"scroll_left": "鍚戝乏婊氬姩",
-		"scroll_right": "鍚戝彸婊氬姩",
-		"scroll_up": "鍚戜笂婊氬姩",
-		"switch_auto_enlarge": "鍒囨崲鍥剧墖鑷姩鏀惧ぇ閫夐」",
-		"switch_dir": "鍒囨崲闃呰鏂瑰悜",
-		"switch_grid_mode": "鍒囨崲缃戞牸妯″紡",
-		"switch_page_fill": "鍒囨崲椤甸潰濉厖",
-		"switch_scroll_mode": "鍒囨崲鍗疯酱妯″紡",
-		"switch_single_double_page_mode": "鍒囨崲鍗曞弻椤垫ā寮?
+		"enter_read_mode": "进入阅读模式",
+		"float_tag_list": "悬浮标签列表",
+		"jump_next": "跳至下一话",
+		"jump_prev": "跳至上一话",
+		"jump_to_end": "跳至尾页",
+		"jump_to_home": "跳至首页",
+		"multi_select_load": "多选加载",
+		"page_down": "向下翻页",
+		"page_up": "向上翻页",
+		"reload_current_error_img": "重载当前错误图片",
+		"repeat_tip": "此快捷键已被绑定至「{{hotkey}}」",
+		"scroll_down": "向下滚动",
+		"scroll_left": "向左滚动",
+		"scroll_right": "向右滚动",
+		"scroll_up": "向上滚动",
+		"switch_auto_enlarge": "切换图片自动放大选项",
+		"switch_dir": "切换阅读方向",
+		"switch_grid_mode": "切换网格模式",
+		"switch_page_fill": "切换页面填充",
+		"switch_scroll_mode": "切换卷轴模式",
+		"switch_single_double_page_mode": "切换单双页模式"
 	},
 	img_status: {
-		"error": "鍔犺浇鍑洪敊",
-		"loading": "姝ｅ湪鍔犺浇",
-		"wait": "绛夊緟鍔犺浇"
+		"error": "加载出错",
+		"loading": "正在加载",
+		"wait": "等待加载"
 	},
 	other: {
-		"auto": "鑷姩",
-		"custom": "鑷畾涔?,
-		"disable": "绂佺敤",
-		"distance": "璺濈",
-		"download": "涓嬭浇",
-		"enabled": "鍚敤",
-		"enter_comic_read_mode": "杩涘叆婕敾闃呰妯″紡",
-		"exit": "閫€鍑?,
-		"fab_hidden": "闅愯棌鎮诞鎸夐挳",
-		"fab_show": "鏄剧ず鎮诞鎸夐挳",
-		"fill_page": "濉厖椤?,
-		"hotkeys": "蹇嵎閿?,
-		"img_loading": "鍥剧墖鍔犺浇涓?,
-		"interval": "闂撮殧",
-		"loading_img": "鍔犺浇鍥剧墖涓?,
-		"multi_select_mode": "澶氶€夋ā寮?,
-		"none": "鏃?,
-		"or": "鎴?,
-		"other": "鍏朵粬",
-		"page_range": "璇疯緭鍏ラ〉鐮佽寖鍥达細\\n锛堜緥濡傦細1, 3-5, 9-)",
-		"read_mode": "闃呰妯″紡",
-		"selected": "宸查€変腑",
-		"setting": "璁剧疆",
-		"clear": "娓呯┖"
+		"auto": "自动",
+		"custom": "自定义",
+		"disable": "禁用",
+		"distance": "距离",
+		"download": "下载",
+		"enabled": "启用",
+		"enter_comic_read_mode": "进入漫画阅读模式",
+		"exit": "退出",
+		"fab_hidden": "隐藏悬浮按钮",
+		"fab_show": "显示悬浮按钮",
+		"fill_page": "填充页",
+		"hotkeys": "快捷键",
+		"img_loading": "图片加载中",
+		"interval": "间隔",
+		"loading_img": "加载图片中",
+		"multi_select_mode": "多选模式",
+		"none": "无",
+		"or": "或",
+		"other": "其他",
+		"page_range": "请输入页码范围：\\n（例如：1, 3-5, 9-)",
+		"read_mode": "阅读模式",
+		"selected": "已选中",
+		"setting": "设置",
+		"clear": "清空"
 	},
 	pwa: {
 		"alert": {
-			"img_data_error": "鍥剧墖鏁版嵁閿欒",
-			"img_not_found": "鎵句笉鍒板浘鐗?,
-			"img_not_found_files": "璇烽€夋嫨鍥剧墖鏂囦欢鎴栧惈鏈夊浘鐗囨枃浠剁殑鍘嬬缉鍖?,
-			"img_not_found_folder": "鏂囦欢澶逛笅娌℃湁鍥剧墖鏂囦欢鎴栧惈鏈夊浘鐗囨枃浠剁殑鍘嬬缉鍖?,
-			"not_valid_url": "涓嶆槸鏈夋晥鐨?URL",
-			"parse_error": "瑙ｆ瀽鍑洪敊",
-			"password_error": "瀵嗙爜閿欒",
-			"repeat_load": "姝ｅ湪鍔犺浇鍏朵粬鏂囦欢涓€︹€?,
-			"userscript_not_installed": "鏈畨瑁?ComicRead 鑴氭湰"
+			"img_data_error": "图片数据错误",
+			"img_not_found": "找不到图片",
+			"img_not_found_files": "请选择图片文件或含有图片文件的压缩包",
+			"img_not_found_folder": "文件夹下没有图片文件或含有图片文件的压缩包",
+			"not_valid_url": "不是有效的 URL",
+			"parse_error": "解析出错",
+			"password_error": "密码错误",
+			"repeat_load": "正在加载其他文件中……",
+			"userscript_not_installed": "未安装 ComicRead 脚本"
 		},
 		"button": {
-			"enter_url": "杈撳叆 URL",
-			"install": "瀹夎",
-			"no_more_prompt": "涓嶅啀鎻愮ず",
-			"resume_read": "鎭㈠闃呰",
-			"select_files": "閫夋嫨鏂囦欢",
-			"select_folder": "閫夋嫨鏂囦欢澶?
+			"enter_url": "输入 URL",
+			"install": "安装",
+			"no_more_prompt": "不再提示",
+			"resume_read": "恢复阅读",
+			"select_files": "选择文件",
+			"select_folder": "选择文件夹"
 		},
-		"install_md": "### 姣忔閮借鎵撳紑杩欎釜缃戦〉寰堥夯鐑︼紵\\n濡傛灉浣犲笇鏈沑\n1. 鑳芥湁鐙珛鐨勭獥鍙ｏ紝鍍忔槸鍦ㄤ娇鐢ㄦ湰鍦拌蒋浠朵竴鏍穃\n1. 鍔犲叆鏈湴鍘嬬缉鏂囦欢鐨勬墦寮€鏂瑰紡涔嬩腑锛屾柟渚跨洿鎺ユ墦寮€\\n1. 绂荤嚎浣跨敤~~锛堜富瑕佹槸鎷呭績鍥藉唴缃戠粶鎶介鏃犳硶璁块棶杩欎釜缃戦〉~~\\n### 娆㈣繋灏嗘湰椤甸潰浣滀负 PWA 搴旂敤瀹夎鍒扮數鑴戜笂馃槂馃憤",
+		"install_md": "### 每次都要打开这个网页很麻烦？\\n如果你希望\\n1. 能有独立的窗口，像是在使用本地软件一样\\n1. 加入本地压缩文件的打开方式之中，方便直接打开\\n1. 离线使用~~（主要是担心国内网络抽风无法访问这个网页~~\\n### 欢迎将本页面作为 PWA 应用安装到电脑上😃👍",
 		"message": {
-			"enter_password": "璇疯緭鍏ュ瘑鐮?,
-			"parsing": "瑙ｆ瀽涓?
+			"enter_password": "请输入密码",
+			"parsing": "解析中"
 		},
-		"tip_enter_url": "璇疯緭鍏ュ帇缂╁寘 URL",
-		"tip_md": "# ComicRead PWA\\n浣跨敤 [ComicRead](https://github.com/hymbz/ComicReadScript) 鐨勯槄璇绘ā寮忛槄璇?*鏈湴**婕敾\\n---\\n### 灏嗗浘鐗囨枃浠躲€佹枃浠跺す銆佸帇缂╁寘鐩存帴鎷栧叆鍗冲彲寮€濮嬮槄璇籠\n*涔熷彲浠ラ€夋嫨**鐩存帴绮樿创**鎴?*杈撳叆**鍘嬬缉鍖?URL 涓嬭浇闃呰*"
+		"tip_enter_url": "请输入压缩包 URL",
+		"tip_md": "# ComicRead PWA\\n使用 [ComicRead](https://github.com/hymbz/ComicReadScript) 的阅读模式阅读**本地**漫画\\n---\\n### 将图片文件、文件夹、压缩包直接拖入即可开始阅读\\n*也可以选择**直接粘贴**或**输入**压缩包 URL 下载阅读*"
 	},
 	setting: {
 		"hotkeys": {
-			"add": "娣诲姞鏂板揩鎹烽敭",
-			"restore": "鎭㈠榛樿蹇嵎閿?
+			"add": "添加新快捷键",
+			"restore": "恢复默认快捷键"
 		},
-		"language": "璇█",
+		"language": "语言",
 		"option": {
-			"abreast_duplicate": "姣忓垪閲嶅姣斾緥",
-			"abreast_mode": "骞舵帓鍗疯酱妯″紡",
-			"adjust_to_width": "鑷€傚簲瀹藉害",
-			"align_edge": "婊氬姩缈婚〉鏃跺榻愯竟缂?,
-			"always_load_all_img": "濮嬬粓鍔犺浇鎵€鏈夊浘鐗?,
-			"autoFullscreen": "鑷姩鍏ㄥ睆",
-			"autoHiddenMouse": "鑷姩闅愯棌榧犳爣",
-			"auto_scale": "鑷姩缂╂斁",
-			"auto_scroll_trigger_end": "鍦ㄧ粨鏉熼〉涓婄户缁粴鍔?,
-			"auto_switch_page_mode": "鎸夊睆骞曟瘮渚嬪垏鎹㈠崟鍙岄〉",
-			"background_color": "鑳屾櫙棰滆壊",
-			"click_page_turn_area": "鐐瑰嚮鍖哄煙",
-			"click_page_turn_enabled": "鐐瑰嚮缈婚〉",
-			"click_page_turn_swap_area": "宸﹀彸鐐瑰嚮鍖哄煙浜ゆ崲",
-			"dark_mode": "榛戞殫妯″紡",
-			"dark_mode_auto": "榛戞殫妯″紡璺熼殢绯荤粺",
-			"dir_ltr": "浠庡乏鍒板彸锛堢編婕級",
-			"dir_rtl": "浠庡彸鍒板乏锛堟棩婕級",
-			"disable_auto_enlarge": "绂佹鍥剧墖鑷姩鏀惧ぇ",
-			"first_page_fill": "榛樿鍚敤棣栭〉濉厖",
-			"full_width": "瑙嗙獥瀹藉害",
-			"img_recognition": "鍥惧儚璇嗗埆",
-			"img_recognition_background": "璇嗗埆鑳屾櫙鑹?,
-			"img_recognition_pageFill": "鑷姩璋冩暣椤甸潰濉厖",
-			"img_recognition_warn": "鉂?褰撳墠娴忚鍣ㄤ笉鏀寔 Web Worker锛屽紑鍚鍔熻兘鍙兘瀵艰嚧椤甸潰鍗￠】锛屽缓璁崌绾ф垨鏇存崲娴忚鍣ㄣ€?,
-			"img_recognition_warn_2": "鉂?褰撳墠缃戠珯涓嶆敮鎸?Web Worker锛屽紑鍚鍔熻兘鍙兘瀵艰嚧椤甸潰鍗￠】銆?,
-			"paragraph_appearance": "澶栬",
-			"paragraph_dir": "闃呰鏂瑰悜",
-			"paragraph_display": "鏄剧ず",
-			"paragraph_scrollbar": "婊氬姩鏉?,
-			"paragraph_translation": "缈昏瘧",
-			"preload_page_num": "棰勫姞杞介〉鏁?,
-			"scroll_end": "缈婚〉鑷冲敖澶村悗",
-			"scroll_end_auto": "浼樺厛璺宠嚦涓?涓嬩竴璇濓紝鍚﹀垯閫€鍑?,
-			"scroll_mode_img_scale": "鍗疯酱鍥剧墖缂╂斁",
-			"scroll_mode_img_spacing": "鍗疯酱鍥剧墖闂磋窛",
-			"scrollbar_auto_hidden": "鑷姩闅愯棌",
-			"scrollbar_easy_scroll": "蹇嵎婊氬姩",
-			"scrollbar_position": "浣嶇疆",
-			"scrollbar_position_bottom": "搴曢儴",
-			"scrollbar_position_hidden": "闅愯棌",
-			"scrollbar_position_right": "鍙充晶",
-			"scrollbar_position_top": "椤堕儴",
-			"scrollbar_show_img_status": "鏄剧ず鍥剧墖鍔犺浇鐘舵€?,
-			"show_clickable_area": "鏄剧ず鐐瑰嚮鍖哄煙",
-			"show_comments": "鍦ㄧ粨鏉熼〉鏄剧ず璇勮",
-			"shrink_menu": "缂╁皬鑿滃崟鍖哄煙",
-			"swap_page_turn_key": "宸﹀彸缈婚〉閿氦鎹?,
-			"zoom": "鍥剧墖缂╂斁"
+			"abreast_duplicate": "每列重复比例",
+			"abreast_mode": "并排卷轴模式",
+			"adjust_to_width": "自适应宽度",
+			"align_edge": "滚动翻页时对齐边缘",
+			"always_load_all_img": "始终加载所有图片",
+			"autoFullscreen": "自动全屏",
+			"autoHiddenMouse": "自动隐藏鼠标",
+			"auto_scale": "自动缩放",
+			"auto_scroll_trigger_end": "在结束页上继续滚动",
+			"auto_switch_page_mode": "按屏幕比例切换单双页",
+			"background_color": "背景颜色",
+			"click_page_turn_area": "点击区域",
+			"click_page_turn_enabled": "点击翻页",
+			"click_page_turn_swap_area": "左右点击区域交换",
+			"dark_mode": "黑暗模式",
+			"dark_mode_auto": "黑暗模式跟随系统",
+			"dir_ltr": "从左到右（美漫）",
+			"dir_rtl": "从右到左（日漫）",
+			"disable_auto_enlarge": "禁止图片自动放大",
+			"first_page_fill": "默认启用首页填充",
+			"full_width": "视窗宽度",
+			"img_recognition": "图像识别",
+			"img_recognition_background": "识别背景色",
+			"img_recognition_pageFill": "自动调整页面填充",
+			"img_recognition_warn": "❗ 当前浏览器不支持 Web Worker，开启此功能可能导致页面卡顿，建议升级或更换浏览器。",
+			"img_recognition_warn_2": "❗ 当前网站不支持 Web Worker，开启此功能可能导致页面卡顿。",
+			"paragraph_appearance": "外观",
+			"paragraph_dir": "阅读方向",
+			"paragraph_display": "显示",
+			"paragraph_scrollbar": "滚动条",
+			"paragraph_translation": "翻译",
+			"preload_page_num": "预加载页数",
+			"scroll_end": "翻页至尽头后",
+			"scroll_end_auto": "优先跳至上/下一话，否则退出",
+			"scroll_mode_img_scale": "卷轴图片缩放",
+			"scroll_mode_img_spacing": "卷轴图片间距",
+			"scrollbar_auto_hidden": "自动隐藏",
+			"scrollbar_easy_scroll": "快捷滚动",
+			"scrollbar_position": "位置",
+			"scrollbar_position_bottom": "底部",
+			"scrollbar_position_hidden": "隐藏",
+			"scrollbar_position_right": "右侧",
+			"scrollbar_position_top": "顶部",
+			"scrollbar_show_img_status": "显示图片加载状态",
+			"show_clickable_area": "显示点击区域",
+			"show_comments": "在结束页显示评论",
+			"shrink_menu": "缩小菜单区域",
+			"swap_page_turn_key": "左右翻页键交换",
+			"zoom": "图片缩放"
 		},
-		"sync_options_other_site": "鍚屾闃呰閰嶇疆鑷冲叾浠栫珯鐐?,
+		"sync_options_other_site": "同步阅读配置至其他站点",
 		"translation": {
-			"cotrans_tip": "<p>灏嗕娇鐢?<a href=\\"https://cotrans.touhou.ai\\" target=\\"_blank\\">Cotrans</a> 鎻愪緵鐨勬帴鍙ｇ炕璇戝浘鐗囷紝璇ユ湇鍔″櫒鐢卞叾缁存姢鑰呯敤鐖卞彂鐢佃嚜璐圭淮鎶?/p>\\n<p>澶氫汉鍚屾椂浣跨敤鏃堕渶瑕佹帓闃熺瓑寰咃紝绛夊緟闃熷垪杈惧埌涓婇檺鍚庡啀涓婁紶鏂板浘鐗囦細鎶ラ敊锛岄渶瑕佽繃娈垫椂闂村啀璇?/p>\\n<p>鎵€浠ヨ繕璇?<b>娉ㄦ剰鐢ㄩ噺</b></p>\\n<p>鏇存帹鑽愯嚜宸辨湰鍦伴儴缃?Manga Image Translator锛屾棦涓嶅崰鐢ㄦ湇鍔″櫒璧勬簮涔熶笉闇€瑕佹帓闃?/p>",
+			"cotrans_tip": "<p>将使用 <a href=\\"https://cotrans.touhou.ai\\" target=\\"_blank\\">Cotrans</a> 提供的接口翻译图片，该服务器由其维护者用爱发电自费维护</p>\\n<p>多人同时使用时需要排队等待，等待队列达到上限后再上传新图片会报错，需要过段时间再试</p>\\n<p>所以还请 <b>注意用量</b></p>\\n<p>更推荐自己本地部署 Manga Image Translator，既不占用服务器资源也不需要排队</p>",
 			"options": {
-				"box_threshold": "鏂囨湰妗嗛槇鍊?,
-				"detection_resolution": "鏂囨湰鎵弿娓呮櫚搴?,
-				"direction": "娓叉煋瀛椾綋鏂瑰悜",
-				"direction_auto": "鍘熸枃涓€鑷?,
-				"direction_horizontal": "浠呴檺姘村钩",
-				"direction_vertical": "浠呴檺鍨傜洿",
-				"force_retry": "蹇界暐缂撳瓨寮哄埗閲嶈瘯",
-				"inpainter": "鍥惧儚淇鍣?,
-				"inpainting_size": "鍥惧儚淇灏哄",
-				"local_url": "鑷畾涔夋湇鍔″櫒 URL",
-				"mask_dilation_offset": "鎺╃爜鑶ㄨ儉鍋忕Щ閲?,
-				"only_download_translated": "鍙笅杞界炕璇戝畬鐨勫浘鐗?,
-				"target_language": "鐩爣璇█",
-				"text_detector": "鏂囨湰鎵弿鍣?,
-				"translator": "缈昏瘧鏈嶅姟",
-				"unclip_ratio": "鏂囨湰妗嗚啫鑳€姣旂巼"
+				"box_threshold": "文本框阈值",
+				"detection_resolution": "文本扫描清晰度",
+				"direction": "渲染字体方向",
+				"direction_auto": "原文一致",
+				"direction_horizontal": "仅限水平",
+				"direction_vertical": "仅限垂直",
+				"force_retry": "忽略缓存强制重试",
+				"inpainter": "图像修复器",
+				"inpainting_size": "图像修复尺寸",
+				"local_url": "自定义服务器 URL",
+				"mask_dilation_offset": "掩码膨胀偏移量",
+				"only_download_translated": "只下载翻译完的图片",
+				"target_language": "目标语言",
+				"text_detector": "文本扫描器",
+				"translator": "翻译服务",
+				"unclip_ratio": "文本框膨胀比率"
 			},
-			"range": "缈昏瘧鑼冨洿",
-			"provider": "缈昏瘧鍣?,
-			"translate_all": "缈昏瘧鍏ㄩ儴鍥剧墖",
-			"translate_to_end": "缈昏瘧褰撳墠椤佃嚦缁撳熬"
+			"range": "翻译范围",
+			"provider": "翻译器",
+			"translate_all": "翻译全部图片",
+			"translate_to_end": "翻译当前页至结尾"
 		}
 	},
 	site: {
 		"add_feature": {
-			"add_hotkeys_actions": "澧炲姞蹇嵎閿搷浣?,
-			"auto_adjust_option": "鑷姩璋冩暣闃呰閰嶇疆",
-			"auto_page_turn": "鏃犻檺婊氬姩",
-			"auto_show": "鑷姩杩涘叆闃呰妯″紡",
-			"block_totally": "褰诲簳灞忚斀婕敾",
-			"colorize_tag": "鏍囩鏌撹壊",
-			"cross_site_link": "鍏宠仈澶栫珯",
-			"detect_ad": "璇嗗埆骞垮憡椤?,
-			"expand_tag_list": "灞曞紑鏍囩鍒楄〃",
-			"float_tag_list": "鎮诞鏍囩鍒楄〃",
-			"load_original_image": "鍔犺浇鍘熷浘",
-			"lock_option": "閿佸畾绔欑偣閰嶇疆",
-			"open_link_new_page": "鍦ㄦ柊椤甸潰涓墦寮€閾炬帴",
-			"quick_favorite": "蹇嵎鏀惰棌",
-			"quick_rating": "蹇嵎璇勫垎",
-			"quick_tag_define": "蹇嵎鏌ョ湅鏍囩瀹氫箟",
-			"remember_current_site": "璁颁綇褰撳墠绔欑偣",
-			"tag_lint": "鏍囩妫€鏌?
+			"add_hotkeys_actions": "增加快捷键操作",
+			"auto_adjust_option": "自动调整阅读配置",
+			"auto_page_turn": "无限滚动",
+			"auto_show": "自动进入阅读模式",
+			"block_totally": "彻底屏蔽漫画",
+			"colorize_tag": "标签染色",
+			"cross_site_link": "关联外站",
+			"detect_ad": "识别广告页",
+			"expand_tag_list": "展开标签列表",
+			"float_tag_list": "悬浮标签列表",
+			"load_original_image": "加载原图",
+			"lock_option": "锁定站点配置",
+			"open_link_new_page": "在新页面中打开链接",
+			"quick_favorite": "快捷收藏",
+			"quick_rating": "快捷评分",
+			"quick_tag_define": "快捷查看标签定义",
+			"remember_current_site": "记住当前站点",
+			"tag_lint": "标签检查"
 		},
-		"changed_load_failed": "缃戠珯鍙戠敓鍙樺寲锛屾棤娉曞姞杞芥极鐢?,
+		"changed_load_failed": "网站发生变化，无法加载漫画",
 		"ehentai": {
-			"change_favorite_failed": "鏀惰棌澶逛慨鏀瑰け璐?,
-			"change_favorite_success": "鏀惰棌澶逛慨鏀规垚鍔?,
-			"change_rating_failed": "璇勫垎淇敼澶辫触",
-			"change_rating_success": "璇勫垎淇敼鎴愬姛",
-			"fetch_favorite_failed": "鑾峰彇鏀惰棌澶逛俊鎭け璐?,
-			"fetch_img_page_source_failed": "鑾峰彇鍥剧墖椤垫簮鐮佸け璐?,
-			"fetch_img_page_url_failed": "浠庤鎯呴〉鑾峰彇鍥剧墖椤靛湴鍧€澶辫触",
-			"fetch_img_url_failed": "浠庡浘鐗囬〉鑾峰彇鍥剧墖鍦板潃澶辫触",
-			"hitomi_error": "hitomi 鍖归厤鍑洪敊",
-			"html_changed_link_failed": "椤甸潰缁撴瀯鍙戠敓鏀瑰彉锛屽叧鑱斿绔欏姛鑳芥棤娉曟甯哥敓鏁?,
-			"ip_banned": "IP鍦板潃琚",
-			"nhentai_error": "nhentai 鍖归厤鍑洪敊",
-			"nhentai_failed": "鍖归厤澶辫触锛岃鍦ㄧ‘璁ょ櫥褰?{{nhentai}} 鍚庡埛鏂?
+			"change_favorite_failed": "收藏夹修改失败",
+			"change_favorite_success": "收藏夹修改成功",
+			"change_rating_failed": "评分修改失败",
+			"change_rating_success": "评分修改成功",
+			"fetch_favorite_failed": "获取收藏夹信息失败",
+			"fetch_img_page_source_failed": "获取图片页源码失败",
+			"fetch_img_page_url_failed": "从详情页获取图片页地址失败",
+			"fetch_img_url_failed": "从图片页获取图片地址失败",
+			"hitomi_error": "hitomi 匹配出错",
+			"html_changed_link_failed": "页面结构发生改变，关联外站功能无法正常生效",
+			"ip_banned": "IP地址被禁",
+			"nhentai_error": "nhentai 匹配出错",
+			"nhentai_failed": "匹配失败，请在确认登录 {{nhentai}} 后刷新"
 		},
 		"nhentai": {
-			"fetch_next_page_failed": "鑾峰彇涓嬩竴椤垫极鐢绘暟鎹け璐?,
-			"tag_blacklist_fetch_failed": "鏍囩榛戝悕鍗曡幏鍙栧け璐?
+			"fetch_next_page_failed": "获取下一页漫画数据失败",
+			"tag_blacklist_fetch_failed": "标签黑名单获取失败"
 		},
-		"show_settings_menu": "鏄剧ず璁剧疆鑿滃崟",
+		"show_settings_menu": "显示设置菜单",
 		"simple": {
-			"auto_read_mode_message": "宸查粯璁ゅ紑鍚€岃嚜鍔ㄨ繘鍏ラ槄璇绘ā寮忋€?,
-			"no_img": "鏈壘鍒板悎閫傜殑婕敾鍥剧墖锛孿\n濡傛湁闇€瑕佸彲鐐规鍏抽棴绠€鏄撻槄璇绘ā寮?,
-			"simple_read_mode": "浣跨敤绠€鏄撻槄璇绘ā寮?
+			"auto_read_mode_message": "已默认开启「自动进入阅读模式」",
+			"no_img": "未找到合适的漫画图片，\\n如有需要可点此关闭简易阅读模式",
+			"simple_read_mode": "使用简易阅读模式"
 		}
 	},
 	touch_area: {
-		"menu": "鑿滃崟",
+		"menu": "菜单",
 		"type": {
-			"edge": "杈圭紭",
+			"edge": "边缘",
 			"l": "L",
-			"left_right": "宸﹀彸",
-			"up_down": "涓婁笅"
+			"left_right": "左右",
+			"up_down": "上下"
 		}
 	},
 	translation: {
 		"status": {
-			"after-translating": "缈昏瘧鍚庡鐞嗕腑",
-			"cancelled": "缈昏瘧宸插彇娑?,
-			"colorizing": "姝ｅ湪涓婅壊",
-			"default": "鏈煡鐘舵€?,
-			"detection": "姝ｅ湪妫€娴嬫枃鏈?,
-			"downloading": "姝ｅ湪涓嬭浇",
-			"downscaling": "姝ｅ湪缂╁皬鍥剧墖",
-			"error": "缈昏瘧鍑洪敊",
-			"error-download": "涓嬭浇鍑洪敊",
-			"error-lang": "浣犻€夋嫨鐨勭炕璇戞湇鍔′笉鏀寔浣犻€夋嫨鐨勮瑷€",
-			"error-translating": "缈昏瘧鏈嶅姟娌℃湁杩斿洖浠讳綍鏂囨湰",
-			"error-too-large": "鍥剧墖灏哄杩囧ぇ锛堣秴杩?8000x8000 鍍忕礌锛?,
-			"error-upload": "涓婁紶鍑洪敊",
-			"error-disconnect": "涓庢湇鍔″櫒鏂紑杩炴帴",
-			"error-with-id": "缈昏瘧鍑洪敊",
-			"finished": "姝ｅ湪鏁寸悊缁撴灉",
-			"inpainting": "姝ｅ湪淇ˉ鍥剧墖",
-			"mask-generation": "姝ｅ湪鐢熸垚鏂囨湰鎺╃爜",
-			"ocr": "姝ｅ湪璇嗗埆鏂囨湰",
-			"pending": "姝ｅ湪绛夊緟",
-			"pending-pos": "姝ｅ湪绛夊緟",
-			"preparing": "绛夊緟绌洪棽绐楀彛",
-			"rendering": "姝ｅ湪娓叉煋",
-			"running_pre_translation_hooks": "姝ｅ湪鎵ц缈昏瘧鍓嶅鐞?,
-			"saved": "淇濆瓨缁撴灉",
-			"saving": "姝ｅ湪淇濆瓨",
-			"skip-no-regions": "鍥剧墖涓病鏈夋娴嬪埌鏂囨湰鍖哄煙",
-			"skip-no-text": "鍥剧墖涓病鏈夋娴嬪埌鏂囨湰",
-			"textline_merge": "姝ｅ湪鏁村悎鏂囨湰",
-			"translating": "姝ｅ湪缈昏瘧鏂囨湰",
-			"upload": "姝ｅ湪涓婁紶",
-			"upscaling": "姝ｅ湪鏀惧ぇ鍥剧墖",
-			"uploading": "姝ｅ湪涓婁紶"
+			"after-translating": "翻译后处理中",
+			"cancelled": "翻译已取消",
+			"colorizing": "正在上色",
+			"default": "未知状态",
+			"detection": "正在检测文本",
+			"downloading": "正在下载",
+			"downscaling": "正在缩小图片",
+			"error": "翻译出错",
+			"error-download": "下载出错",
+			"error-lang": "你选择的翻译服务不支持你选择的语言",
+			"error-translating": "翻译服务没有返回任何文本",
+			"error-too-large": "图片尺寸过大（超过 8000x8000 像素）",
+			"error-upload": "上传出错",
+			"error-disconnect": "与服务器断开连接",
+			"error-with-id": "翻译出错",
+			"finished": "正在整理结果",
+			"inpainting": "正在修补图片",
+			"mask-generation": "正在生成文本掩码",
+			"ocr": "正在识别文本",
+			"pending": "正在等待",
+			"pending-pos": "正在等待",
+			"preparing": "等待空闲窗口",
+			"rendering": "正在渲染",
+			"running_pre_translation_hooks": "正在执行翻译前处理",
+			"saved": "保存结果",
+			"saving": "正在保存",
+			"skip-no-regions": "图片中没有检测到文本区域",
+			"skip-no-text": "图片中没有检测到文本",
+			"textline_merge": "正在整合文本",
+			"translating": "正在翻译文本",
+			"upload": "正在上传",
+			"upscaling": "正在放大图片",
+			"uploading": "正在上传"
 		},
 		"tip": {
-			"check_img_status_failed": "妫€鏌ュ浘鐗囩姸鎬佸け璐?,
-			"download_img_failed": "涓嬭浇鍥剧墖澶辫触",
-			"get_translator_list_error": "鑾峰彇鍙敤缈昏瘧鏈嶅姟鍒楄〃鏃跺嚭閿?,
-			"id_not_returned": "鏈繑鍥?id",
-			"img_downloading": "涓嬭浇鍥剧墖涓?,
-			"img_not_fully_loaded": "鍥剧墖鏈姞杞藉畬姣?,
-			"pending": "姝ｅ湪绛夊緟锛屽垪闃熻繕鏈?{{pos}} 寮犲浘鐗?,
-			"resize_img_failed": "缂╂斁鍥剧墖澶辫触",
-			"translating": "缈昏瘧鍥剧墖涓?,
-			"translation_completed": "缈昏瘧瀹屾垚",
-			"upload": "涓婁紶鍥剧墖涓?,
-			"upload_error": "涓婁紶鍥剧墖鍑洪敊",
-			"upload_return_error": "鏈嶅姟鍣ㄧ炕璇戝嚭閿?,
-			"wait_translation": "绛夊緟缈昏瘧"
+			"check_img_status_failed": "检查图片状态失败",
+			"download_img_failed": "下载图片失败",
+			"get_translator_list_error": "获取可用翻译服务列表时出错",
+			"id_not_returned": "未返回 id",
+			"img_downloading": "下载图片中",
+			"img_not_fully_loaded": "图片未加载完毕",
+			"pending": "正在等待，列队还有 {{pos}} 张图片",
+			"resize_img_failed": "缩放图片失败",
+			"translating": "翻译图片中",
+			"translation_completed": "翻译完成",
+			"upload": "上传图片中",
+			"upload_error": "上传图片出错",
+			"upload_return_error": "服务器翻译出错",
+			"wait_translation": "等待翻译"
 		},
 		"translator": {
-			"baidu": "鐧惧害",
+			"baidu": "百度",
 			"deepl": "DeepL",
-			"google": "璋锋瓕",
+			"google": "谷歌",
 			"gpt3.5": "GPT-3.5",
-			"none": "鍒犻櫎鏂囨湰",
-			"offline": "绂荤嚎妯″瀷",
-			"original": "鍘熸枃",
+			"none": "删除文本",
+			"offline": "离线模型",
+			"original": "原文",
 			"papago": "Papago",
-			"youdao": "鏈夐亾"
+			"youdao": "有道"
 		}
 	},
 	upscale: {
-		"module_download_complete": "鍥剧墖鏀惧ぇ妯″瀷涓嬭浇瀹屾垚",
-		"module_download_failed": "鍥剧墖鏀惧ぇ妯″瀷涓嬭浇澶辫触",
-		"module_downloading": "鍥剧墖鏀惧ぇ妯″瀷涓嬭浇涓?..",
-		"title": "鏃犳崯鏀惧ぇ鍥剧墖",
-		"upscaled": "宸叉斁澶?,
-		"upscaling": "鏀惧ぇ涓?,
-		"webgpu_tip": "鏃犳硶浣跨敤 WebGPU 鏀惧ぇ鍥剧墖锛屽鐞嗛€熷害灏嗗彉鎱?
+		"module_download_complete": "图片放大模型下载完成",
+		"module_download_failed": "图片放大模型下载失败",
+		"module_downloading": "图片放大模型下载中...",
+		"title": "无损放大图片",
+		"upscaled": "已放大",
+		"upscaling": "放大中",
+		"webgpu_tip": "无法使用 WebGPU 放大图片，处理速度将变慢"
 	}
 };
 //#endregion
@@ -15254,7 +15409,7 @@ function dequal(foo, bar) {
 }
 //#endregion
 //#region src/helper/other.ts
-/** 鏍规嵁璺緞鑾峰彇瀵硅薄涓嬬殑鎸囧畾鍊?*/
+/** 根据路径获取对象下的指定值 */
 const byPath = (obj, path, handleVal) => {
 	const keys = typeof path === "string" ? path.split(".") : path;
 	let target = obj;
@@ -15315,7 +15470,7 @@ let publicOwner;
 solid_js.createRoot(() => {
 	publicOwner = solid_js.getOwner();
 });
-/** 浼氳嚜鍔ㄨ缃?equals 鍜?createRoot 鐨?createMemo */
+/** 会自动设置 equals 和 createRoot 的 createMemo */
 const createRootMemo$1 = ((fn, init, options) => {
 	if (fn.name === "bound readSignal") return fn;
 	const _init = init ?? fn(void 0);
@@ -15354,7 +15509,7 @@ const useStyle = (css, e) => {
 	if (typeof css === "string") styleSheet.replaceSync(css);
 	else createEffectOn$2(createRootMemo$1(css), (style) => styleSheet.replaceSync(style));
 };
-/** 鐢?CSSStyleSheet 瀹炵幇鍜屼慨鏀?style 涓€鏍风殑鏁堟灉 */
+/** 用 CSSStyleSheet 实现和修改 style 一样的效果 */
 const useStyleMemo = (selector, styleMapArg, e) => {
 	const styleSheet = useStyleSheet(e);
 	styleSheet.insertRule(\`\${selector} { }\`);
@@ -15421,10 +15576,10 @@ const SelectionMask = (props) => {
 
       @keyframes check-blink {
         0% { opacity: 0; }
-        20% { opacity: 1; }   /* 0.4s 娣″叆 */
-        35% { opacity: 1; }   /* 淇濇寔鏄剧ず 0.3s */
-        55% { opacity: 0; }   /* 0.4s 娣″嚭 */
-        100% { opacity: 0; }  /* 绛夊緟 0.9s */
+        20% { opacity: 1; }   /* 0.4s 淡入 */
+        35% { opacity: 1; }   /* 保持显示 0.3s */
+        55% { opacity: 0; }   /* 0.4s 淡出 */
+        100% { opacity: 0; }  /* 等待 0.9s */
       }
     \`, props.dom);
 	useStyleMemo(".selection-mask-content", { color: () => isSelected() ? "#ffffffbf" : "#fffb" }, props.dom);
@@ -15467,12 +15622,14 @@ solid_js_web.delegateEvents(["pointerdown", "contextmenu"]);
 //#endregion
 //#region src/userscript/multiSelect/usePointerSelect.ts
 /**
-* 鍒涘缓鍖洪棿鎷栨嫿閫夋嫨寮曟搸銆?* 閫氳繃鎿嶄綔 session 鐨?range 鍜?operationType 鏉ョ鐞嗛€変腑鐘舵€侊紝
-* pointerup 鏃?commit 鎻愪氦淇敼锛宲ointercancel 鏃?cancel 涓㈠純淇敼銆?*/
+* 创建区间拖拽选择引擎。
+* 通过操作 session 的 range 和 operationType 来管理选中状态，
+* pointerup 时 commit 提交修改，pointercancel 时 cancel 丢弃修改。
+*/
 const createDragSession = ({ isEnabled, registeredItems, isSelected, setSession, commit, cancel }) => {
-	/** 褰撳墠娲昏穬鎵嬪娍鐨?pointerId锛宯ull 琛ㄧず鏃犳椿璺冩墜鍔?*/
+	/** 当前活跃手势的 pointerId，null 表示无活跃手势 */
 	let pointerId = null;
-	/** 閿氱偣鍦?items 涓殑绱㈠紩锛屽浐瀹氫笉鍙?*/
+	/** 锚点在 items 中的索引，固定不变 */
 	let anchorIndex = -1;
 	return {
 		onPointerDown: (dom, e) => {
@@ -15512,7 +15669,7 @@ const createDragSession = ({ isEnabled, registeredItems, isSelected, setSession,
 			pointerId = null;
 			cancel();
 		},
-		/** 鍙栨秷娲昏穬鎵嬪娍骞堕噸缃姸鎬?*/
+		/** 取消活跃手势并重置状态 */
 		clear: () => {
 			if (pointerId !== null) cancel();
 			pointerId = null;
@@ -15521,18 +15678,18 @@ const createDragSession = ({ isEnabled, registeredItems, isSelected, setSession,
 };
 //#endregion
 //#region src/userscript/multiSelect/useSelection.ts
-/** 鍒涘缓閫変腑鐘舵€佺鐞嗗櫒 */
+/** 创建选中状态管理器 */
 const useSelectionManager = () => {
-	/** 宸茬‘璁ょ殑閫変腑椤?*/
+	/** 已确认的选中项 */
 	const baselineIds = new helper.ReactiveSet();
 	const { store: session, setState: setSession } = helper.useStore({
 		items: [],
 		range: [-1, -1],
 		operationType: "select"
 	});
-	/** 鍒ゆ柇 session 鏄惁澶勪簬娲昏穬鐘舵€?*/
+	/** 判断 session 是否处于活跃状态 */
 	const isSessionActive = () => session.range[0] >= 0 && session.range[1] >= 0;
-	/** 褰撳墠 range 鍖洪棿鍐呯殑 id 闆嗗悎 */
+	/** 当前 range 区间内的 id 集合 */
 	const rangeIds = helper.createRootMemo(() => {
 		if (!isSessionActive()) return /* @__PURE__ */ new Set();
 		return new Set(session.items.slice(session.range[0], session.range[1] + 1));
@@ -15541,7 +15698,7 @@ const useSelectionManager = () => {
 		if (!isSessionActive()) return [...baselineIds];
 		return session.operationType === "select" ? [...baselineIds.union(rangeIds())] : [...baselineIds.difference(rangeIds())];
 	});
-	/** 璁板綍姣忎釜 id 鐨勯€変腑椤哄簭 */
+	/** 记录每个 id 的选中顺序 */
 	const orderMap = helper.createRootMemo(() => Object.fromEntries(selectedIds().map((id, i) => [id, i + 1])));
 	const cancel = () => setSession((state) => {
 		state.items = [];
@@ -15549,33 +15706,33 @@ const useSelectionManager = () => {
 		state.operationType = "select";
 	});
 	return {
-		/** 褰撳墠浼氳瘽鐘舵€侊紙鍙锛?*/
+		/** 当前会话状态（只读） */
 		session,
-		/** 褰撳墠閫変腑椤?id 鍒楄〃 */
+		/** 当前选中项 id 列表 */
 		selectedIds,
-		/** 璁板綍姣忎釜 id 鐨勯€変腑椤哄簭 */
+		/** 记录每个 id 的选中顺序 */
 		orderMap,
-		/** 鍒ゆ柇鎸囧畾 id 鏄惁琚€変腑 */
+		/** 判断指定 id 是否被选中 */
 		isSelected: (id) => id in orderMap(),
-		/** 鑾峰彇鎸囧畾 id 鐨勯€変腑椤哄簭锛屾湭閫変腑杩斿洖 undefined */
+		/** 获取指定 id 的选中顺序，未选中返回 undefined */
 		getOrder: (id) => orderMap()[id],
-		/** 淇敼浼氳瘽鐘舵€?*/
+		/** 修改会话状态 */
 		setSession,
-		/** 灏?session 鐨勪慨鏀瑰簲鐢ㄥ埌鍩虹嚎锛岀劧鍚庨噸缃?session */
+		/** 将 session 的修改应用到基线，然后重置 session */
 		commit: () => {
 			if (!isSessionActive()) return;
 			if (session.operationType === "select") for (const id of rangeIds()) baselineIds.add(id);
 			else for (const id of rangeIds()) baselineIds.delete(id);
 			cancel();
 		},
-		/** 閲嶇疆 session 涓哄垵濮嬬姸鎬?*/
+		/** 重置 session 为初始状态 */
 		cancel,
-		/** 鐩存帴璁剧疆鍩虹嚎閫変腑椤瑰垪琛?*/
+		/** 直接设置基线选中项列表 */
 		setBaseline: (ids) => {
 			baselineIds.clear();
 			for (const id of ids) baselineIds.add(id);
 		},
-		/** 娓呯┖鍩虹嚎閫変腑椤瑰垪琛?*/
+		/** 清空基线选中项列表 */
 		clearBaseline: () => baselineIds.clear()
 	};
 };
@@ -15592,11 +15749,11 @@ const useMultiSelect = ({ onStart, registeredItems }) => solid_js.createRoot((di
 		commit: selection.commit,
 		cancel: selection.cancel
 	});
-	/** 鎵€鏈夐渶瑕佸湪 unmount 鏃舵墽琛岀殑娓呯悊鍑芥暟锛圖OM dispose銆佷簨浠剁洃鍚瓑锛?*/
+	/** 所有需要在 unmount 时执行的清理函数（DOM dispose、事件监听等） */
 	const cleanups = [];
 	let isInitialized = false;
 	let elementIndex = 0;
-	/** 娉ㄥ唽涓€涓彲閫夊厓绱狅細鎸傝浇 SelectionMask */
+	/** 注册一个可选元素：挂载 SelectionMask */
 	const register = (dom) => {
 		if (!registeredItems().get(dom)) return;
 		const index = elementIndex++;
@@ -15615,7 +15772,7 @@ const useMultiSelect = ({ onStart, registeredItems }) => solid_js.createRoot((di
 			container.remove();
 		});
 	};
-	/** 鍗歌浇鎵€鏈?DOM 娉ㄥ唽鍜屼簨浠剁洃鍚紝浣嗕繚鐣欓€変腑鐘舵€侊紙缈婚〉鍦烘櫙锛?*/
+	/** 卸载所有 DOM 注册和事件监听，但保留选中状态（翻页场景） */
 	const unmount = () => {
 		drag.clear();
 		setIsEnabled(false);
@@ -15624,9 +15781,9 @@ const useMultiSelect = ({ onStart, registeredItems }) => solid_js.createRoot((di
 		cleanups.length = 0;
 	};
 	return {
-		/** 褰撳墠鏄惁澶勪簬澶氶€夋ā寮?*/
+		/** 当前是否处于多选模式 */
 		isEnabled,
-		/** 寮€鍚閫夋ā寮忓苟娉ㄥ唽鍏冪礌 */
+		/** 开启多选模式并注册元素 */
 		start: () => {
 			if (isEnabled()) return;
 			setIsEnabled(true);
@@ -15642,7 +15799,7 @@ const useMultiSelect = ({ onStart, registeredItems }) => solid_js.createRoot((di
 			for (const dom of registeredItems().keys()) register(dom);
 			isInitialized = true;
 		},
-		/** 缁撴潫澶氶€夋ā寮忥紝骞跺彂澶勭悊鎵€鏈夐€変腑椤瑰苟杩斿洖缁撴灉鍒楄〃 */
+		/** 结束多选模式，并发处理所有选中项并返回结果列表 */
 		collect: async (process, limit) => {
 			const ids = selection.selectedIds();
 			if (ids.length === 0) return [];
@@ -15655,18 +15812,18 @@ const useMultiSelect = ({ onStart, registeredItems }) => solid_js.createRoot((di
 				}
 			}), void 0, limit);
 		},
-		/** 娓呯┖閫変腑鐘舵€佸苟鍗歌浇鎵€鏈?DOM 娉ㄥ唽 */
+		/** 清空选中状态并卸载所有 DOM 注册 */
 		clear: () => {
 			selection.clearBaseline();
 			selection.cancel();
 			unmount();
 		},
 		unmount,
-		/** 娓呯悊鎵€鏈?SolidJS 鍝嶅簲寮忚祫婧?*/
+		/** 清理所有 SolidJS 响应式资源 */
 		dispose,
-		/** 褰撳墠閫変腑椤?ID 鍒楄〃 */
+		/** 当前选中项 ID 列表 */
 		selectedIds: selection.selectedIds,
-		/** 鏍规嵁 ID 鍒楄〃鎭㈠閫変腑鐘舵€侊紙缈婚〉鍚庨噸鏂版敞鍐?DOM 鏃朵娇鐢級 */
+		/** 根据 ID 列表恢复选中状态（翻页后重新注册 DOM 时使用） */
 		setSelectedIds: selection.setBaseline
 	};
 });
@@ -15760,7 +15917,7 @@ const useMultiSelectLoad = ({ setState, showComic }, { id: initListid, onStart, 
 		multi_select_load: multiSelectLoad
 	}, true);
 	let oldIdSet = [];
-	/** 娓呯悊鍓綔鐢紝浣嗕繚鐣欓€変腑鐘舵€侊紙鐢ㄤ簬缈婚〉锛?*/
+	/** 清理副作用，但保留选中状态（用于翻页） */
 	const unmount = () => {
 		oldIdSet = [...registeredItems().values()];
 		sm.unmount();
@@ -15768,7 +15925,7 @@ const useMultiSelectLoad = ({ setState, showComic }, { id: initListid, onStart, 
 		unlistenHotkey();
 	};
 	return {
-		/** 娉ㄥ唽鏂扮殑鍙€夐」锛屽苟绛夊緟鑷冲拰涓婃鐨勬敞鍐岄」涓嶅悓 */
+		/** 注册新的可选项，并等待至和上次的注册项不同 */
 		registerItems: async (newId, fillItems, maxWaitTime = 5e3) => {
 			setListId(newId);
 			const map = await helper.wait(async () => {
@@ -15778,7 +15935,7 @@ const useMultiSelectLoad = ({ setState, showComic }, { id: initListid, onStart, 
 				if (helper.isEqual(oldIdSet, [...newMap.values()])) return;
 				return newMap;
 			}, maxWaitTime);
-			if (!map) throw new Error("绛夊緟鏂?DOM 瓒呮椂");
+			if (!map) throw new Error("等待新 DOM 超时");
 			setregisteredItems(map);
 			const pending = await cache.get("pending", listId());
 			if (pending?.selecteds.length) {
@@ -15787,7 +15944,7 @@ const useMultiSelectLoad = ({ setState, showComic }, { id: initListid, onStart, 
 			}
 		},
 		unmount,
-		/** 瀹屽叏娓呯悊鎵€鏈夌姸鎬佸拰鍓綔鐢?*/
+		/** 完全清理所有状态和副作用 */
 		dispose: () => {
 			oldIdSet = [];
 			unmount();
@@ -15819,14 +15976,14 @@ const handlePwa = () => {
 		e.parentNode.insertBefore(a, e.nextElementSibling);
 	}
 };
-/** 澶氶€夊姞杞藉疄渚嬶紝鐢ㄤ簬鍦ㄧ炕椤垫椂淇濇寔閫変腑鐘舵€?*/
+/** 多选加载实例，用于在翻页时保持选中状态 */
 let multiSelectLoader;
 core.setupSiteAdapter({
 	name: "kemono",
 	options: {
 		autoShow: false,
 		defaultOption: { pageNum: 1 },
-		/** 鍔犺浇鍘熷浘 */
+		/** 加载原图 */
 		load_original_image: true
 	},
 	getPageContext: () => {
@@ -15915,18 +16072,18 @@ const toImgList = (data) => data.pages.map((page) => ({
 //#endregion
 //#region src/site/nhentai.tsx
 var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<a href=javascript:; id=comicReadMode class="btn btn-secondary"><i class="fa fa-book"></i> Read\`);
-/** 绛夊緟姘村悎瀹屾垚锛岀‘淇濅箣鍚庣殑 dom 鎿嶄綔涓嶄細琚按鍚堣鐩?*/
+/** 等待水合完成，确保之后的 dom 操作不会被水合覆盖 */
 const waitHydrated = () => helper.waitDom("#svelte-announcer", 1, 1e3 * 5);
 core.setupSiteAdapter({
 	name: "nhentai",
 	options: {
-		/** 鏃犻檺婊氬姩 */
+		/** 无限滚动 */
 		auto_page_turn: true,
-		/** 褰诲簳灞忚斀婕敾 */
+		/** 彻底屏蔽漫画 */
 		block_totally: true,
-		/** 鍦ㄦ柊椤甸潰涓墦寮€閾炬帴 */
+		/** 在新页面中打开链接 */
 		open_link_new_page: true,
-		/** 璇嗗埆骞垮憡椤?*/
+		/** 识别广告页 */
 		detect_ad: true
 	},
 	getPageContext: () => {
@@ -15956,7 +16113,7 @@ core.setupSiteAdapter({
 		document.getElementById("download")?.after(comicReadModeDom);
 	} },
 	features: {
-		/** 璇嗗埆骞垮憡椤?*/
+		/** 识别广告页 */
 		detect_ad: async ({ store, setState }, pageCtx) => {
 			if (pageCtx.type !== "manga") return;
 			if (!helper.querySelector("#tags .tag[href=\\"/tag/extraneous-ads/\\"]")) return;
@@ -15972,18 +16129,18 @@ core.setupSiteAdapter({
               }\`).join("\\n");
 			});
 		},
-		/** 褰诲簳灞忚斀婕敾 */
+		/** 彻底屏蔽漫画 */
 		block_totally: (_, pageCtx) => {
 			if (pageCtx.type !== "list") return;
 			helper.useStyle(".blacklisted.gallery { display: none; }");
 		},
-		/** 鍦ㄦ柊椤甸潰涓墦寮€閾炬帴 */
+		/** 在新页面中打开链接 */
 		open_link_new_page: async (_, pageCtx) => {
 			if (pageCtx.type !== "list") return;
 			await waitHydrated();
 			for (const e of helper.querySelectorAll("a:not([href^=\\"javascript:\\"])")) e.setAttribute("target", "_blank");
 		},
-		/** 鏃犻檺婊氬姩 */
+		/** 无限滚动 */
 		auto_page_turn: async (_, pageCtx) => {
 			if (pageCtx.type !== "list") return;
 			await waitHydrated();
@@ -16034,7 +16191,7 @@ core.setupSiteAdapter({
 	options: {
 		autoShow: false,
 		defaultOption: { pageNum: 1 },
-		/** 鍔犺浇鍘熷浘 */
+		/** 加载原图 */
 		load_original_image: true
 	},
 	getPageContext: async () => {
@@ -16161,8 +16318,8 @@ let core = require("core");
 let helper = require("helper");
 let solid_js = require("solid-js");
 //#region src/site/yamibo.tsx
-var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<li><a style=color:unset>鍥炵<!>椤礬`), _tmpl$2 = /* @__PURE__ */ solid_js_web.template(\`<a class=historyTag>鍥炵<!>椤?\`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<div class=historyTag>+\`);
-/** 浠?URL 瀛楃涓蹭腑鎻愬彇 fid */
+var _tmpl$ = /* @__PURE__ */ solid_js_web.template(\`<li><a style=color:unset>回第<!>页\`), _tmpl$2 = /* @__PURE__ */ solid_js_web.template(\`<a class=historyTag>回第<!>页 \`), _tmpl$3 = /* @__PURE__ */ solid_js_web.template(\`<div class=historyTag>+\`);
+/** 从 URL 字符串中提取 fid */
 const extractFid = (url) => {
 	if (!url) return void 0;
 	const fid = new URLSearchParams(url).get("fid");
@@ -16171,12 +16328,12 @@ const extractFid = (url) => {
 core.setupSiteAdapter({
 	name: "yamibo",
 	options: {
-		璁板綍闃呰杩涘害: true,
-		鍏抽棴蹇嵎瀵艰埅鐨勮烦杞? true,
-		淇鐐瑰嚮椤垫暟鏃剁殑璺宠浆鍒ゅ畾: true,
-		鍥哄畾瀵艰埅鏉? true,
-		鑷姩绛惧埌: true,
-		绉诲姩绔樉绀哄笘瀛愭潈闄? true
+		记录阅读进度: true,
+		关闭快捷导航的跳转: true,
+		修正点击页数时的跳转判定: true,
+		固定导航条: true,
+		自动签到: true,
+		移动端显示帖子权限: true
 	},
 	getPageContext: () => {
 		if (/thread(?:-\\d+){3}|mod=viewthread/.test(document.URL)) {
@@ -16234,7 +16391,7 @@ core.setupSiteAdapter({
             color: RGB(255, 246, 215);
           }
 
-          /* 灏嗐€屽洖澶?鏌ョ湅銆嶅垪鍔犲涓€鐐?*/
+          /* 将「回复/查看」列加宽一点 */
           .tl .num {
             width: 80px !important;
           }
@@ -16269,7 +16426,7 @@ core.setupSiteAdapter({
 					}
 				});
 				if (helper.querySelector("div.pti > div.authi")) {
-					helper.querySelector("div.pti > div.authi").insertAdjacentHTML("beforeend", "<span class=\\"pipe show\\">|</span><a id=\\"comicReadMode\\" class=\\"show\\" href=\\"javascript:;\\">婕敾闃呰</a>");
+					helper.querySelector("div.pti > div.authi").insertAdjacentHTML("beforeend", "<span class=\\"pipe show\\">|</span><a id=\\"comicReadMode\\" class=\\"show\\" href=\\"javascript:;\\">漫画阅读</a>");
 					document.getElementById("comicReadMode")?.addEventListener("click", () => showComic());
 				}
 				if (helper.querySelector("#threadindex")) helper.hijackFn("ajaxinnerhtml", () => {
@@ -16298,7 +16455,7 @@ core.setupSiteAdapter({
 			};
 			if (isMangaForum) readMode();
 			else {
-				helper.querySelector("div.pti > div.authi").insertAdjacentHTML("beforeend", "<span class=\\"pipe show\\">|</span><a id=\\"comicReadMode\\" class=\\"show\\" href=\\"javascript:;\\">婕敾闃呰</a>");
+				helper.querySelector("div.pti > div.authi").insertAdjacentHTML("beforeend", "<span class=\\"pipe show\\">|</span><a id=\\"comicReadMode\\" class=\\"show\\" href=\\"javascript:;\\">漫画阅读</a>");
 				const button = document.getElementById("comicReadMode");
 				button?.addEventListener("click", () => {
 					button.previousElementSibling?.remove();
@@ -16310,15 +16467,15 @@ core.setupSiteAdapter({
 		}
 	},
 	features: {
-		鍥哄畾瀵艰埅鏉? () => helper.useStyle(".header-stackup { position: fixed !important }"),
-		鍏抽棴蹇嵎瀵艰埅鐨勮烦杞? () => helper.querySelector("#qmenu a")?.setAttribute("href", "javascript:;"),
-		淇鐐瑰嚮椤垫暟鏃剁殑璺宠浆鍒ゅ畾: (_, pageCtx) => {
+		固定导航条: () => helper.useStyle(".header-stackup { position: fixed !important }"),
+		关闭快捷导航的跳转: () => helper.querySelector("#qmenu a")?.setAttribute("href", "javascript:;"),
+		修正点击页数时的跳转判定: (_, pageCtx) => {
 			if (pageCtx.type !== "forum") return;
 			const list = helper.querySelectorAll(".tps>a");
 			let i = list.length;
 			while (i--) list[i].setAttribute("onClick", "atarget(this)");
 		},
-		鑷姩绛惧埌: async () => {
+		自动签到: async () => {
 			if (!unsafeWindow.discuz_uid || unsafeWindow.discuz_uid === "0") return;
 			const todayString = (/* @__PURE__ */ new Date()).toLocaleDateString("zh-CN");
 			if (todayString === localStorage.getItem("signDate")) return;
@@ -16326,36 +16483,36 @@ core.setupSiteAdapter({
 			if (!sign) return;
 			try {
 				const body = await (await fetch(\`plugin.php?id=zqlj_sign&sign=\${sign}\`)).text();
-				if (!/鎴愬姛锛亅鎵撹繃鍗?.test(body)) throw new Error("鑷姩绛惧埌澶辫触");
-				core.toast.success("鑷姩绛惧埌鎴愬姛");
+				if (!/成功！|打过卡/.test(body)) throw new Error("自动签到失败");
+				core.toast.success("自动签到成功");
 				localStorage.setItem("signDate", todayString);
 			} catch {
-				core.toast.error("鑷姩绛惧埌澶辫触");
+				core.toast.error("自动签到失败");
 			}
 		},
-		璁板綍闃呰杩涘害: async (_, pageCtx) => {
+		记录阅读进度: async (_, pageCtx) => {
 			if (pageCtx.type === "thread") {
 				const { tid } = pageCtx;
-				/** 鍥炲鏁?*/
+				/** 回复数 */
 				let allReplies;
 				try {
 					const res = await core.request(\`/api/mobile/index.php?module=viewthread&tid=\${tid}\`, {
 						responseType: "json",
-						errorText: "鑾峰彇甯栧瓙鍥炲鏁版椂鍑洪敊",
+						errorText: "获取帖子回复数时出错",
 						noTip: true
 					});
 					allReplies = Number.parseInt(res.response?.Variables?.thread?.allreplies, 10);
 				} catch {}
-				/** 褰撳墠鎵€鍦ㄩ〉鏁?*/
+				/** 当前所在页数 */
 				const currentPageNum = Number.parseInt(helper.querySelector("#pgt strong")?.textContent ?? helper.querySelector("#dumppage")?.value ?? "1", 10);
 				const cache = await helper.useCache({ history: "tid" });
 				const data = await cache.get("history", \`\${tid}\`);
 				if (data && currentPageNum < data.lastPageNum) return;
-				/** 鐩戣妤煎眰鍒楄〃 */
+				/** 监视楼层列表 */
 				const watchFloorList = helper.querySelectorAll(data?.lastAnchor && currentPageNum === data.lastPageNum ? \`#\${data.lastAnchor} ~ div\` : "#postlist > div, .plc.cl");
 				if (watchFloorList.length === 0) return;
 				let id = 0;
-				/** 鍌ㄥ瓨鏁版嵁锛屼絾鏄槻鎶?*/
+				/** 储存数据，但是防抖 */
 				const debounceSave = (saveData) => {
 					if (id) window.clearTimeout(id);
 					id = window.setTimeout(async () => {
@@ -16439,7 +16596,7 @@ core.setupSiteAdapter({
 				return () => document.removeEventListener("visibilitychange", updateHistoryTag);
 			}
 		},
-		绉诲姩绔樉绀哄笘瀛愭潈闄? async (_, pageCtx) => {
+		移动端显示帖子权限: async (_, pageCtx) => {
 			if (pageCtx.type !== "forum" || !pageCtx.isMobile) return;
 			const apiUrl = new URL(location.href);
 			apiUrl.pathname = "/api/mobile/index.php";
@@ -16447,7 +16604,7 @@ core.setupSiteAdapter({
 			apiUrl.searchParams.delete("mod");
 			const res = await core.request(\`\${apiUrl}\`, {
 				responseType: "json",
-				errorText: "鑾峰彇甯栧瓙鏉冮檺鏃跺嚭閿?
+				errorText: "获取帖子权限时出错"
 			});
 			const readpermMap = /* @__PURE__ */ new Map();
 			for (const { tid, readperm } of res.response.Variables.forum_threadlist) if (readperm !== "0") readpermMap.set(Number(tid), Number(readperm));
@@ -16455,7 +16612,7 @@ core.setupSiteAdapter({
 				const a = item.querySelector("a[href*=\\"&tid=\\"]");
 				const tid = Number(new URLSearchParams(a.href).get("tid"));
 				if (!readpermMap.has(tid)) continue;
-				item.querySelector(".threadlist_foot li.mr").insertAdjacentHTML("beforeend", \`<span style="margin-right: .5em; color: #EE1B2E">#鏉冮檺\${readpermMap.get(tid)}</span>\`);
+				item.querySelector(".threadlist_foot li.mr").insertAdjacentHTML("beforeend", \`<span style="margin-right: .5em; color: #EE1B2E">#权限\${readpermMap.get(tid)}</span>\`);
 			}
 		}
 	}
@@ -16468,9 +16625,9 @@ let helper = require("helper");
 //#region src/site/yurifans.tsx
 core.setupSiteAdapter({
 	name: "yurifans",
-	options: { 鑷姩绛惧埌: true },
+	options: { 自动签到: true },
 	getPageContext: async () => {
-		if (!await helper.waitDom("a.post-list-cat-item[title=\\"鍦ㄧ嚎鍖?婕敾\\"]")) return;
+		if (!await helper.waitDom("a.post-list-cat-item[title=\\"在线区-漫画\\"]")) return;
 		if (helper.querySelector(".content-hidden")) return {
 			type: "manga",
 			mangaType: "purchased"
@@ -16522,7 +16679,7 @@ core.setupSiteAdapter({
 			}
 		}
 	} },
-	features: { 鑷姩绛惧埌: async () => {
+	features: { 自动签到: async () => {
 		if (!globalThis.b2token) return;
 		const todayString = (/* @__PURE__ */ new Date()).toLocaleDateString("zh-CN");
 		if (todayString === localStorage.getItem("signDate")) return;
@@ -16533,11 +16690,11 @@ core.setupSiteAdapter({
 				headers: { Authorization: \`Bearer \${b2token}\` }
 			});
 			const data = JSON.parse(res.responseText);
-			if (!(data?.mission?.date || !Number.isNaN(Number(data)))) throw new Error("绛惧埌澶辫触");
-			core.toast("鑷姩绛惧埌鎴愬姛");
+			if (!(data?.mission?.date || !Number.isNaN(Number(data)))) throw new Error("签到失败");
+			core.toast("自动签到成功");
 			localStorage.setItem("signDate", todayString);
 		} catch {
-			core.toast.error("鑷姩绛惧埌澶辫触");
+			core.toast.error("自动签到失败");
 		}
 	} }
 });
@@ -16562,7 +16719,7 @@ const crsLib = {
 const tempName = Math.random().toString(36).slice(2);
 const getResource = (name) => {
 	const text = gmApi.GM_getResourceText?.(name.replaceAll("/", "|").replaceAll("@", "_"));
-	if (!text) throw new Error(`澶栭儴妯″潡 ${name} 鏈湪 @Resource 涓０鏄巂);
+	if (!text) throw new Error(`外部模块 ${name} 未在 @Resource 中声明`);
 	if (name === "@tensorflow/tfjs-backend-webgpu") return text.replace("@tensorflow/tfjs-core", "@tensorflow/tfjs");
 	return text;
 };
@@ -16622,7 +16779,9 @@ moduleMap['Comlink'].expose(exports);`;
 	Reflect.deleteProperty(gmApi.unsafeWindow, tempName);
 };
 /**
-* 鍒涘缓涓€涓閮ㄦā鍧楃殑 Proxy锛岀瓑鍒拌鍙栧璞″睘鎬ф椂鎵嶅姞杞芥ā鍧?* @param name 澶栭儴妯″潡鍚?*/
+* 创建一个外部模块的 Proxy，等到读取对象属性时才加载模块
+* @param name 外部模块名
+*/
 const require = (name) => {
 	const __esModule = { value: true };
 	const selfLibProxy = () => {};
@@ -16697,10 +16856,10 @@ try {
 			if (location.pathname !== "/manga/view-chapter") break;
 			const id = new URLSearchParams(location.search).get("id");
 			if (!id) break;
-			/** 鎬婚〉鏁?*/
-			const totalPageNum = Number(helper.querySelector("section div:first-of-type div:last-of-type").innerHTML.split("锛?)[1]);
+			/** 总页数 */
+			const totalPageNum = Number(helper.querySelector("section div:first-of-type div:last-of-type").innerHTML.split("：")[1]);
 			if (Number.isNaN(totalPageNum)) throw new Error(helper.t("site.changed_load_failed"));
-			/** 鑾峰彇鎸囧畾椤垫暟鐨勫浘鐗?url */
+			/** 获取指定页数的图片 url */
 			const loadImg = async (i) => {
 				const res = await core.request(`https://www.yamibo.com/manga/view-chapter?id=${id}&page=${i}`);
 				return /(?<=<img id=['"]imgPic['"].+?src=['"]).+?(?=['"])/.exec(res.responseText)[0].replaceAll("&amp;", "&").replaceAll("http://", "https://");
@@ -16867,8 +17026,8 @@ try {
 						}
 					}, imgNum);
 				},
-				onPrev: () => getChapterNav(".logo_1", "涓婁竴绔?),
-				onNext: () => getChapterNav(".logo_2", "涓嬩竴绔?),
+				onPrev: () => getChapterNav(".logo_1", "上一章"),
+				onNext: () => getChapterNav(".logo_2", "下一章"),
 				onExit: (isEnd) => isEnd && helper.scrollIntoView(".postlist")
 			});
 			break;
@@ -16908,8 +17067,8 @@ try {
 						setImg(imgList.size - 1, url);
 					}
 				}, imgNum),
-				onNext: () => getChapterNav("body > .container a[href^=\"/\"]:last-child", "涓嬩竴"),
-				onPrev: () => getChapterNav("body > .container a[href^=\"/\"]:first-child", "涓婁竴")
+				onNext: () => getChapterNav("body > .container a[href^=\"/\"]:last-child", "下一"),
+				onPrev: () => getChapterNav("body > .container a[href^=\"/\"]:first-child", "上一")
 			});
 			break;
 		}
@@ -16946,8 +17105,8 @@ try {
 						})
 					})).response.data.imagesByChapterId.map(({ kid }) => `https://komiic.com/api/image/${kid}`);
 				},
-				onPrev: () => getChapterNav("涓婁竴"),
-				onNext: () => getChapterNav("涓嬩竴")
+				onPrev: () => getChapterNav("上一"),
+				onNext: () => getChapterNav("下一")
 			});
 			break;
 		}
@@ -16987,7 +17146,7 @@ try {
 				if (!reRes) throw new Error(helper.t("site.changed_load_failed"));
 				return eval(reRes[1]);
 			};
-			else if (location.pathname.startsWith("/photos-slist-aid-")) getImgList = () => unsafeWindow.imglist.filter(({ caption }) => caption !== "鍠滄绱冲＋婕暙鐨勫悓瀛歌珛鍔犲叆鏀惰棌鍝︼紒").map(({ url }) => url);
+			else if (location.pathname.startsWith("/photos-slist-aid-")) getImgList = () => unsafeWindow.imglist.filter(({ caption }) => caption !== "喜歡紳士漫畫的同學請加入收藏哦！").map(({ url }) => url);
 			else break;
 			core.setup({
 				name: "wnacg",
@@ -17295,14 +17454,14 @@ try {
 				isMangaPage: () => location.href.includes("episode") && { id: location.href },
 				async getImgList({ dynamicLazyLoad }) {
 					const pageList = (await core.request(apiUrl(), { responseType: "json" })).response.data.pageInfos;
-					if (pageList.length === 0 && location.pathname.includes("episode")) throw new Error("鑾峰彇鍥剧墖鍒楄〃鏃跺嚭閿?);
+					if (pageList.length === 0 && location.pathname.includes("episode")) throw new Error("获取图片列表时出错");
 					return dynamicLazyLoad({
 						loadImg,
 						length: pageList.length
 					});
 				},
-				onPrev: () => handlePrevNext("涓婁竴"),
-				onNext: () => handlePrevNext("涓嬩竴")
+				onPrev: () => handlePrevNext("上一"),
+				onNext: () => handlePrevNext("下一")
 			});
 			break;
 		}
@@ -17354,8 +17513,8 @@ try {
 				await GM.registerMenuCommand(((lang) => {
 					switch (lang) {
 						case "en": return "Enter simple reading mode";
-						case "ru": return "袙泻谢褞褔懈褌褜 锌褉芯褋褌芯泄 褉械卸懈屑 褔褌械薪懈褟";
-						default: return "浣跨敤绠€鏄撻槄璇绘ā寮?;
+						case "ru": return "Включить простой режим чтения";
+						default: return "使用简易阅读模式";
 					}
 				})(await helper_languages.getInitLang()), () => userscript_otherSite.otherSite());
 			})();

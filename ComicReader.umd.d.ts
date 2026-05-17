@@ -211,6 +211,8 @@ type Option$1 = {
 	relineUpscale: {
 		enabled: boolean;
 		serverUrl: string;
+		preloadRange: 0 | 5 | 10 | -1;
+		preloadPrevious: boolean;
 	};
 	/** 翻译 */
 	translation: {

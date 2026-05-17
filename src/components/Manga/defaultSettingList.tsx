@@ -384,6 +384,33 @@ export const defaultSettingList: () => SettingList = () => [
             }}
           />
         </SettingsItem>
+        <SettingsItemSelect<'0' | '5' | '10' | '-1'>
+          name={tt('reline_upscale.preload_range', 'Preload range')}
+          value={String(store.option.relineUpscale.preloadRange) as
+            | '0'
+            | '5'
+            | '10'
+            | '-1'}
+          options={[
+            ['0', tt('reline_upscale.preload_current', 'Current page only')],
+            ['5', tt('reline_upscale.preload_5', 'Around 5 pages')],
+            ['10', tt('reline_upscale.preload_10', 'Around 10 pages')],
+            ['-1', tt('reline_upscale.preload_all', 'Whole chapter')],
+          ]}
+          onChange={(val) => {
+            setOption((draftOption) => {
+              draftOption.relineUpscale.preloadRange = Number(val) as
+                | 0
+                | 5
+                | 10
+                | -1;
+            });
+          }}
+        />
+        <SettingsItemSwitch
+          name={tt('reline_upscale.preload_previous', 'Preload previous pages')}
+          {...bindOption('relineUpscale', 'preloadPrevious')}
+        />
       </>
     ),
   ],
