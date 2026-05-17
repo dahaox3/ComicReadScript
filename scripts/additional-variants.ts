@@ -68,7 +68,7 @@ export const buildUMD = async () => {
       [
         {
           filePath: pathResolve('src/umd.tsx'),
-          output: { noBanner: true },
+          output: { inlineDeclareGlobals: true, noBanner: true },
         },
       ],
       { preferredConfigPath: pathResolve('tsconfig.json') },
