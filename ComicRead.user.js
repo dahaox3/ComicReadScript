@@ -5886,10 +5886,11 @@ const checkServer = async () => {
 		errorText: rt("server_not_started", "Reline service is not started. Start API service in Reline first.")
 	})).response;
 };
-const upload = async (blob) => {
+const upload = async (blob, pageIndex) => {
 	const formData = new FormData();
 	const ext = blob.type.split("/").at(-1) || "png";
-	formData.append("file", new File([blob], \`image.\${ext}\`, { type: blob.type }));
+	const pageName = String(Math.max(0, pageIndex) + 1).padStart(4, "0");
+	formData.append("file", new File([blob], \`\${pageName}.\${ext}\`, { type: blob.type }));
 	const res = await request.request(\`\${normalizeServerUrl()}/upscale\`, {
 		method: "POST",
 		responseType: "blob",
@@ -5989,7 +5990,7 @@ const relineUpscaleImage = async (url, currentRunId = runId) => {
 			relineUpscaleType: "processing",
 			relineUpscaleMessage: rt("processing", "Reline processing image")
 		});
-		const resultBlob = await upload(await downloadImg(url));
+		const resultBlob = await upload(await downloadImg(url), store.imgList.indexOf(url));
 		const item = saveCache(getCacheKey(url), resultBlob);
 		const currentType = store.imgMap[url]?.relineUpscaleType;
 		const shouldShow = relineRunEnabled && (currentType === void 0 || currentType === "wait" || currentType === "processing");

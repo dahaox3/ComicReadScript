@@ -109,10 +109,11 @@ const checkServer = async () => {
   return res.response;
 };
 
-const upload = async (blob: Blob) => {
+const upload = async (blob: Blob, pageIndex: number) => {
   const formData = new FormData();
   const ext = blob.type.split('/').at(-1) || 'png';
-  formData.append('file', new File([blob], `image.${ext}`, { type: blob.type }));
+  const pageName = String(Math.max(0, pageIndex) + 1).padStart(4, '0');
+  formData.append('file', new File([blob], `${pageName}.${ext}`, { type: blob.type }));
 
   const res = await request<Blob>(`${normalizeServerUrl()}/upscale`, {
     method: 'POST',
@@ -247,7 +248,7 @@ export const relineUpscaleImage = async (url: string, currentRunId = runId) => {
         relineUpscaleMessage: rt('processing', 'Reline processing image'),
       });
     const blob = await downloadImg(url);
-    const resultBlob = await upload(blob);
+    const resultBlob = await upload(blob, store.imgList.indexOf(url));
     const item = saveCache(getCacheKey(url), resultBlob);
     const currentType = store.imgMap[url]?.relineUpscaleType;
     const shouldShow =

@@ -49,8 +49,8 @@
 // @resource        comlink https://cdn.jsdelivr.net/npm/comlink@4.4.2/dist/umd/comlink.min.js
 // @resource        solid-js|store https://cdn.jsdelivr.net/npm/solid-js@1.9.8/store/dist/store.cjs
 // @resource        solid-js|web https://cdn.jsdelivr.net/npm/solid-js@1.9.8/web/dist/web.cjs
-// @resource        _tensorflow|tfjs https://registry.npmmirror.com/@tensorflow/tfjs/4.22.0/files/dist/tf.min.js
-// @resource        _tensorflow|tfjs-backend-webgpu https://registry.npmmirror.com/@tensorflow/tfjs-backend-webgpu/4.22.0/files/dist/tf-backend-webgpu.js
+// @resource        _tensorflow|tfjs https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js
+// @resource        _tensorflow|tfjs-backend-webgpu https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgpu@4.22.0/dist/tf-backend-webgpu.js
 // @supportURL      https://github.com/hymbz/ComicReadScript/issues
 // @updateURL       https://github.com/hymbz/ComicReadScript/raw/master/ComicRead.user.js
 // @downloadURL     https://github.com/hymbz/ComicReadScript/raw/master/ComicRead.user.js
@@ -5886,10 +5886,11 @@ const checkServer = async () => {
 		errorText: rt("server_not_started", "Reline service is not started. Start API service in Reline first.")
 	})).response;
 };
-const upload = async (blob) => {
+const upload = async (blob, pageIndex) => {
 	const formData = new FormData();
 	const ext = blob.type.split("/").at(-1) || "png";
-	formData.append("file", new File([blob], \`image.\${ext}\`, { type: blob.type }));
+	const pageName = String(Math.max(0, pageIndex) + 1).padStart(4, "0");
+	formData.append("file", new File([blob], \`\${pageName}.\${ext}\`, { type: blob.type }));
 	const res = await request.request(\`\${normalizeServerUrl()}/upscale\`, {
 		method: "POST",
 		responseType: "blob",
@@ -5989,7 +5990,7 @@ const relineUpscaleImage = async (url, currentRunId = runId) => {
 			relineUpscaleType: "processing",
 			relineUpscaleMessage: rt("processing", "Reline processing image")
 		});
-		const resultBlob = await upload(await downloadImg(url));
+		const resultBlob = await upload(await downloadImg(url), store.imgList.indexOf(url));
 		const item = saveCache(getCacheKey(url), resultBlob);
 		const currentType = store.imgMap[url]?.relineUpscaleType;
 		const shouldShow = relineRunEnabled && (currentType === void 0 || currentType === "wait" || currentType === "processing");
