@@ -34,7 +34,7 @@ export const outputPlugins: RolldownPluginOption[] = [
     renderChunk: (code) =>
       // 删除单独的 require 语句和注释
       code.replaceAll(
-        /\nrequire.+;|\n\/\*\*.+?\*\/\n(?=\n)|\n\/\/ .+\n(?=\n)/g,
+        /\nrequire.+;|\n\/\*\*.+?\*\/\n(?=\n)|\n\/\/ (?!==\/?UserScript==).+\n(?=\n)/g,
         '',
       ),
   },
