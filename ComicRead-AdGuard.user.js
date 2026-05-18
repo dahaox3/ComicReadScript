@@ -5952,6 +5952,75 @@ const checkServer = async () => {
 		errorText: rt("server_not_started", "Reline service is not started. Start API service in Reline first.")
 	})).response;
 };
+const parseRelineError = async (res) => {
+	let text = res.responseText || "";
+	if (!text && res.response instanceof Blob) text = await res.response.text();
+	if (text) {
+		const message = parseRelineErrorText(text);
+		if (message) return message;
+	}
+	return res.statusText || (res.status ? \`HTTP \${res.status}\` : void 0);
+};
+const parseRelineErrorText = (text) => {
+	const trimmed = text.trim();
+	if (!trimmed) return;
+	try {
+		const data = JSON.parse(trimmed);
+		for (const key of [
+			"error",
+			"message",
+			"detail"
+		]) {
+			const value = data[key];
+			if (typeof value === "string" && value.trim()) return value.trim();
+			if (value && typeof value === "object") return JSON.stringify(value);
+		}
+	} catch {
+		return trimmed;
+	}
+	return trimmed;
+};
+const getErrorCause = (error) => error && typeof error === "object" && "cause" in error ? error.cause : void 0;
+const getErrorMessage = async (error) => {
+	const messages = /* @__PURE__ */ new Set();
+	const collect = async (value) => {
+		if (!value) return;
+		if (typeof value === "string") {
+			const message = parseRelineErrorText(value);
+			if (message) messages.add(message);
+			return;
+		}
+		if (value instanceof Error) {
+			await collect(value.message);
+			await collect(getErrorCause(value));
+			return;
+		}
+		if (value instanceof Blob) {
+			await collect(await value.text());
+			return;
+		}
+		if (typeof value !== "object") return;
+		const response = value;
+		await collect(response.error);
+		await collect(response.detail);
+		await collect(response.message);
+		const responseMessage = await parseRelineError(response);
+		if (responseMessage) messages.add(responseMessage);
+		await collect(response.cause);
+	};
+	await collect(error);
+	return [...messages].join("\\n");
+};
+const appendRelineHint = (message) => {
+	const serverUrl = normalizeServerUrl();
+	const lowerMessage = message.toLowerCase();
+	const hints = [];
+	if (lowerMessage.includes("failed to fetch") || lowerMessage.includes("gm_xmlhttprequest error") || lowerMessage.includes("network") || lowerMessage.includes("timeout")) hints.push(\`Cannot reach \${serverUrl}. Start the API service in Reline GUI and check the service URL.\`);
+	if (lowerMessage.includes("upscale node skipped the image") || lowerMessage.includes("model") || lowerMessage.includes("no such file") || lowerMessage.includes("not found")) hints.push("Check that the selected Reline model files still exist, then apply/reload the API config.");
+	if (lowerMessage.includes("folder_reader") || lowerMessage.includes("folder_writer") || lowerMessage.includes("api_output")) hints.push("Check the API pipeline: it needs a reader node and an output node that can return the processed image.");
+	if (hints.length === 0) return message;
+	return \`\${message}\\n\${[...new Set(hints)].join("\\n")}\`;
+};
 const upload = async (blob, pageIndex) => {
 	const formData = new FormData();
 	const ext = blob.type.split("/").at(-1) || "png";
@@ -5964,8 +6033,10 @@ const upload = async (blob, pageIndex) => {
 		fetch: false,
 		data: formData,
 		noTip: true,
+		noCheckCode: true,
 		errorText: rt("upload_failed", "Failed to upload image to Reline")
 	});
+	if (res.status !== 200) throw new Error(\`\${rt("request_failed", "Reline API request failed")}: \${await parseRelineError(res)}\`);
 	const contentType = res.responseHeaders?.match(/content-type:\\s*([^\\r\\n;]+)/i)?.[1] || res.response.type;
 	if (!contentType) return res.response;
 	return new Blob([res.response], { type: contentType });
@@ -6068,11 +6139,12 @@ const relineUpscaleImage = async (url, currentRunId = runId) => {
 	} catch (error) {
 		helper.log.error("Reline upscale error", error);
 		if (currentRunId !== runId) return;
+		const message = appendRelineHint(await getErrorMessage(error)) || rt("failed", "Reline upscale failed");
 		setState("imgMap", url, {
 			relineUpscaleType: "error",
-			relineUpscaleMessage: error?.message || rt("failed", "Reline upscale failed")
+			relineUpscaleMessage: message
 		});
-		components_Toast.toast.error(rt("failed", "Reline upscale failed"));
+		components_Toast.toast.error(message);
 	}
 };
 const relineUpscaleNext = helper.singleThreaded(async (state) => {
