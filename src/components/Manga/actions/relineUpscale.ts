@@ -109,6 +109,25 @@ const checkServer = async () => {
   return res.response;
 };
 
+const parseRelineError = async (res: {
+  responseText?: string;
+  response?: unknown;
+  status: number;
+  statusText?: string;
+}) => {
+  let text = res.responseText || '';
+  if (!text && res.response instanceof Blob) text = await res.response.text();
+  if (text) {
+    try {
+      const data = JSON.parse(text) as { error?: unknown };
+      if (typeof data.error === 'string') return data.error;
+    } catch {
+      return text;
+    }
+  }
+  return res.statusText || `HTTP ${res.status}`;
+};
+
 const upload = async (blob: Blob, pageIndex: number) => {
   const formData = new FormData();
   const ext = blob.type.split('/').at(-1) || 'png';
@@ -122,8 +141,16 @@ const upload = async (blob: Blob, pageIndex: number) => {
     fetch: false,
     data: formData,
     noTip: true,
+    noCheckCode: true,
     errorText: rt('upload_failed', 'Failed to upload image to Reline'),
   });
+  if (res.status !== 200) {
+    throw new Error(
+      `${rt('request_failed', 'Reline API request failed')}: ${await parseRelineError(
+        res,
+      )}`,
+    );
+  }
 
   const contentType =
     res.responseHeaders?.match(/content-type:\s*([^\r\n;]+)/i)?.[1] ||
@@ -265,12 +292,12 @@ export const relineUpscaleImage = async (url: string, currentRunId = runId) => {
   } catch (error) {
     log.error('Reline upscale error', error);
     if (currentRunId !== runId) return;
+    const message = (error as Error)?.message || rt('failed', 'Reline upscale failed');
     setState('imgMap', url, {
       relineUpscaleType: 'error',
-      relineUpscaleMessage:
-        (error as Error)?.message || rt('failed', 'Reline upscale failed'),
+      relineUpscaleMessage: message,
     });
-    toast.error(rt('failed', 'Reline upscale failed'));
+    toast.error(message);
   }
 };
 
