@@ -117,6 +117,7 @@ export type Option = {
     serverUrl: string;
     preloadRange: 0 | 5 | 10 | -1;
     preloadPrevious: boolean;
+    cacheLimit: 0 | 50 | 100 | 200;
   };
 
   /** 翻译 */
@@ -200,6 +201,7 @@ const _defaultOption: Readonly<Option> = {
     serverUrl: 'http://127.0.0.1:5678',
     preloadRange: -1,
     preloadPrevious: false,
+    cacheLimit: 100,
   },
 
   translation: {

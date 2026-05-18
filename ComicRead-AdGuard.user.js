@@ -2882,7 +2882,8 @@ const _defaultOption = {
 		enabled: false,
 		serverUrl: "http://127.0.0.1:5678",
 		preloadRange: -1,
-		preloadPrevious: false
+		preloadPrevious: false,
+		cacheLimit: 100
 	},
 	translation: {
 		enabled: false,
@@ -5884,10 +5885,7 @@ const handleWheel = (e) => {
 };
 //#endregion
 //#region src/components/Manga/actions/relineUpscale.ts
-const maxCacheCount = 50;
-const maxCacheSize = 512 * 1024 * 1024;
 const cache = /* @__PURE__ */ new Map();
-let cacheSize = 0;
 let runId = 0;
 let relineRunEnabled = false;
 const rt = (key, fallback, variables) => helper.t(\`reline_upscale.\${key}\`, variables) || fallback;
@@ -5907,29 +5905,31 @@ const getCache = (url) => {
 	return item;
 };
 const evictCache = () => {
-	while (cache.size > maxCacheCount || cacheSize > maxCacheSize) {
+	const limit = store.option.relineUpscale.cacheLimit;
+	if (limit === 0) return;
+	while (cache.size > limit) {
 		const entry = cache.entries().next().value;
 		if (!entry) return;
 		const [key, item] = entry;
 		cache.delete(key);
-		cacheSize -= item.size;
 		URL.revokeObjectURL(item.blobUrl);
+		setState("imgMap", item.imgUrl, {
+			relineUpscaleUrl: void 0,
+			relineUpscaleType: void 0,
+			relineUpscaleMessage: void 0
+		});
 	}
 };
-const saveCache = (key, blob) => {
+const saveCache = (key, blob, imgUrl) => {
 	const oldItem = cache.get(key);
-	if (oldItem) {
-		cacheSize -= oldItem.size;
-		URL.revokeObjectURL(oldItem.blobUrl);
-	}
+	if (oldItem) URL.revokeObjectURL(oldItem.blobUrl);
 	const item = {
 		blob,
 		blobUrl: URL.createObjectURL(blob),
-		size: blob.size,
+		imgUrl,
 		lastUsed: Date.now()
 	};
 	cache.set(key, item);
-	cacheSize += item.size;
 	evictCache();
 	return item;
 };
@@ -6128,7 +6128,7 @@ const relineUpscaleImage = async (url, currentRunId = runId) => {
 			relineUpscaleMessage: rt("processing", "Reline processing image")
 		});
 		const resultBlob = await upload(await downloadImg(url), store.imgList.indexOf(url));
-		const item = saveCache(getCacheKey(url), resultBlob);
+		const item = saveCache(getCacheKey(url), resultBlob, url);
 		const currentType = store.imgMap[url]?.relineUpscaleType;
 		const shouldShow = relineRunEnabled && (currentType === void 0 || currentType === "wait" || currentType === "processing");
 		setState("imgMap", url, {
@@ -8195,7 +8195,28 @@ const defaultSettingList = () => [
 		}),
 		solid_js_web.createComponent(SettingsItemSwitch, solid_js_web.mergeProps({ get name() {
 			return tt$1("reline_upscale.preload_previous", "Preload previous pages");
-		} }, () => bindOption("relineUpscale", "preloadPrevious")))
+		} }, () => bindOption("relineUpscale", "preloadPrevious"))),
+		solid_js_web.createComponent(SettingsItemSelect, {
+			get name() {
+				return tt$1("reline_upscale.cache_limit", "Cache limit");
+			},
+			get value() {
+				return String(store.option.relineUpscale.cacheLimit);
+			},
+			get options() {
+				return [
+					["50", tt$1("reline_upscale.cache_50", "50 images")],
+					["100", tt$1("reline_upscale.cache_100", "100 images")],
+					["200", tt$1("reline_upscale.cache_200", "200 images")],
+					["0", tt$1("reline_upscale.cache_unlimited", "Unlimited")]
+				];
+			},
+			onChange: (val) => {
+				setOption((draftOption) => {
+					draftOption.relineUpscale.cacheLimit = Number(val);
+				});
+			}
+		})
 	]],
 	[helper.t("setting.option.img_recognition"), () => [
 		solid_js_web.createComponent(SettingsItemSwitch, {

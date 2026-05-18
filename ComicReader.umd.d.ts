@@ -213,6 +213,7 @@ type Option$1 = {
 		serverUrl: string;
 		preloadRange: 0 | 5 | 10 | -1;
 		preloadPrevious: boolean;
+		cacheLimit: 0 | 50 | 100 | 200;
 	};
 	/** 翻译 */
 	translation: {

@@ -9,14 +9,11 @@ import { activeImgIndex, activePage } from './memo';
 type RelineCacheItem = {
   blob: Blob;
   blobUrl: string;
-  size: number;
+  imgUrl: string;
   lastUsed: number;
 };
 
-const maxCacheCount = 50;
-const maxCacheSize = 512 * 1024 * 1024;
 const cache = new Map<string, RelineCacheItem>();
-let cacheSize = 0;
 let runId = 0;
 let relineRunEnabled = false;
 
@@ -49,31 +46,33 @@ const getCache = (url: string) => {
 };
 
 const evictCache = () => {
-  while (cache.size > maxCacheCount || cacheSize > maxCacheSize) {
+  const limit = store.option.relineUpscale.cacheLimit;
+  if (limit === 0) return;
+  while (cache.size > limit) {
     const entry = cache.entries().next().value;
     if (!entry) return;
     const [key, item] = entry;
     cache.delete(key);
-    cacheSize -= item.size;
     URL.revokeObjectURL(item.blobUrl);
+    setState('imgMap', item.imgUrl, {
+      relineUpscaleUrl: undefined,
+      relineUpscaleType: undefined,
+      relineUpscaleMessage: undefined,
+    });
   }
 };
 
-const saveCache = (key: string, blob: Blob) => {
+const saveCache = (key: string, blob: Blob, imgUrl: string) => {
   const oldItem = cache.get(key);
-  if (oldItem) {
-    cacheSize -= oldItem.size;
-    URL.revokeObjectURL(oldItem.blobUrl);
-  }
+  if (oldItem) URL.revokeObjectURL(oldItem.blobUrl);
 
   const item = {
     blob,
     blobUrl: URL.createObjectURL(blob),
-    size: blob.size,
+    imgUrl,
     lastUsed: Date.now(),
   };
   cache.set(key, item);
-  cacheSize += item.size;
   evictCache();
   return item;
 };
@@ -376,7 +375,7 @@ export const relineUpscaleImage = async (url: string, currentRunId = runId) => {
       });
     const blob = await downloadImg(url);
     const resultBlob = await upload(blob, store.imgList.indexOf(url));
-    const item = saveCache(getCacheKey(url), resultBlob);
+    const item = saveCache(getCacheKey(url), resultBlob, url);
     const currentType = store.imgMap[url]?.relineUpscaleType;
     const shouldShow =
       relineRunEnabled &&

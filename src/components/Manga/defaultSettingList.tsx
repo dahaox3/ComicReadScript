@@ -411,6 +411,29 @@ export const defaultSettingList: () => SettingList = () => [
           name={tt('reline_upscale.preload_previous', 'Preload previous pages')}
           {...bindOption('relineUpscale', 'preloadPrevious')}
         />
+        <SettingsItemSelect<'50' | '100' | '200' | '0'>
+          name={tt('reline_upscale.cache_limit', 'Cache limit')}
+          value={String(store.option.relineUpscale.cacheLimit) as
+            | '50'
+            | '100'
+            | '200'
+            | '0'}
+          options={[
+            ['50', tt('reline_upscale.cache_50', '50 images')],
+            ['100', tt('reline_upscale.cache_100', '100 images')],
+            ['200', tt('reline_upscale.cache_200', '200 images')],
+            ['0', tt('reline_upscale.cache_unlimited', 'Unlimited')],
+          ]}
+          onChange={(val) => {
+            setOption((draftOption) => {
+              draftOption.relineUpscale.cacheLimit = Number(val) as
+                | 0
+                | 50
+                | 100
+                | 200;
+            });
+          }}
+        />
       </>
     ),
   ],
