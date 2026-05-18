@@ -5,6 +5,7 @@ import { buildAdGuard, buildUMD } from './additional-variants';
 import { isDevMode } from './lib/ctx';
 import { docGeneratorPlugin } from './lib/doc-generator';
 import { packlist } from './lib/packlist.json' with { type: 'json' };
+import { copyReleaseArtifacts } from './lib/release-artifacts';
 import { createBundleConfigs } from './lib/shared-config';
 import { transforms } from './lib/transforms';
 import {
@@ -58,5 +59,6 @@ process.on('SIGINT', () => {
 if (!isDevMode) {
   await buildAdGuard();
   await buildUMD();
+  copyReleaseArtifacts();
   console.log(chalk.blue.bold('\n构建完成'));
 }
