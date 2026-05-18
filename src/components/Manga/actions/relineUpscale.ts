@@ -112,20 +112,120 @@ const checkServer = async () => {
 const parseRelineError = async (res: {
   responseText?: string;
   response?: unknown;
-  status: number;
+  status?: number;
   statusText?: string;
 }) => {
   let text = res.responseText || '';
   if (!text && res.response instanceof Blob) text = await res.response.text();
   if (text) {
-    try {
-      const data = JSON.parse(text) as { error?: unknown };
-      if (typeof data.error === 'string') return data.error;
-    } catch {
-      return text;
-    }
+    const message = parseRelineErrorText(text);
+    if (message) return message;
   }
-  return res.statusText || `HTTP ${res.status}`;
+  return res.statusText || (res.status ? `HTTP ${res.status}` : undefined);
+};
+
+const parseRelineErrorText = (text: string) => {
+  const trimmed = text.trim();
+  if (!trimmed) return;
+
+  try {
+    const data = JSON.parse(trimmed) as Record<string, unknown>;
+    for (const key of ['error', 'message', 'detail']) {
+      const value = data[key];
+      if (typeof value === 'string' && value.trim()) return value.trim();
+      if (value && typeof value === 'object') return JSON.stringify(value);
+    }
+  } catch {
+    return trimmed;
+  }
+
+  return trimmed;
+};
+
+const getErrorCause = (error: unknown) =>
+  error && typeof error === 'object' && 'cause' in error
+    ? (error as { cause?: unknown }).cause
+    : undefined;
+
+const getErrorMessage = async (error: unknown): Promise<string> => {
+  const messages = new Set<string>();
+
+  const collect = async (value: unknown) => {
+    if (!value) return;
+    if (typeof value === 'string') {
+      const message = parseRelineErrorText(value);
+      if (message) messages.add(message);
+      return;
+    }
+    if (value instanceof Error) {
+      await collect(value.message);
+      await collect(getErrorCause(value));
+      return;
+    }
+    if (value instanceof Blob) {
+      await collect(await value.text());
+      return;
+    }
+    if (typeof value !== 'object') return;
+
+    const response = value as {
+      message?: unknown;
+      responseText?: string;
+      response?: unknown;
+      status?: number;
+      statusText?: string;
+      error?: unknown;
+      detail?: unknown;
+      cause?: unknown;
+    };
+    await collect(response.error);
+    await collect(response.detail);
+    await collect(response.message);
+    const responseMessage = await parseRelineError(response);
+    if (responseMessage) messages.add(responseMessage);
+    await collect(response.cause);
+  };
+
+  await collect(error);
+  return [...messages].join('\n');
+};
+
+const appendRelineHint = (message: string) => {
+  const serverUrl = normalizeServerUrl();
+  const lowerMessage = message.toLowerCase();
+  const hints: string[] = [];
+
+  if (
+    lowerMessage.includes('failed to fetch') ||
+    lowerMessage.includes('gm_xmlhttprequest error') ||
+    lowerMessage.includes('network') ||
+    lowerMessage.includes('timeout')
+  )
+    hints.push(
+      `Cannot reach ${serverUrl}. Start the API service in Reline GUI and check the service URL.`,
+    );
+
+  if (
+    lowerMessage.includes('upscale node skipped the image') ||
+    lowerMessage.includes('model') ||
+    lowerMessage.includes('no such file') ||
+    lowerMessage.includes('not found')
+  )
+    hints.push(
+      'Check that the selected Reline model files still exist, then apply/reload the API config.',
+    );
+
+  if (
+    lowerMessage.includes('folder_reader') ||
+    lowerMessage.includes('folder_writer') ||
+    lowerMessage.includes('api_output')
+  )
+    hints.push(
+      'Check the API pipeline: it needs a reader node and an output node that can return the processed image.',
+    );
+
+  if (hints.length === 0) return message;
+  return `${message}\n${[...new Set(hints)].join('\n')}`;
 };
 
 const upload = async (blob: Blob, pageIndex: number) => {
@@ -292,7 +392,9 @@ export const relineUpscaleImage = async (url: string, currentRunId = runId) => {
   } catch (error) {
     log.error('Reline upscale error', error);
     if (currentRunId !== runId) return;
-    const message = (error as Error)?.message || rt('failed', 'Reline upscale failed');
+    const message =
+      appendRelineHint(await getErrorMessage(error)) ||
+      rt('failed', 'Reline upscale failed');
     setState('imgMap', url, {
       relineUpscaleType: 'error',
       relineUpscaleMessage: message,
