@@ -16,6 +16,7 @@ export const SettingsItemButton: Component<SettingsItemSwitchProps> = (
   return (
     <SettingsItem {...others}>
       <button
+        aria-label={props.name}
         class={classes.SettingsItemIconButton}
         type="button"
         on:click={props.onClick}

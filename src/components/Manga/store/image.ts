@@ -30,6 +30,10 @@ export type ComicImg = {
   translationType?: 'wait' | 'show' | 'hide' | 'error';
 
   upscaleUrl?: string;
+  chainnerOriginalUrl?: string;
+  chainnerTranslatedUrl?: string;
+  chainnerTranslatedSource?: string;
+  chainnerMessage?: string;
 };
 
 export type PageList = ([number] | [number, number])[];

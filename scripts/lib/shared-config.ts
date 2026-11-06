@@ -116,7 +116,7 @@ export const createBundleConfigs = (
             renderChunk(code: string) {
               return code.replaceAll(
                 /\(0,\s*(?<name>\w+(?:\.\w+)+)\)(?=\s*\()/gu,
-                '$<name>',
+                ' $<name>',
               );
             },
           },

@@ -69,10 +69,7 @@ export const transforms = {
     );
 
     // 脚本更新链接也换掉
-    code = code.replaceAll(
-      '/raw/master/ComicRead.user.js',
-      '/raw/master/ComicRead-AdGuard.user.js',
-    );
+    code = code.replaceAll('/ComicRead.user.js', '/ComicRead-AdGuard.user.js');
 
     // 不知道为啥会提示 'Access to function "GM_getValue" is not allowed.'
     // 明明我用的是 GM.getValue。虽然好像对功能没有影响，但以防万一还是加上吧

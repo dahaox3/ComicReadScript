@@ -1,6 +1,7 @@
 import { createEffectOn, t, throttle } from 'helper';
 
 import { setState, store } from '../store';
+import { isChainnerUpscale } from './chainner';
 import { getImg } from './helper';
 import { activePage, isUpscale } from './memo';
 import { resetPage } from './renderPage';
@@ -13,6 +14,9 @@ export const getImgTip = (i: number) => {
   // 如果图片未加载完毕则在其 index 后增加显示当前加载状态
   if (img.loadType !== 'loaded')
     return `${i + 1} (${t(`img_status.${img.loadType}`)})`;
+
+  if (isChainnerUpscale() && img.chainnerMessage)
+    return `${i + 1}：${img.chainnerMessage}`;
 
   if (
     img.translationType &&

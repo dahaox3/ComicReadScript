@@ -1,8 +1,10 @@
+import * as styledSyntax from 'postcss-styled-syntax';
+
 export default {
   overrides: [
     {
       files: ['**/*.ts', '**/*.tsx'],
-      customSyntax: 'postcss-styled-syntax',
+      customSyntax: styledSyntax,
     },
   ],
   ignoreFiles: [

@@ -366,5 +366,26 @@
     "upscaled": "upscaled",
     "upscaling": "upscaling",
     "webgpu_tip": "Unable to upscale images using WebGPU, processing will be slower"
+  },
+  "chainner": {
+    "title": "chaiNNer local upscale",
+    "provider": "Upscale backend",
+    "browser": "Built-in browser",
+    "server_url": "Service URL",
+    "token": "Access token",
+    "preload": "Pages ahead",
+    "test": "Test connection",
+    "retry": "Reconnect / retry",
+    "clear_cache": "Clear disk cache",
+    "help": "Run Receive Image → processing → Return Image in chaiNNer. Set model and scale in its nodes.",
+    "connecting": "Connecting to chaiNNer",
+    "connected": "chaiNNer connected",
+    "paused": "chaiNNer paused",
+    "queued": "Waiting to upscale",
+    "processing": "Upscaling",
+    "ready": "Upscaled",
+    "cancelled": "Cancelled",
+    "failed": "Upscale failed; showing source",
+    "cache_cleared": "Disk cache cleared"
   }
 }

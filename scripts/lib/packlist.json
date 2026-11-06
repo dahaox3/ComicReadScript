@@ -21,6 +21,7 @@
   ],
   "devPacklist": ["components/DebugPopup"],
   "umdPacklist": [
+    "userscript/supportWorker",
     "helper/languages",
     "helper",
     "request",

@@ -366,5 +366,26 @@
     "upscaled": "已放大",
     "upscaling": "放大中",
     "webgpu_tip": "无法使用 WebGPU 放大图片，处理速度将变慢"
+  },
+  "chainner": {
+    "title": "chaiNNer 本机超分",
+    "provider": "超分后端",
+    "browser": "浏览器内置",
+    "server_url": "服务地址",
+    "token": "访问令牌",
+    "preload": "预处理后续张数",
+    "test": "测试连接",
+    "retry": "重新连接／重试",
+    "clear_cache": "清理磁盘缓存",
+    "help": "先在 chaiNNer 运行接收／返回图片工作流，倍率与模型在节点中设置。",
+    "connecting": "正在连接 chaiNNer",
+    "connected": "chaiNNer 已连接",
+    "paused": "chaiNNer 已暂停",
+    "queued": "等待超分",
+    "processing": "正在超分",
+    "ready": "超分完成",
+    "cancelled": "超分已取消",
+    "failed": "超分失败，继续显示原图／译图",
+    "cache_cleared": "磁盘缓存已清理"
   }
 }

@@ -1,0 +1,27 @@
+name: chaiNNer reader integration
+
+on:
+  push:
+    branches: [chainner-upscale]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  reader:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Supply empty optional site-test cookie fixture
+        run: >-
+          node -e "require('node:fs').writeFileSync('test/cookie.ts',
+          'export const cookie: Record<string, { name: string; value: string; path?: string; domain?: string; secure?: boolean; httpOnly?: boolean; expiry?: number }[]> = {};\n')"
+      - run: pnpm check
+      - run: pnpm test --run

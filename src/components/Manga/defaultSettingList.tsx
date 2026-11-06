@@ -26,6 +26,7 @@ import {
   switchImgRecognition,
   zoom,
 } from './actions';
+import { SettingChainner } from './components/SettingChainner';
 import { SettingHotkeysBlock } from './components/SettingHotkeys';
 import { SettingsItem } from './components/SettingsItem';
 import { SettingsItemButton } from './components/SettingsItemButton';
@@ -521,14 +522,27 @@ export const defaultSettingList: () => SettingList = () => [
           value={store.option.imgRecognition.keepMargin}
         />
         <Show when={!store.isMobile}>
+          <SettingsItemSelect
+            name={t('chainner.provider')}
+            options={[
+              ['browser', t('chainner.browser')],
+              ['chainner', t('chainner.title')],
+            ]}
+            {...bindOption('upscaleProvider')}
+          />
           <SettingsItemSwitch
             name={t('upscale.title')}
             disabled={
-              !store.option.imgRecognition.enabled || !store.supportUpscaleImage
+              store.option.upscaleProvider !== 'chainner' &&
+              (!store.option.imgRecognition.enabled ||
+                !store.supportUpscaleImage)
             }
             value={store.option.imgRecognition.upscale}
-            onChange={() => switchImgRecognition('upscale')}
+            onChange={(value) => setOption('imgRecognition', 'upscale', value)}
           />
+          <Show when={store.option.upscaleProvider === 'chainner'}>
+            <SettingChainner />
+          </Show>
         </Show>
       </>
     ),

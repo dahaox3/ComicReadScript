@@ -9,6 +9,8 @@ import {
 import { type areaArrayMap } from '../components/TouchArea';
 
 export type Option = {
+  upscaleProvider: 'browser' | 'chainner';
+  chainner: { serverUrl: string; token: string; preload: number };
   /** 漫画方向 */
   dir: 'ltr' | 'rtl';
   /** 默认启用首页填充 */
@@ -163,6 +165,8 @@ export type Option = {
 };
 
 const _defaultOption: Readonly<Option> = {
+  upscaleProvider: 'browser',
+  chainner: { serverUrl: 'http://127.0.0.1:5004', token: '', preload: 2 },
   dir: 'rtl',
   scrollbar: {
     position: 'auto',

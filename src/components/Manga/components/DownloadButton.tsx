@@ -5,7 +5,7 @@ import { type Zippable, zipSync } from 'fflate';
 import { FaviconProgress, createEffectOn, saveAs, t, useStore } from 'helper';
 import { createMemo } from 'solid-js';
 
-import { imgList, isUpscale } from '../actions';
+import { chainnerImageUrl, imgList, isUpscale } from '../actions';
 import { downloadImg } from '../helper';
 import { store } from '../store';
 
@@ -43,7 +43,9 @@ export const DownloadButton = () => {
         continue;
 
       let url: string;
-      if (img.translationType === 'show') url = img.translationUrl!;
+      const processed = chainnerImageUrl(img);
+      if (processed) url = processed;
+      else if (img.translationType === 'show') url = img.translationUrl!;
       else if (img.upscaleUrl && isUpscale()) url = img.upscaleUrl;
       else url = img.src;
 

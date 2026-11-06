@@ -25,7 +25,12 @@ const xmlHttpRequest = <T = any>(
   details: Tampermonkey.Request<T>,
 ): Promise<Tampermonkey.Response<T>> =>
   new Promise((resolve, reject) => {
+    const abortListener = () => abort.abort();
+    const cleanup = () => {
+      details.signal?.removeEventListener('abort', abortListener);
+    };
     const handleError = (error?: Tampermonkey.ErrorResponse) => {
+      cleanup();
       details.onerror?.(error);
       log.error('GM_xmlhttpRequest Error', error);
       reject(new Error(error?.responseText || 'GM_xmlhttpRequest Error'));
@@ -33,6 +38,7 @@ const xmlHttpRequest = <T = any>(
     const abort = GM_xmlhttpRequest<T>({
       ...details,
       onload(res) {
+        cleanup();
         details.onload?.call(res, res);
         resolve(res);
       },
@@ -40,7 +46,9 @@ const xmlHttpRequest = <T = any>(
       ontimeout: handleError,
       onabort: handleError,
     });
-    details.signal?.addEventListener('abort', () => abort.abort());
+    if (details.signal?.aborted) abortListener();
+    else
+      details.signal?.addEventListener('abort', abortListener, { once: true });
   });
 
 /** 通过流读取 blob，并回报下载进度 */

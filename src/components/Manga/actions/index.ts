@@ -8,6 +8,7 @@ export * from './imageLoad';
 export * from './imageSize';
 export * from './imageType';
 export * from './imageUpscale';
+export * from './chainner';
 export * from './jumpToPage';
 export * from './memo';
 export * from './operate';

@@ -10,6 +10,7 @@ import {
 
 import {
   abreastArea,
+  chainnerImageUrl,
   getCropMargin,
   getImgEle,
   getImgTip,
@@ -20,7 +21,7 @@ import {
   isEnableBg,
 } from '../actions';
 import classes from '../index.module.css';
-import { refs, store } from '../store';
+import { refs, setState, store } from '../store';
 import { type ComicImg as TComicImg } from '../store/image';
 
 export const ComicImg: Component<TComicImg & { index: number }> = (img) => {
@@ -31,9 +32,15 @@ export const ComicImg: Component<TComicImg & { index: number }> = (img) => {
 
   const src = () => {
     if (img.loadType === 'wait') return '';
+    const processed = chainnerImageUrl(img);
+    if (processed) return processed;
     if (img.translationType === 'show') return img.translationUrl;
     if (store.option.imgRecognition.enabled) {
-      if (store.option.imgRecognition.upscale && img.upscaleUrl)
+      if (
+        store.option.upscaleProvider !== 'chainner' &&
+        store.option.imgRecognition.upscale &&
+        img.upscaleUrl
+      )
         return img.upscaleUrl;
       return img.blobUrl;
     }
@@ -164,8 +171,23 @@ export const ComicImg: Component<TComicImg & { index: number }> = (img) => {
               src={src()}
               alt={`${img.index}`}
               data-src={img.src}
-              onLoad={(e) => handleImgLoaded(img.src, e.currentTarget)}
-              onError={(e) => handleImgError(img.src, e.currentTarget)}
+              onLoad={(e) => {
+                // Keep layout and crop calculations in original-image coordinates.
+                if (e.currentTarget.src !== chainnerImageUrl(img))
+                  handleImgLoaded(img.src, e.currentTarget);
+              }}
+              onError={(e) => {
+                if (e.currentTarget.src === chainnerImageUrl(img)) {
+                  setState(
+                    'imgMap',
+                    img.src,
+                    img.translationType === 'show'
+                      ? 'chainnerTranslatedUrl'
+                      : 'chainnerOriginalUrl',
+                    undefined,
+                  );
+                } else handleImgError(img.src, e.currentTarget);
+              }}
               draggable="false"
               decoding="async"
             />

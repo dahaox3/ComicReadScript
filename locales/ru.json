@@ -366,5 +366,26 @@
     "upscaled": "Увеличенный",
     "upscaling": "Увеличивается",
     "webgpu_tip": "Невозможно увеличить изображения с помощью WebGPU, обработка будет медленнее"
+  },
+  "chainner": {
+    "title": "Апскейл chaiNNer",
+    "provider": "Движок апскейла",
+    "browser": "Встроенный",
+    "server_url": "Адрес сервиса",
+    "token": "Токен доступа",
+    "preload": "Страниц вперёд",
+    "test": "Проверить связь",
+    "retry": "Повторить",
+    "clear_cache": "Очистить кеш",
+    "help": "Запустите Receive Image → обработка → Return Image в chaiNNer. Модель и масштаб задаются в узлах.",
+    "connecting": "Подключение к chaiNNer",
+    "connected": "chaiNNer подключён",
+    "paused": "chaiNNer на паузе",
+    "queued": "В очереди",
+    "processing": "Апскейл",
+    "ready": "Готово",
+    "cancelled": "Отменено",
+    "failed": "Ошибка апскейла; показан оригинал",
+    "cache_cleared": "Кеш очищен"
   }
 }

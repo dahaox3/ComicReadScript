@@ -4,6 +4,7 @@ import {
   Show,
   createEffect,
   enableScheduling,
+  onCleanup,
   onMount,
 } from 'solid-js';
 import { type PartialDeep } from 'type-fest';
@@ -15,6 +16,7 @@ import {
   handleKeyUp,
   handleMouseDown,
   handleWheel,
+  setChainnerReaderVisible,
 } from './actions';
 import { ComicImgFlow } from './components/ComicImgFlow';
 import { EndPage } from './components/EndPage';
@@ -73,6 +75,8 @@ export const Manga: Component<MangaProps> = (props) => {
   onMount(() => useInit(props));
 
   createEffect(() => props.show && focus());
+  createEffect(() => setChainnerReaderVisible(props.show !== false));
+  onCleanup(() => setChainnerReaderVisible(false));
 
   return (
     <>

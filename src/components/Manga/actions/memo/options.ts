@@ -45,6 +45,7 @@ export const isEnableBg = createRootMemo(
 export const isUpscale = createRootMemo(
   () =>
     !store.isMobile &&
+    store.option.upscaleProvider !== 'chainner' &&
     store.option.imgRecognition.enabled &&
     store.option.imgRecognition.upscale,
 );

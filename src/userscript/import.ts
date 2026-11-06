@@ -18,7 +18,7 @@ const gmApiList = Object.keys(gmApi);
 // 部分站点启用了 Trusted Types CSP，
 // 会禁止 Element.innerHTML、eval()、创建 script 等注入操作，
 // 因此需要使用 Trusted Types 隐式生效的 default 策略来绕过 CSP 限制
-const { trustedTypes } = unsafeWindow;
+const { trustedTypes } = gmApi.unsafeWindow as typeof unsafeWindow;
 if (trustedTypes) {
   try {
     if (!trustedTypes.defaultPolicy)
