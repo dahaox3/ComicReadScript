@@ -1,3 +1,5 @@
+> **chaiNNer 定制分支**：[安装阅读超分脚本](https://github.com/dahaox3/ComicReadScript/raw/chainner-upscale/ComicRead.user.js) · [连接与维护说明](CHAINNER.md)。下方原版安装链接用于上游版本；使用定制版时请停用原版／旧 Reline 脚本。
+
 ![页面填充示例](/docs/public/页面填充示例.webp)
 
 <p align="center">

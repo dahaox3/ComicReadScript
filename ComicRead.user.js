@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name            ComicRead
-// @name:en         ComicRead
-// @name:ru         ComicRead
-// @namespace       ComicRead
-// @version         12.15.0
+// @name            ComicRead chaiNNer
+// @name:en         ComicRead chaiNNer
+// @name:ru         ComicRead chaiNNer
+// @namespace       dahaox3/ComicReadScript/chainner
+// @version         12.15.0-chainner.1
 // @description     为漫画站增加双页阅读、翻译等优化体验的增强功能。百合会（记录阅读历史、自动签到等）、百合会新站、E-Hentai（关联外站、快捷收藏、标签染色、识别广告页等）、nhentai（彻底屏蔽漫画、无限滚动）、Yurifans（自动签到）、拷贝漫画(copymanga)（显示最后阅读记录、解锁隐藏漫画）、再漫画、漫画柜(manhuagui)、动漫屋(dm5)、mangabz、komiic、無限動漫、绅士漫画(wnacg)、禁漫天堂、NoyAcg、熱辣漫畫、hanime1、E-Hentai 镜像站、hitomi、hdoujin、SchaleNetwork、nude-moon、HentaiZap、IMHentai、HentaiEra、HentaiEnvy、EAHentai、HentaiNexus、AsmHentai、3Hentai、MangaDex、welovemanga、kisslove(klz9)、Pawchive、kemono、nekohouse、Pixiv、微博、明日方舟泰拉记事社、Postimages、ニコニコ漫画、最前線、芸能ヌード、Suwayomi、LANraragi
 // @description:en  Add dual-page reading, translation and other enhancements to comic sites. E-Hentai (Associate nhentai, Quick favorite, Colorize tags, Floating tag list, etc.) | nhentai (Totally block comics, Auto page turning) | E-Hentai 镜像站 | hitomi | hdoujin | SchaleNetwork | nude-moon | HentaiZap | IMHentai | HentaiEra | HentaiEnvy | EAHentai | HentaiNexus | AsmHentai | 3Hentai | Pawchive | kemono | nekohouse | MangaDex | welovemanga | kisslove(klz9)
 // @description:ru  Добавляет расширенные функции для удобства на сайт, такие как двухстраничный режим и перевод.
@@ -26,20 +26,20 @@
 // @connect         self
 // @connect         127.0.0.1
 // @connect         *
-// @connect         mapi.elfgjfghkk.club
-// @connect         mapi.fgjfghkk.club
-// @connect         mapi.hotmangasg.com
-// @connect         mapi.hotmangasd.com
 // @connect         api.2024manga.com
+// @connect         mapi.hotmangasg.com
 // @connect         mapi.hotmangasf.com
-// @connect         mapi.fgjfghkkcenter.club
-// @connect         www.manga2026.xyz
 // @connect         www.manga2025.com
+// @connect         mapi.fgjfghkkcenter.club
+// @connect         mapi.hotmangasd.com
+// @connect         www.manga2026.xyz
+// @connect         mapi.fgjfghkk.club
+// @connect         mapi.elfgjfghkk.club
 // @connect         api.manga2025.com
 // @connect         m.manga2025.com
+// @connect         api.mangacopy.com
 // @connect         api.copy4000.com
 // @connect         api.copy3000.com
-// @connect         api.mangacopy.com
 // @connect         mapi.copy20.com
 // @connect         api.2026copy.com
 // @grant           GM_addElement
@@ -64,9 +64,9 @@
 // @resource        solid-js|web https://registry.npmmirror.com/solid-js/1.9.8/files/web/dist/web.cjs
 // @resource        _tensorflow|tfjs https://registry.npmmirror.com/@tensorflow/tfjs/4.22.0/files/dist/tf.min.js
 // @resource        _tensorflow|tfjs-backend-webgpu https://registry.npmmirror.com/@tensorflow/tfjs-backend-webgpu/4.22.0/files/dist/tf-backend-webgpu.js
-// @supportURL      https://github.com/hymbz/ComicReadScript/issues
-// @updateURL       https://github.com/hymbz/ComicReadScript/raw/master/ComicRead.user.js
-// @downloadURL     https://github.com/hymbz/ComicReadScript/raw/master/ComicRead.user.js
+// @supportURL      https://github.com/dahaox3/ComicReadScript/issues
+// @updateURL       https://github.com/dahaox3/ComicReadScript/raw/chainner-upscale/ComicRead.user.js
+// @downloadURL     https://github.com/dahaox3/ComicReadScript/raw/chainner-upscale/ComicRead.user.js
 // ==/UserScript==
 //#region \0virtual:lib-code
 const libCodeMap = {
@@ -543,6 +543,27 @@ var en_default = {
 		"upscaled": "upscaled",
 		"upscaling": "upscaling",
 		"webgpu_tip": "Unable to upscale images using WebGPU, processing will be slower"
+	},
+	chainner: {
+		"title": "chaiNNer local upscale",
+		"provider": "Upscale backend",
+		"browser": "Built-in browser",
+		"server_url": "Service URL",
+		"token": "Access token",
+		"preload": "Pages ahead",
+		"test": "Test connection",
+		"retry": "Reconnect / retry",
+		"clear_cache": "Clear disk cache",
+		"help": "Run Receive Image → processing → Return Image in chaiNNer. Set model and scale in its nodes.",
+		"connecting": "Connecting to chaiNNer",
+		"connected": "chaiNNer connected",
+		"paused": "chaiNNer paused",
+		"queued": "Waiting to upscale",
+		"processing": "Upscaling",
+		"ready": "Upscaled",
+		"cancelled": "Cancelled",
+		"failed": "Upscale failed; showing source",
+		"cache_cleared": "Disk cache cleared"
 	}
 };
 //#endregion
@@ -915,6 +936,27 @@ var ru_default = {
 		"upscaled": "Увеличенный",
 		"upscaling": "Увеличивается",
 		"webgpu_tip": "Невозможно увеличить изображения с помощью WebGPU, обработка будет медленнее"
+	},
+	chainner: {
+		"title": "Апскейл chaiNNer",
+		"provider": "Движок апскейла",
+		"browser": "Встроенный",
+		"server_url": "Адрес сервиса",
+		"token": "Токен доступа",
+		"preload": "Страниц вперёд",
+		"test": "Проверить связь",
+		"retry": "Повторить",
+		"clear_cache": "Очистить кеш",
+		"help": "Запустите Receive Image → обработка → Return Image в chaiNNer. Модель и масштаб задаются в узлах.",
+		"connecting": "Подключение к chaiNNer",
+		"connected": "chaiNNer подключён",
+		"paused": "chaiNNer на паузе",
+		"queued": "В очереди",
+		"processing": "Апскейл",
+		"ready": "Готово",
+		"cancelled": "Отменено",
+		"failed": "Ошибка апскейла; показан оригинал",
+		"cache_cleared": "Кеш очищен"
 	}
 };
 //#endregion
@@ -1287,10 +1329,31 @@ var zh_default = {
 		"upscaled": "已放大",
 		"upscaling": "放大中",
 		"webgpu_tip": "无法使用 WebGPU 放大图片，处理速度将变慢"
+	},
+	chainner: {
+		"title": "chaiNNer 本机超分",
+		"provider": "超分后端",
+		"browser": "浏览器内置",
+		"server_url": "服务地址",
+		"token": "访问令牌",
+		"preload": "预处理后续张数",
+		"test": "测试连接",
+		"retry": "重新连接／重试",
+		"clear_cache": "清理磁盘缓存",
+		"help": "先在 chaiNNer 运行接收／返回图片工作流，倍率与模型在节点中设置。",
+		"connecting": "正在连接 chaiNNer",
+		"connected": "chaiNNer 已连接",
+		"paused": "chaiNNer 已暂停",
+		"queued": "等待超分",
+		"processing": "正在超分",
+		"ready": "超分完成",
+		"cancelled": "超分已取消",
+		"failed": "超分失败，继续显示原图／译图",
+		"cache_cleared": "磁盘缓存已清理"
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/dequal@2.0.3/node_modules/dequal/dist/index.mjs
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/dequal@2.0.3/node_modules/dequal/dist/index.mjs
 var has = Object.prototype.hasOwnProperty;
 function find(iter, tar, key) {
 	for (key of iter.keys()) if (dequal(key, tar)) return key;
@@ -1433,7 +1496,7 @@ const t = solid_js.createRoot(() => {
 	};
 });
 //#endregion
-//#region node_modules/.pnpm/@solid-primitives+scheduled@1.5.3_solid-js@1.9.14/node_modules/@solid-primitives/scheduled/dist/index.js
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@solid-primitives+scheduled@1.5.3_solid-js@1.9.14/node_modules/@solid-primitives/scheduled/dist/index.js
 /**
 * Creates a callback that is debounced and cancellable. The debounced callback is called on **trailing** edge.
 *
@@ -1602,7 +1665,7 @@ function createScheduled(schedule) {
 const throttle = (fn, wait = 100) => leadingAndTrailing(throttle$1, fn, wait);
 const debounce = (fn, wait = 100) => debounce$1(fn, wait);
 //#endregion
-//#region node_modules/.pnpm/@solid-primitives+trigger@1.2.4_solid-js@1.9.14/node_modules/@solid-primitives/trigger/dist/index.js
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@solid-primitives+trigger@1.2.4_solid-js@1.9.14/node_modules/@solid-primitives/trigger/dist/index.js
 const triggerOptions = !solid_js_web.isServer && solid_js.DEV ? {
 	equals: false,
 	name: "trigger"
@@ -1642,7 +1705,7 @@ var TriggerCache = class {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@solid-primitives+map@0.7.4_solid-js@1.9.14/node_modules/@solid-primitives/map/dist/index.js
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@solid-primitives+map@0.7.4_solid-js@1.9.14/node_modules/@solid-primitives/map/dist/index.js
 const $OBJECT = Symbol("track-object");
 /**
 * A reactive version of \`Map\` data structure. All the reads (like \`get\` or \`has\`) are signals, and all the writes (\`delete\` or \`set\`) will cause updates to appropriate signals.
@@ -1742,7 +1805,7 @@ var ReactiveMap = class extends Map {
 	}
 };
 //#endregion
-//#region node_modules/.pnpm/@solid-primitives+set@0.7.4_solid-js@1.9.14/node_modules/@solid-primitives/set/dist/index.js
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@solid-primitives+set@0.7.4_solid-js@1.9.14/node_modules/@solid-primitives/set/dist/index.js
 const $KEYS = Symbol("track-keys");
 /**
 * A reactive version of a Javascript built-in \`Set\` class.
@@ -2982,7 +3045,12 @@ exports.withEventStop = withEventStop;
 let helper = require("helper");
 //#region src/request.ts
 const xmlHttpRequest = (details) => new Promise((resolve, reject) => {
+	const abortListener = () => abort.abort();
+	const cleanup = () => {
+		details.signal?.removeEventListener("abort", abortListener);
+	};
 	const handleError = (error) => {
+		cleanup();
 		details.onerror?.(error);
 		helper.log.error("GM_xmlhttpRequest Error", error);
 		reject(new Error(error?.responseText || "GM_xmlhttpRequest Error"));
@@ -2990,6 +3058,7 @@ const xmlHttpRequest = (details) => new Promise((resolve, reject) => {
 	const abort = GM_xmlhttpRequest({
 		...details,
 		onload(res) {
+			cleanup();
 			details.onload?.call(res, res);
 			resolve(res);
 		},
@@ -2997,7 +3066,8 @@ const xmlHttpRequest = (details) => new Promise((resolve, reject) => {
 		ontimeout: handleError,
 		onabort: handleError
 	});
-	details.signal?.addEventListener("abort", () => abort.abort());
+	if (details.signal?.aborted) abortListener();
+	else details.signal?.addEventListener("abort", abortListener, { once: true });
 });
 /** 通过流读取 blob，并回报下载进度 */
 const readBlobWithProgress = async (res, onprogress) => {
@@ -3284,6 +3354,12 @@ const cotransDefaultOptions = () => ({
 //#endregion
 //#region src/components/Manga/store/option.ts
 const _defaultOption = {
+	upscaleProvider: "browser",
+	chainner: {
+		serverUrl: "http://127.0.0.1:5004",
+		token: "",
+		preload: 2
+	},
 	dir: "rtl",
 	scrollbar: {
 		position: "auto",
@@ -3668,7 +3744,7 @@ const isUseAutoScale = helper.createRootMemo(() => isScrollMode() && typeof stor
 /** 当前是否开启了识别背景色 */
 const isEnableBg = helper.createRootMemo(() => store.option.imgRecognition.enabled && store.option.imgRecognition.background);
 /** 当前是否开启了图像放大 */
-const isUpscale = helper.createRootMemo(() => !store.isMobile && store.option.imgRecognition.enabled && store.option.imgRecognition.upscale);
+const isUpscale = helper.createRootMemo(() => !store.isMobile && store.option.upscaleProvider !== "chainner" && store.option.imgRecognition.enabled && store.option.imgRecognition.upscale);
 /** 根据视区宽高判断单双页模式 */
 const autoPageNum = helper.createThrottleMemo(() => store.rootSize.width >= store.rootSize.height ? 2 : 1);
 /** 当前使用的单双页模式 */
@@ -4419,7 +4495,7 @@ const playAnimation = (e) => {
 		animation.play();
 	}
 };
-const downloadImg = async (imgUrl, details, retryNum = 0) => {
+const downloadImg$1 = async (imgUrl, details, retryNum = 0) => {
 	const url = store.imgMap[imgUrl]?.blobUrl ?? imgUrl;
 	if (url.startsWith("blob:")) return (await fetch(url)).blob();
 	const res = await request.downloadImg(url, details, retryNum);
@@ -4446,7 +4522,7 @@ var TranslationTask = class {
 	/** 下载图片 */
 	async download(url = this.url, details) {
 		try {
-			return await downloadImg(url, details);
+			return await downloadImg$1(url, details);
 		} catch (error) {
 			helper.log.error(error);
 			store.prop.onImgError?.(url);
@@ -4855,10 +4931,10 @@ const classes$2 = {
 };
 //#endregion
 //#region src/components/Manga/components/SettingsItem.tsx
-var _tmpl$$44 = /*#__PURE__*/ solid_js_web.template(\`<div><div> <!> \`);
+var _tmpl$$47 = /*#__PURE__*/ solid_js_web.template(\`<div><div> <!> \`);
 /** 设置菜单项 */
 const SettingsItem = (props) => (() => {
-	var _el$ = _tmpl$$44(), _el$2 = _el$.firstChild, _el$5 = _el$2.firstChild.nextSibling;
+	var _el$ = _tmpl$$47(), _el$2 = _el$.firstChild, _el$5 = _el$2.firstChild.nextSibling;
 	_el$5.nextSibling;
 	solid_js_web.insert(_el$2, () => props.name, _el$5);
 	solid_js_web.insert(_el$, () => props.children, null);
@@ -4884,8 +4960,8 @@ const SettingsItem = (props) => (() => {
 })();
 //#endregion
 //#region src/components/Manga/components/SettingsItemSelect.tsx
-var _tmpl$$43 = /*#__PURE__*/ solid_js_web.template(\`<select>\`);
-var _tmpl$2$9 = /*#__PURE__*/ solid_js_web.template(\`<option>\`);
+var _tmpl$$46 = /*#__PURE__*/ solid_js_web.template(\`<select>\`);
+var _tmpl$2$10 = /*#__PURE__*/ solid_js_web.template(\`<option>\`);
 /** 选择器式菜单项 */
 const SettingsItemSelect = (props) => {
 	let ref;
@@ -4903,7 +4979,7 @@ const SettingsItemSelect = (props) => {
 			return props.classList;
 		},
 		get children() {
-			var _el$ = _tmpl$$43();
+			var _el$ = _tmpl$$46();
 			solid_js_web.addEventListener(_el$, "click", () => props.onClick?.());
 			_el$.addEventListener("change", (e) => props.onChange(e.target.value));
 			var _ref$ = ref;
@@ -4913,7 +4989,7 @@ const SettingsItemSelect = (props) => {
 					return props.options;
 				},
 				children: ([val, label]) => (() => {
-					var _el$2 = _tmpl$2$9();
+					var _el$2 = _tmpl$2$10();
 					_el$2.value = val;
 					solid_js_web.insert(_el$2, label ?? val);
 					return _el$2;
@@ -4926,12 +5002,12 @@ const SettingsItemSelect = (props) => {
 };
 //#endregion
 //#region src/components/Manga/actions/translation/translator/Cotrans/settings.tsx
-var _tmpl$$42 = /*#__PURE__*/ solid_js_web.template(\`<blockquote>\`);
+var _tmpl$$45 = /*#__PURE__*/ solid_js_web.template(\`<blockquote>\`);
 const bindOption$3 = (...args) => bindOption("translation", "cotrans", ...args);
 /** Cotrans 设置组件 */
 const cotransSettings = () => [
 	(() => {
-		var _el$ = _tmpl$$42();
+		var _el$ = _tmpl$$45();
 		solid_js_web.effect(() => _el$.innerHTML = helper.t("setting.translation.cotrans_tip"));
 		return _el$;
 	})(),
@@ -4981,7 +5057,7 @@ const cotransSettings = () => [
 ];
 //#endregion
 //#region src/components/NumberInput.tsx
-var _tmpl$$41 = /*#__PURE__*/ solid_js_web.template(\`<span contenteditable data-only-number>\`);
+var _tmpl$$44 = /*#__PURE__*/ solid_js_web.template(\`<span contenteditable data-only-number>\`);
 /** 数值输入框 */
 const NumberInput = (props) => {
 	const handleInput = (e) => {
@@ -4998,7 +5074,7 @@ const NumberInput = (props) => {
 		}
 	};
 	return [(() => {
-		var _el$ = _tmpl$$41();
+		var _el$ = _tmpl$$44();
 		_el$.addEventListener("blur", (e) => {
 			try {
 				props.onChange(Number(e.currentTarget.textContent) || 0);
@@ -5021,7 +5097,7 @@ const NumberInput = (props) => {
 };
 //#endregion
 //#region src/components/Manga/components/SettingsItemNumber.tsx
-var _tmpl$$40 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
+var _tmpl$$43 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
 /** 数值输入框菜单项 */
 const SettingsItemNumber = (props) => solid_js_web.createComponent(SettingsItem, {
 	get name() {
@@ -5034,7 +5110,7 @@ const SettingsItemNumber = (props) => solid_js_web.createComponent(SettingsItem,
 		return props.classList;
 	},
 	get children() {
-		var _el$ = _tmpl$$40();
+		var _el$ = _tmpl$$43();
 		solid_js_web.insert(_el$, solid_js_web.createComponent(NumberInput, props));
 		solid_js_web.effect((_$p) => solid_js_web.setStyleProperty(_el$, "margin-right", props.suffix ? ".3em" : ".6em"));
 		return _el$;
@@ -5042,7 +5118,7 @@ const SettingsItemNumber = (props) => solid_js_web.createComponent(SettingsItem,
 });
 //#endregion
 //#region src/components/Manga/components/SettingsItemSwitch.tsx
-var _tmpl$$39 = /*#__PURE__*/ solid_js_web.template(\`<button type=button><div>\`);
+var _tmpl$$42 = /*#__PURE__*/ solid_js_web.template(\`<button type=button><div>\`);
 /** 开关式菜单项 */
 const SettingsItemSwitch = (props) => {
 	const handleClick = () => props.onChange(!props.value);
@@ -5060,7 +5136,7 @@ const SettingsItemSwitch = (props) => {
 			return props.disabled;
 		},
 		get children() {
-			var _el$ = _tmpl$$39(), _el$2 = _el$.firstChild;
+			var _el$ = _tmpl$$42(), _el$2 = _el$.firstChild;
 			solid_js_web.addEventListener(_el$, "click", handleClick);
 			solid_js_web.effect((_p$) => {
 				var _v$ = classes$2.SettingsItemSwitch, _v$2 = props.value, _v$3 = classes$2.SettingsItemSwitchRound;
@@ -5082,7 +5158,7 @@ const SettingsItemSwitch = (props) => {
 /**
 * MangaImageTranslator 翻译服务设置界面
 */
-var _tmpl$$38 = /*#__PURE__*/ solid_js_web.template(\`<input type=url>\`);
+var _tmpl$$41 = /*#__PURE__*/ solid_js_web.template(\`<input type=url>\`);
 const bindOption$2 = (...args) => bindOption("translation", "mit", ...args);
 /** MangaImageTranslator 设置组件 */
 const mitSettings = () => [
@@ -5185,7 +5261,7 @@ const mitSettings = () => [
 			return store.option.translation.mit.localUrl !== void 0;
 		},
 		get children() {
-			var _el$ = _tmpl$$38();
+			var _el$ = _tmpl$$41();
 			_el$.addEventListener("change", (e) => {
 				const url = e.target.value.replace(/\\/$/u, "");
 				setOption("translation", "mit", "localUrl", url);
@@ -6268,6 +6344,378 @@ const initWorker = helper.once(() => {
 	worker_ImageUpscale.default.setMainFn(comlink.default.proxy(mainFn), Object.keys(mainFn));
 });
 //#endregion
+//#region src/components/Manga/actions/chainner/client.ts
+var BridgeHttpError = class extends Error {
+	status;
+	constructor(status, message) {
+		super(\`chaiNNer HTTP \${status}: \${message}\`);
+		this.name = "BridgeHttpError";
+		this.status = status;
+	}
+};
+const delay = (signal) => new Promise((resolve, reject) => {
+	const aborted = () => {
+		clearTimeout(timer);
+		reject(new DOMException("Aborted", "AbortError"));
+	};
+	const timer = setTimeout(() => {
+		signal.removeEventListener("abort", aborted);
+		resolve();
+	}, 300);
+	signal.addEventListener("abort", aborted, { once: true });
+	if (signal.aborted) aborted();
+});
+var BridgeClient = class {
+	baseUrl;
+	config;
+	constructor(config) {
+		this.config = { ...config };
+		const url = new URL(config.serverUrl);
+		if (url.protocol !== "http:" || !["127.0.0.1", "localhost"].includes(url.hostname) || url.username || url.password || config.token.length < 16) throw new Error("Use a local HTTP address and a token of at least 16 characters.");
+		this.baseUrl = url.origin;
+	}
+	async api(path, details = {}) {
+		const res = await request.request(\`\${this.baseUrl}/v1\${path}\`, {
+			responseType: "json",
+			timeout: 15e3,
+			noTip: true,
+			noCheckCode: true,
+			fetch: false,
+			...details,
+			headers: { Authorization: \`Bearer \${this.config.token}\` }
+		});
+		if (res.status !== 200) {
+			const data = res.response;
+			const message = data instanceof Blob ? await data.text() : JSON.stringify(data || res.responseText);
+			throw new BridgeHttpError(res.status, message);
+		}
+		return res.response;
+	}
+	async status(signal) {
+		const status = await this.api("/status", { signal });
+		if (status.protocol !== 1 || !status.fingerprint) throw new Error("Unsupported chaiNNer image service.");
+		return status;
+	}
+	async process({ source, id, priority, signal, onState }) {
+		const blob = await request.downloadImg(source, {
+			signal,
+			noTip: true
+		});
+		signal.throwIfAborted();
+		const form = new FormData();
+		form.append("image", blob, "page");
+		form.append("request_id", id);
+		form.append("priority", String(priority));
+		const deadline = Date.now() + 6e5;
+		let job;
+		while (true) {
+			signal.throwIfAborted();
+			try {
+				job = await this.api("/jobs", {
+					method: "POST",
+					data: form,
+					timeout: 6e4,
+					signal
+				});
+				break;
+			} catch (error) {
+				if (!(error instanceof BridgeHttpError) || ![429, 503].includes(error.status) || Date.now() >= deadline) throw error;
+				onState("queued");
+				await delay(signal);
+			}
+		}
+		while (job.state !== "ready") {
+			signal.throwIfAborted();
+			onState(job.state);
+			if (job.state === "failed" || job.state === "cancelled") throw new Error(job.error || job.state);
+			if (Date.now() > deadline) throw new Error("chaiNNer job timed out.");
+			await delay(signal);
+			job = await this.api(\`/jobs/\${id}\`, { signal });
+		}
+		return await this.api(\`/jobs/\${id}/result\`, {
+			responseType: "blob",
+			timeout: 6e4,
+			signal
+		});
+	}
+	cancel(id) {
+		return this.api(\`/jobs/\${id}\`, { method: "DELETE" });
+	}
+	reprioritize(id, priority) {
+		return this.api(\`/jobs/\${id}/priority\`, {
+			method: "POST",
+			data: JSON.stringify({ priority })
+		});
+	}
+	clearCache() {
+		return this.api("/cache", { method: "DELETE" });
+	}
+};
+//#endregion
+//#region src/components/Manga/actions/chainner/queue.ts
+const readingWindow = (visible, count, ahead) => {
+	const current = visible.filter((i) => i >= 0 && i < count);
+	if (current.length === 0 && count > 0) current.push(0);
+	const last = Math.max(0, ...current);
+	return [...current, ...Array.from({ length: Number.isFinite(ahead) ? Math.max(0, Math.min(8, Math.floor(ahead))) : 2 }, (_, i) => last + i + 1).filter((i) => i < count)];
+};
+var ReadingQueue = class {
+	desired = /* @__PURE__ */ new Map();
+	tasks = /* @__PURE__ */ new Map();
+	results = /* @__PURE__ */ new Map();
+	attempted = /* @__PURE__ */ new Set();
+	processor;
+	onResult;
+	onState;
+	onError;
+	objectUrls;
+	constructor(options) {
+		this.processor = options.processor;
+		this.onResult = options.onResult;
+		this.onState = options.onState;
+		this.onError = options.onError;
+		this.objectUrls = options.objectUrls ?? {
+			create: (blob) => URL.createObjectURL(blob),
+			revoke: (url) => URL.revokeObjectURL(url)
+		};
+	}
+	reconcile(targets, retainUrls) {
+		this.desired = new Map(targets.map((target) => [target.key, target]));
+		for (const [key, task] of this.tasks) {
+			const target = this.desired.get(key);
+			if (!target) {
+				task.controller.abort();
+				this.processor.cancel(task.id).catch(() => {});
+				this.tasks.delete(key);
+				this.attempted.delete(key);
+			} else if (task.priority !== target.priority) {
+				task.priority = target.priority;
+				this.processor.reprioritize(task.id, target.priority).catch(() => {});
+			}
+		}
+		for (const [key, result] of this.results) if (!retainUrls.has(result.target.url) || !key.endsWith("\\0original") && !this.desired.has(key)) {
+			this.onResult(result.target, void 0);
+			this.objectUrls.revoke(result.url);
+			this.results.delete(key);
+			this.attempted.delete(key);
+		}
+		for (const key of this.attempted) if (!this.desired.has(key) && !this.results.has(key)) this.attempted.delete(key);
+		for (const target of targets) {
+			const result = this.results.get(target.key);
+			if (result) {
+				this.onResult(target, result.url);
+				continue;
+			}
+			if (this.attempted.has(target.key)) continue;
+			this.attempted.add(target.key);
+			const id = crypto.randomUUID();
+			const controller = new AbortController();
+			const task = {
+				id,
+				controller,
+				priority: target.priority
+			};
+			this.tasks.set(target.key, task);
+			this.onState(target, "queued");
+			this.processor.process({
+				source: target.source,
+				id,
+				priority: target.priority,
+				signal: controller.signal,
+				onState: (state) => {
+					if (this.tasks.get(target.key) === task) this.onState(target, state);
+				}
+			}).then((blob) => {
+				if (controller.signal.aborted || this.tasks.get(target.key) !== task || !this.desired.has(target.key)) return;
+				const url = this.objectUrls.create(blob);
+				this.results.set(target.key, {
+					url,
+					target
+				});
+				this.onResult(target, url);
+				return this.onState(target, "ready");
+			}).catch((error) => {
+				if (!controller.signal.aborted && this.tasks.get(target.key) === task) this.onError(target, error);
+			}).finally(() => {
+				if (this.tasks.get(target.key) === task) this.tasks.delete(target.key);
+				this.processor.cancel(id).catch(() => {});
+			});
+		}
+	}
+	dispose() {
+		this.reconcile([], /* @__PURE__ */ new Set());
+		this.attempted.clear();
+	}
+};
+//#endregion
+//#region src/components/Manga/actions/chainner/index.ts
+const [chainnerReaderVisible, setChainnerReaderVisible] = solid_js.createSignal(false);
+const isChainnerUpscale = () => chainnerReaderVisible() && !store.isMobile && store.option.imgRecognition.upscale && store.option.upscaleProvider === "chainner";
+const variant = (img) => img.translationType === "show" && img.translationUrl ? img.translationUrl : "original";
+const chainnerImageUrl = (img) => {
+	if (!isChainnerUpscale()) return;
+	const version = variant(img);
+	if (version === "original") return img.chainnerOriginalUrl;
+	return img.chainnerTranslatedSource === version ? img.chainnerTranslatedUrl : void 0;
+};
+let client;
+let queue;
+let fingerprint = "";
+let configuration = "";
+let generation = 0;
+let heartbeat;
+let targets = [];
+let retainUrls = /* @__PURE__ */ new Set();
+const [retryVersion, setRetryVersion] = solid_js.createSignal(0);
+const [chainnerConnection, setChainnerConnection] = solid_js.createSignal("");
+const updateImage = (target, url) => {
+	if (!store.imgMap[target.url]) return;
+	if (target.key.endsWith("\\0original")) setState("imgMap", target.url, {
+		chainnerOriginalUrl: url,
+		...url ? {} : { chainnerMessage: void 0 }
+	});
+	else if (url || store.imgMap[target.url].chainnerTranslatedSource === target.source) setState("imgMap", target.url, {
+		chainnerTranslatedUrl: url,
+		chainnerTranslatedSource: url ? target.source : void 0,
+		...url ? {} : { chainnerMessage: void 0 }
+	});
+};
+const makeQueue = (processor) => new ReadingQueue({
+	processor,
+	onResult: updateImage,
+	onState: (target, state) => {
+		if (store.imgMap[target.url]) setState("imgMap", target.url, "chainnerMessage", helper.t(\`chainner.\${state}\`));
+	},
+	onError: (target, error) => {
+		helper.log.error("chaiNNer image request failed", error);
+		if (store.imgMap[target.url]) setState("imgMap", target.url, "chainnerMessage", \`\${helper.t("chainner.failed")}: \${error.message}\`);
+	}
+});
+const stop = () => {
+	generation += 1;
+	if (heartbeat) clearInterval(heartbeat);
+	heartbeat = void 0;
+	queue?.dispose();
+	setState((state) => {
+		for (const url of retainUrls) if (state.imgMap[url]) state.imgMap[url].chainnerMessage = void 0;
+	});
+	queue = void 0;
+	client = void 0;
+	fingerprint = "";
+};
+window.addEventListener("pagehide", () => {
+	configuration = "";
+	stop();
+});
+window.addEventListener("pageshow", (event) => {
+	if (event.persisted) retryChainner();
+});
+const start = async (key) => {
+	stop();
+	const current = generation;
+	setChainnerConnection(helper.t("chainner.connecting"));
+	try {
+		const processor = new BridgeClient(store.option.chainner);
+		const status = await processor.status();
+		if (current !== generation || configuration !== key) return;
+		client = processor;
+		({fingerprint} = status);
+		queue = makeQueue(processor);
+		queue.reconcile(targets, retainUrls);
+		setChainnerConnection(helper.t("chainner.connected"));
+		let checking = false;
+		heartbeat = setInterval(() => {
+			if (checking) return;
+			checking = true;
+			processor.status().then((next) => {
+				if (current !== generation) return;
+				if (next.fingerprint !== fingerprint) {
+					({fingerprint} = next);
+					queue?.dispose();
+					queue = makeQueue(processor);
+					queue.reconcile(targets, retainUrls);
+				}
+				return setChainnerConnection(helper.t(next.paused ? "chainner.paused" : "chainner.connected"));
+			}).catch((error) => {
+				if (current !== generation) return;
+				stop();
+				setChainnerConnection(\`\${helper.t("chainner.failed")}: \${error.message}\`);
+			}).finally(() => {
+				checking = false;
+			});
+		}, 5e3);
+	} catch (error) {
+		if (current === generation) setChainnerConnection(\`\${helper.t("chainner.failed")}: \${error.message}\`);
+	}
+};
+const retryChainner = () => setRetryVersion((value) => value + 1);
+const testChainner = async () => {
+	try {
+		await new BridgeClient(store.option.chainner).status();
+		components_Toast.toast.success(helper.t("chainner.connected"));
+		retryChainner();
+	} catch (error) {
+		components_Toast.toast.error(\`\${helper.t("chainner.failed")}: \${error.message}\`);
+	}
+};
+const clearChainnerCache = async () => {
+	try {
+		const processor = client ?? new BridgeClient(store.option.chainner);
+		stop();
+		await processor.clearCache();
+		components_Toast.toast.success(helper.t("chainner.cache_cleared"));
+	} catch (error) {
+		components_Toast.toast.error(\`\${helper.t("chainner.failed")}: \${error.message}\`);
+	} finally {
+		retryChainner();
+	}
+};
+helper.createEffectOn(() => {
+	const enabled = isChainnerUpscale();
+	const config = store.option.chainner;
+	const key = JSON.stringify([
+		enabled,
+		config.serverUrl,
+		config.token,
+		retryVersion()
+	]);
+	const visible = store.option.scrollMode.enabled ? [...new Set(store.pageList.slice(store.showRange[0], store.showRange[1] + 1).flat())].filter((index) => index >= 0) : activePage();
+	const indexes = readingWindow(visible, store.imgList.length, config.preload);
+	const current = new Set(visible);
+	return {
+		enabled,
+		key,
+		images: indexes.map((index) => {
+			const url = store.imgList[index];
+			const img = store.imgMap[url];
+			return {
+				url,
+				source: variant(img),
+				loaded: img.loadType === "loaded",
+				waitingTranslation: img.translationType === "wait",
+				priority: current.has(index) ? 0 : index + 1
+			};
+		})
+	};
+}, ({ enabled, key, images }) => {
+	retainUrls = new Set(images.map((img) => img.url));
+	targets = enabled ? images.filter((img) => img.loaded && !img.waitingTranslation).map((img) => ({
+		key: \`\${img.url}\\0\${img.source}\`,
+		url: img.url,
+		source: img.source === "original" ? img.url : img.source,
+		priority: img.priority
+	})) : [];
+	if (!enabled || images.length === 0) {
+		configuration = "";
+		stop();
+		setChainnerConnection("");
+	} else if (configuration === key) queue?.reconcile(targets, retainUrls);
+	else {
+		configuration = key;
+		start(key);
+	}
+});
+//#endregion
 //#region src/components/Manga/actions/operate.ts
 const handleMouseDown = (e) => {
 	if (e.button !== 1 || store.option.scrollMode.enabled) return;
@@ -6622,6 +7070,7 @@ const getImgTip = (i) => {
 	if (i === -1) return helper.t("other.fill_page");
 	const img = getImg(i);
 	if (img.loadType !== "loaded") return \`\${i + 1} (\${helper.t(\`img_status.\${img.loadType}\`)})\`;
+	if (isChainnerUpscale() && img.chainnerMessage) return \`\${i + 1}：\${img.chainnerMessage}\`;
 	if (img.translationType && img.translationType !== "hide" && img.translationMessage) return \`\${i + 1}：\${img.translationMessage}\`;
 	if (isUpscale() && img.upscaleUrl !== void 0) return \`\${i + 1} (\${img.upscaleUrl ? helper.t("upscale.upscaled") : helper.t("upscale.upscaling")})\`;
 	return \`\${i + 1}\`;
@@ -6841,16 +7290,18 @@ function css$1(arg1, arg2, ...rest) {
 }
 //#endregion
 //#region src/components/Manga/components/ComicImg.tsx
-var _tmpl$$37 = /*#__PURE__*/ solid_js_web.template(\`<img draggable=false decoding=async>\`);
-var _tmpl$2$8 = /*#__PURE__*/ solid_js_web.template(\`<div><picture><div>\`);
+var _tmpl$$40 = /*#__PURE__*/ solid_js_web.template(\`<img draggable=false decoding=async>\`);
+var _tmpl$2$9 = /*#__PURE__*/ solid_js_web.template(\`<div><picture><div>\`);
 const ComicImg = (img) => {
 	const showState = () => store.imgShowState[img.index];
 	solid_js.createEffect(() => src() && getImgEle(img.src)?.decode());
 	const src = () => {
 		if (img.loadType === "wait") return "";
+		const processed = chainnerImageUrl(img);
+		if (processed) return processed;
 		if (img.translationType === "show") return img.translationUrl;
 		if (store.option.imgRecognition.enabled) {
-			if (store.option.imgRecognition.upscale && img.upscaleUrl) return img.upscaleUrl;
+			if (store.option.upscaleProvider !== "chainner" && store.option.imgRecognition.upscale && img.upscaleUrl) return img.upscaleUrl;
 			return img.blobUrl;
 		}
 		if (img.src.startsWith("blob:")) return img.src.replace(/#\\..+/u, "");
@@ -6924,15 +7375,20 @@ const ComicImg = (img) => {
 			};
 		});
 		return (() => {
-			var _el$ = _tmpl$2$8(), _el$2 = _el$.firstChild, _el$4 = _el$2.firstChild;
+			var _el$ = _tmpl$2$9(), _el$2 = _el$.firstChild, _el$4 = _el$2.firstChild;
 			solid_js_web.insert(_el$2, solid_js_web.createComponent(solid_js.Show, {
 				get when() {
 					return src();
 				},
 				get children() {
-					var _el$3 = _tmpl$$37();
-					_el$3.addEventListener("error", (e) => handleImgError(img.src, e.currentTarget));
-					_el$3.addEventListener("load", (e) => handleImgLoaded(img.src, e.currentTarget));
+					var _el$3 = _tmpl$$40();
+					_el$3.addEventListener("error", (e) => {
+						if (e.currentTarget.src === chainnerImageUrl(img)) setState("imgMap", img.src, img.translationType === "show" ? "chainnerTranslatedUrl" : "chainnerOriginalUrl", void 0);
+						else handleImgError(img.src, e.currentTarget);
+					});
+					_el$3.addEventListener("load", (e) => {
+						if (e.currentTarget.src !== chainnerImageUrl(img)) handleImgLoaded(img.src, e.currentTarget);
+					});
 					solid_js_web.use((el) => {
 						refs.imgEleMap[img.src] ??= /* @__PURE__ */ new Set();
 						const set = refs.imgEleMap[img.src];
@@ -7001,7 +7457,7 @@ const ComicImg = (img) => {
 };
 //#endregion
 //#region src/components/Manga/components/ComicImgFlow.tsx
-var _tmpl$$36 = /*#__PURE__*/ solid_js_web.template(\`<div tabindex=-1><div tabindex=-1>\`);
+var _tmpl$$39 = /*#__PURE__*/ solid_js_web.template(\`<div tabindex=-1><div tabindex=-1>\`);
 const ComicImgFlow = () => {
 	const hiddenMouse = useHiddenMouse(() => refs.mangaFlow);
 	const handleDrag = (state, e) => {
@@ -7099,7 +7555,7 @@ const ComicImgFlow = () => {
 		return [...list].toSorted((a, b) => a - b);
 	});
 	return (() => {
-		var _el$ = _tmpl$$36(), _el$2 = _el$.firstChild;
+		var _el$ = _tmpl$$39(), _el$2 = _el$.firstChild;
 		solid_js_web.addEventListener(_el$, "scrollend", focus);
 		_el$.addEventListener("transitionend", handleTransitionEnd);
 		var _ref$ = bindRef("mangaBox");
@@ -7143,8 +7599,8 @@ const ComicImgFlow = () => {
 };
 //#endregion
 //#region src/components/Manga/components/TouchArea.tsx
-var _tmpl$$35 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
-var _tmpl$2$7 = /*#__PURE__*/ solid_js_web.template(\`<div role=button tabindex=-1>\`);
+var _tmpl$$38 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
+var _tmpl$2$8 = /*#__PURE__*/ solid_js_web.template(\`<div role=button tabindex=-1>\`);
 const areaArrayMap = {
 	left_right: [
 		[
@@ -7221,7 +7677,7 @@ const dir = helper.createRootMemo(() => {
 	return store.option.dir === "rtl" ? "ltr" : "rtl";
 });
 const TouchArea = () => (() => {
-	var _el$ = _tmpl$$35();
+	var _el$ = _tmpl$$38();
 	var _ref$ = bindRef("touchArea");
 	typeof _ref$ === "function" && solid_js_web.use(_ref$, _el$);
 	solid_js_web.insert(_el$, solid_js_web.createComponent(solid_js.For, {
@@ -7231,7 +7687,7 @@ const TouchArea = () => (() => {
 		children: (rows) => solid_js_web.createComponent(solid_js.For, {
 			each: rows,
 			children: (area) => (() => {
-				var _el$2 = _tmpl$2$7();
+				var _el$2 = _tmpl$2$8();
 				solid_js_web.setAttribute(_el$2, "data-area", area);
 				solid_js_web.effect(() => solid_js_web.className(_el$2, classes$2.touchArea));
 				return _el$2;
@@ -7259,8 +7715,8 @@ const TouchArea = () => (() => {
 })();
 //#endregion
 //#region src/components/Manga/components/EndPage.tsx
-var _tmpl$$34 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
-var _tmpl$2$6 = /*#__PURE__*/ solid_js_web.template(\`<div role=button tabindex=-1><div><p></p><button type=button></button><button type=button data-is-end></button><button type=button>\`);
+var _tmpl$$37 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
+var _tmpl$2$7 = /*#__PURE__*/ solid_js_web.template(\`<div role=button tabindex=-1><div><p></p><button type=button></button><button type=button data-is-end></button><button type=button>\`);
 var _tmpl$3$2 = /*#__PURE__*/ solid_js_web.template(\`<p>\`);
 let delayTypeTimer = 0;
 const EndPage = () => {
@@ -7309,7 +7765,7 @@ const EndPage = () => {
 		return "";
 	});
 	return (() => {
-		var _el$ = _tmpl$2$6(), _el$2 = _el$.firstChild, _el$3 = _el$2.firstChild, _el$4 = _el$3.nextSibling, _el$5 = _el$4.nextSibling, _el$6 = _el$5.nextSibling;
+		var _el$ = _tmpl$2$7(), _el$2 = _el$.firstChild, _el$3 = _el$2.firstChild, _el$4 = _el$3.nextSibling, _el$5 = _el$4.nextSibling, _el$6 = _el$5.nextSibling;
 		solid_js_web.addEventListener(_el$, "click", handleClick);
 		var _ref$ = ref;
 		typeof _ref$ === "function" ? solid_js_web.use(_ref$, _el$) : ref = _el$;
@@ -7331,7 +7787,7 @@ const EndPage = () => {
 				return solid_js_web.memo(() => !!(store.option.showComment && delayType() === "end"))() && store.commentList?.length;
 			},
 			get children() {
-				var _el$7 = _tmpl$$34();
+				var _el$7 = _tmpl$$37();
 				solid_js_web.addEventListener(_el$7, "wheel", stopPropagation);
 				solid_js_web.insert(_el$7, solid_js_web.createComponent(solid_js.For, {
 					get each() {
@@ -7383,10 +7839,10 @@ const EndPage = () => {
 };
 //#endregion
 //#region src/components/Manga/components/LoadingMask.tsx
-var _tmpl$$33 = /*#__PURE__*/ solid_js_web.template(\`<div><p>\`);
+var _tmpl$$36 = /*#__PURE__*/ solid_js_web.template(\`<div><p>\`);
 /** imgList 为空时显示的加载提示 */
 const LoadingMask = () => (() => {
-	var _el$ = _tmpl$$33(), _el$2 = _el$.firstChild;
+	var _el$ = _tmpl$$36(), _el$2 = _el$.firstChild;
 	solid_js_web.addEventListener(_el$, "wheel", stopPropagation);
 	solid_js_web.addEventListener(_el$, "mousedown", stopPropagation);
 	solid_js_web.addEventListener(_el$, "click", stopPropagation);
@@ -7410,7 +7866,7 @@ const useHover = (ref) => {
 };
 //#endregion
 //#region src/components/Manga/components/ScrollbarPageStatus.tsx
-var _tmpl$$32 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
+var _tmpl$$35 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
 const getScrollbarPage = (img, i, double = false) => {
 	let num;
 	if (store.option.scrollMode.enabled) num = getImg(i).size.height;
@@ -7425,7 +7881,7 @@ const getScrollbarPage = (img, i, double = false) => {
 	};
 };
 const ScrollbarPage = (props) => (() => {
-	var _el$ = _tmpl$$32();
+	var _el$ = _tmpl$$35();
 	solid_js_web.effect((_p$) => {
 		var _v$ = classes$2.scrollbarPage, _v$2 = \`\${props.num / scrollLength() * 100}%\`, _v$3 = props.loadType, _v$4 = props.translationType, _v$5 = props.upscale;
 		_v$ !== _p$.e && solid_js_web.className(_el$, _p$.e = _v$);
@@ -7488,8 +7944,8 @@ const ScrollbarPageStatus = () => {
 };
 //#endregion
 //#region src/components/Manga/components/Scrollbar.tsx
-var _tmpl$$31 = /*#__PURE__*/ solid_js_web.template(\`<div role=scrollbar tabindex=-1>\`);
-var _tmpl$2$5 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
+var _tmpl$$34 = /*#__PURE__*/ solid_js_web.template(\`<div role=scrollbar tabindex=-1>\`);
+var _tmpl$2$6 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
 /** 滚动条 */
 const Scrollbar = () => {
 	solid_js.onMount(() => {
@@ -7549,7 +8005,7 @@ const Scrollbar = () => {
 		"--slider-top": sliderTop
 	});
 	const ScrollbarBase = (props) => (() => {
-		var _el$ = _tmpl$$31();
+		var _el$ = _tmpl$$34();
 		_el$.addEventListener("wheel", handleWheel);
 		var _ref$ = props.ref;
 		typeof _ref$ === "function" ? solid_js_web.use(_ref$, _el$) : props.ref = _el$;
@@ -7588,7 +8044,7 @@ const Scrollbar = () => {
 		},
 		get children() {
 			return [(() => {
-				var _el$2 = _tmpl$2$5();
+				var _el$2 = _tmpl$2$6();
 				solid_js_web.insert(_el$2, tipText);
 				solid_js_web.effect(() => solid_js_web.className(_el$2, classes$2.scrollbarPoper));
 				return _el$2;
@@ -7607,105 +8063,105 @@ const Scrollbar = () => {
 			"pointer-events": "none"
 		},
 		get children() {
-			var _el$3 = _tmpl$2$5();
+			var _el$3 = _tmpl$2$6();
 			solid_js_web.effect(() => solid_js_web.className(_el$3, classes$2.scrollbarSlider));
 			return _el$3;
 		}
 	})];
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/close.svg
-var _tmpl$$30 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4">\`);
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/close.svg
+var _tmpl$$33 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4">\`);
 var close_default = (props = {}) => (() => {
+	var _el$ = _tmpl$$33();
+	solid_js_web.spread(_el$, props, true, true);
+	return _el$;
+})();
+//#endregion
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/fullscreen.svg
+var _tmpl$$32 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M6 14c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h3c.55 0 1-.45 1-1s-.45-1-1-1H7v-2c0-.55-.45-1-1-1m0-4c.55 0 1-.45 1-1V7h2c.55 0 1-.45 1-1s-.45-1-1-1H6c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1m11 7h-2c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1s-1 .45-1 1zM14 6c0 .55.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1V6c0-.55-.45-1-1-1h-3c-.55 0-1 .45-1 1">\`);
+var fullscreen_default = (props = {}) => (() => {
+	var _el$ = _tmpl$$32();
+	solid_js_web.spread(_el$, props, true, true);
+	return _el$;
+})();
+//#endregion
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/fullscreen_exit.svg
+var _tmpl$$31 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M6 16h2v2c0 .55.45 1 1 1s1-.45 1-1v-3c0-.55-.45-1-1-1H6c-.55 0-1 .45-1 1s.45 1 1 1m2-8H6c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1V6c0-.55-.45-1-1-1s-1 .45-1 1zm7 11c.55 0 1-.45 1-1v-2h2c.55 0 1-.45 1-1s-.45-1-1-1h-3c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1m1-11V6c0-.55-.45-1-1-1s-1 .45-1 1v3c0 .55.45 1 1 1h3c.55 0 1-.45 1-1s-.45-1-1-1z">\`);
+var fullscreen_exit_default = (props = {}) => (() => {
+	var _el$ = _tmpl$$31();
+	solid_js_web.spread(_el$, props, true, true);
+	return _el$;
+})();
+//#endregion
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/looks_one.svg
+var _tmpl$$30 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-6 14c-.55 0-1-.45-1-1V9h-1c-.55 0-1-.45-1-1s.45-1 1-1h2c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1">\`);
+var looks_one_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$30();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/fullscreen.svg
-var _tmpl$$29 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M6 14c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h3c.55 0 1-.45 1-1s-.45-1-1-1H7v-2c0-.55-.45-1-1-1m0-4c.55 0 1-.45 1-1V7h2c.55 0 1-.45 1-1s-.45-1-1-1H6c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1m11 7h-2c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1s-1 .45-1 1zM14 6c0 .55.45 1 1 1h2v2c0 .55.45 1 1 1s1-.45 1-1V6c0-.55-.45-1-1-1h-3c-.55 0-1 .45-1 1">\`);
-var fullscreen_default = (props = {}) => (() => {
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/looks_two.svg
+var _tmpl$$29 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-4 8c0 1.1-.9 2-2 2h-2v2h3c.55 0 1 .45 1 1s-.45 1-1 1h-4c-.55 0-1-.45-1-1v-3c0-1.1.9-2 2-2h2V9h-3c-.55 0-1-.45-1-1s.45-1 1-1h3c1.1 0 2 .9 2 2z">\`);
+var looks_two_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$29();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/fullscreen_exit.svg
-var _tmpl$$28 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M6 16h2v2c0 .55.45 1 1 1s1-.45 1-1v-3c0-.55-.45-1-1-1H6c-.55 0-1 .45-1 1s.45 1 1 1m2-8H6c-.55 0-1 .45-1 1s.45 1 1 1h3c.55 0 1-.45 1-1V6c0-.55-.45-1-1-1s-1 .45-1 1zm7 11c.55 0 1-.45 1-1v-2h2c.55 0 1-.45 1-1s-.45-1-1-1h-3c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1m1-11V6c0-.55-.45-1-1-1s-1 .45-1 1v3c0 .55.45 1 1 1h3c.55 0 1-.45 1-1s-.45-1-1-1z">\`);
-var fullscreen_exit_default = (props = {}) => (() => {
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/low_priority.svg
+var _tmpl$$28 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M15 5h6c.55 0 1 .45 1 1s-.45 1-1 1h-6c-.55 0-1-.45-1-1s.45-1 1-1m0 5.5h6c.55 0 1 .45 1 1s-.45 1-1 1h-6c-.55 0-1-.45-1-1s.45-1 1-1m0 5.5h6c.55 0 1 .45 1 1s-.45 1-1 1h-6c-.55 0-1-.45-1-1s.45-1 1-1m-5.15 3.15 1.79-1.79c.2-.2.2-.51 0-.71l-1.79-1.79a.495.495 0 0 0-.85.35v3.59c0 .44.54.66.85.35M9 16h-.3c-2.35 0-4.45-1.71-4.68-4.05A4.51 4.51 0 0 1 8.5 7H11c.55 0 1-.45 1-1s-.45-1-1-1H8.5c-3.86 0-6.96 3.4-6.44 7.36C2.48 15.64 5.43 18 8.73 18H9">\`);
+var low_priority_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$28();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/looks_one.svg
-var _tmpl$$27 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-6 14c-.55 0-1-.45-1-1V9h-1c-.55 0-1-.45-1-1s.45-1 1-1h2c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1">\`);
-var looks_one_default = (props = {}) => (() => {
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/queue.svg
+var _tmpl$$27 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M3 6c-.55 0-1 .45-1 1v13c0 1.1.9 2 2 2h13c.55 0 1-.45 1-1s-.45-1-1-1H5c-.55 0-1-.45-1-1V7c0-.55-.45-1-1-1m17-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m-2 9h-3v3c0 .55-.45 1-1 1s-1-.45-1-1v-3h-3c-.55 0-1-.45-1-1s.45-1 1-1h3V6c0-.55.45-1 1-1s1 .45 1 1v3h3c.55 0 1 .45 1 1s-.45 1-1 1">\`);
+var queue_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$27();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/looks_two.svg
-var _tmpl$$26 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-4 8c0 1.1-.9 2-2 2h-2v2h3c.55 0 1 .45 1 1s-.45 1-1 1h-4c-.55 0-1-.45-1-1v-3c0-1.1.9-2 2-2h2V9h-3c-.55 0-1-.45-1-1s.45-1 1-1h3c1.1 0 2 .9 2 2z">\`);
-var looks_two_default = (props = {}) => (() => {
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/settings.svg
+var _tmpl$$26 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M19.5 12c0-.23-.01-.45-.03-.68l1.86-1.41c.4-.3.51-.86.26-1.3l-1.87-3.23a.987.987 0 0 0-1.25-.42l-2.15.91c-.37-.26-.76-.49-1.17-.68l-.29-2.31c-.06-.5-.49-.88-.99-.88h-3.73c-.51 0-.94.38-1 .88l-.29 2.31c-.41.19-.8.42-1.17.68l-2.15-.91c-.46-.2-1-.02-1.25.42L2.41 8.62c-.25.44-.14.99.26 1.3l1.86 1.41a7.3 7.3 0 0 0 0 1.35l-1.86 1.41c-.4.3-.51.86-.26 1.3l1.87 3.23c.25.44.79.62 1.25.42l2.15-.91c.37.26.76.49 1.17.68l.29 2.31c.06.5.49.88.99.88h3.73c.5 0 .93-.38.99-.88l.29-2.31c.41-.19.8-.42 1.17-.68l2.15.91c.46.2 1 .02 1.25-.42l1.87-3.23c.25-.44.14-.99-.26-1.3l-1.86-1.41c.03-.23.04-.45.04-.68m-7.46 3.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5">\`);
+var settings_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$26();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/low_priority.svg
-var _tmpl$$25 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M15 5h6c.55 0 1 .45 1 1s-.45 1-1 1h-6c-.55 0-1-.45-1-1s.45-1 1-1m0 5.5h6c.55 0 1 .45 1 1s-.45 1-1 1h-6c-.55 0-1-.45-1-1s.45-1 1-1m0 5.5h6c.55 0 1 .45 1 1s-.45 1-1 1h-6c-.55 0-1-.45-1-1s.45-1 1-1m-5.15 3.15 1.79-1.79c.2-.2.2-.51 0-.71l-1.79-1.79a.495.495 0 0 0-.85.35v3.59c0 .44.54.66.85.35M9 16h-.3c-2.35 0-4.45-1.71-4.68-4.05A4.51 4.51 0 0 1 8.5 7H11c.55 0 1-.45 1-1s-.45-1-1-1H8.5c-3.86 0-6.96 3.4-6.44 7.36C2.48 15.64 5.43 18 8.73 18H9">\`);
-var low_priority_default = (props = {}) => (() => {
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/translate.svg
+var _tmpl$$25 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M12.65 15.67c.14-.36.05-.77-.23-1.05l-2.09-2.06.03-.03A17.5 17.5 0 0 0 14.07 6h1.94c.54 0 .99-.45.99-.99v-.02c0-.54-.45-.99-.99-.99H10V3c0-.55-.45-1-1-1s-1 .45-1 1v1H1.99c-.54 0-.99.45-.99.99 0 .55.45.99.99.99h10.18A15.7 15.7 0 0 1 9 11.35c-.81-.89-1.49-1.86-2.06-2.88A.89.89 0 0 0 6.16 8c-.69 0-1.13.75-.79 1.35.63 1.13 1.4 2.21 2.3 3.21L3.3 16.87a.99.99 0 0 0 0 1.42c.39.39 1.02.39 1.42 0L9 14l2.02 2.02c.51.51 1.38.32 1.63-.35M17.5 10c-.6 0-1.14.37-1.35.94l-3.67 9.8c-.24.61.22 1.26.87 1.26.39 0 .74-.24.88-.61l.89-2.39h4.75l.9 2.39c.14.36.49.61.88.61.65 0 1.11-.65.88-1.26l-3.67-9.8c-.22-.57-.76-.94-1.36-.94m-1.62 7 1.62-4.33L19.12 17z">\`);
+var translate_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$25();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/queue.svg
-var _tmpl$$24 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M3 6c-.55 0-1 .45-1 1v13c0 1.1.9 2 2 2h13c.55 0 1-.45 1-1s-.45-1-1-1H5c-.55 0-1-.45-1-1V7c0-.55-.45-1-1-1m17-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2m-2 9h-3v3c0 .55-.45 1-1 1s-1-.45-1-1v-3h-3c-.55 0-1-.45-1-1s.45-1 1-1h3V6c0-.55.45-1 1-1s1 .45 1 1v3h3c.55 0 1 .45 1 1s-.45 1-1 1">\`);
-var queue_default = (props = {}) => (() => {
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/view_day.svg
+var _tmpl$$24 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M3 21h17c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1M20 8H3c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h17c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1M2 4v1c0 .55.45 1 1 1h17c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1">\`);
+var view_day_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$24();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/settings.svg
-var _tmpl$$23 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M19.5 12c0-.23-.01-.45-.03-.68l1.86-1.41c.4-.3.51-.86.26-1.3l-1.87-3.23a.987.987 0 0 0-1.25-.42l-2.15.91c-.37-.26-.76-.49-1.17-.68l-.29-2.31c-.06-.5-.49-.88-.99-.88h-3.73c-.51 0-.94.38-1 .88l-.29 2.31c-.41.19-.8.42-1.17.68l-2.15-.91c-.46-.2-1-.02-1.25.42L2.41 8.62c-.25.44-.14.99.26 1.3l1.86 1.41a7.3 7.3 0 0 0 0 1.35l-1.86 1.41c-.4.3-.51.86-.26 1.3l1.87 3.23c.25.44.79.62 1.25.42l2.15-.91c.37.26.76.49 1.17.68l.29 2.31c.06.5.49.88.99.88h3.73c.5 0 .93-.38.99-.88l.29-2.31c.41-.19.8-.42 1.17-.68l2.15.91c.46.2 1 .02 1.25-.42l1.87-3.23c.25-.44.14-.99-.26-1.3l-1.86-1.41c.03-.23.04-.45.04-.68m-7.46 3.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5">\`);
-var settings_default = (props = {}) => (() => {
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/zoom_in.svg
+var _tmpl$$23 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.78 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.26 4.25c.41.41 1.07.41 1.48 0l.01-.01c.41-.41.41-1.07 0-1.48zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14m0-7c-.28 0-.5.22-.5.5V9H7.5c-.28 0-.5.22-.5.5s.22.5.5.5H9v1.5c0 .28.22.5.5.5s.5-.22.5-.5V10h1.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5H10V7.5c0-.28-.22-.5-.5-.5">\`);
+var zoom_in_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$23();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/translate.svg
-var _tmpl$$22 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M12.65 15.67c.14-.36.05-.77-.23-1.05l-2.09-2.06.03-.03A17.5 17.5 0 0 0 14.07 6h1.94c.54 0 .99-.45.99-.99v-.02c0-.54-.45-.99-.99-.99H10V3c0-.55-.45-1-1-1s-1 .45-1 1v1H1.99c-.54 0-.99.45-.99.99 0 .55.45.99.99.99h10.18A15.7 15.7 0 0 1 9 11.35c-.81-.89-1.49-1.86-2.06-2.88A.89.89 0 0 0 6.16 8c-.69 0-1.13.75-.79 1.35.63 1.13 1.4 2.21 2.3 3.21L3.3 16.87a.99.99 0 0 0 0 1.42c.39.39 1.02.39 1.42 0L9 14l2.02 2.02c.51.51 1.38.32 1.63-.35M17.5 10c-.6 0-1.14.37-1.35.94l-3.67 9.8c-.24.61.22 1.26.87 1.26.39 0 .74-.24.88-.61l.89-2.39h4.75l.9 2.39c.14.36.49.61.88.61.65 0 1.11-.65.88-1.26l-3.67-9.8c-.22-.57-.76-.94-1.36-.94m-1.62 7 1.62-4.33L19.12 17z">\`);
-var translate_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$22();
-	solid_js_web.spread(_el$, props, true, true);
-	return _el$;
-})();
-//#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/view_day.svg
-var _tmpl$$21 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M3 21h17c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1M20 8H3c-.55 0-1 .45-1 1v6c0 .55.45 1 1 1h17c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1M2 4v1c0 .55.45 1 1 1h17c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1">\`);
-var view_day_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$21();
-	solid_js_web.spread(_el$, props, true, true);
-	return _el$;
-})();
-//#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/zoom_in.svg
-var _tmpl$$20 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34-4.23-.52-7.78 3.04-7.27 7.27.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.26 4.25c.41.41 1.07.41 1.48 0l.01-.01c.41-.41.41-1.07 0-1.48zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14m0-7c-.28 0-.5.22-.5.5V9H7.5c-.28 0-.5.22-.5.5s.22.5.5.5H9v1.5c0 .28.22.5.5.5s.5-.22.5-.5V10h1.5c.28 0 .5-.22.5-.5s-.22-.5-.5-.5H10V7.5c0-.28-.22-.5-.5-.5">\`);
-var zoom_in_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$20();
-	solid_js_web.spread(_el$, props, true, true);
-	return _el$;
-})();
-//#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/zoom_out.svg
-var _tmpl$$19 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.26 4.25c.41.41 1.07.41 1.48 0l.01-.01c.41-.41.41-1.07 0-1.48zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14m-2-5h4c.28 0 .5.22.5.5s-.22.5-.5.5h-4c-.28 0-.5-.22-.5-.5s.22-.5.5-.5">\`);
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/zoom_out.svg
+var _tmpl$$22 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.26 4.25c.41.41 1.07.41 1.48 0l.01-.01c.41-.41.41-1.07 0-1.48zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14m-2-5h4c.28 0 .5.22.5.5s-.22.5-.5.5h-4c-.28 0-.5-.22-.5-.5s.22-.5.5-.5">\`);
 var zoom_out_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$19();
+	var _el$ = _tmpl$$22();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
@@ -7724,8 +8180,8 @@ const classes$1 = {
 var index_module_default$1 = ".iconButtonItem___vTPHz {\\n  position: relative;\\n  display: flex;\\n  align-items: center;\\n}\\n\\n.iconButton___dhWw3 {\\n  cursor: pointer;\\n\\n  display: flex;\\n  align-items: center;\\n  justify-content: center;\\n\\n  width: 1.5em;\\n  height: 1.5em;\\n  margin: 0.1em;\\n  padding: 0;\\n  border-style: none;\\n  border-radius: 9999px;\\n\\n  font-size: 1.5em;\\n  color: var(--text, white);\\n\\n  background-color: transparent;\\n  outline: none;\\n}\\n\\n.iconButton___dhWw3:focus,.iconButton___dhWw3:hover {\\n    background-color: var(--hover-bg-color, #fff3);\\n  }\\n\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj) {\\n    color: var(--text-bg, #121212);\\n    background-color: var(--text, white);\\n  }\\n\\n.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):focus,.iconButton___dhWw3.enabled___eXH34:not(.disable___7C-Rj):hover {\\n      background-color: var(--hover-bg-color-enable, #fffa);\\n    }\\n\\n.iconButton___dhWw3.disable___7C-Rj {\\n    cursor: not-allowed;\\n    opacity: 0.5;\\n    background-color: unset;\\n  }\\n\\n.iconButton___dhWw3 > svg {\\n    width: 1em;\\n  }\\n\\n/* 默认悬浮框样式 */\\n.iconButtonPopper___dVIu- {\\n  pointer-events: none;\\n  -webkit-user-select: none;\\n          user-select: none;\\n\\n  position: absolute;\\n  top: 50%;\\n  transform: translateY(-50%);\\n\\n  display: flex;\\n  align-items: center;\\n\\n  padding: 0.4em 0.5em;\\n  border-radius: 0.3em;\\n\\n  font-size: 0.8em;\\n  color: white;\\n  white-space: nowrap;\\n\\n  opacity: 0;\\n  background-color: #303030;\\n}\\n.iconButtonPopper___dVIu-[data-placement='right'] {\\n    left: calc(100% + 1.5em);\\n  }\\n.iconButtonPopper___dVIu-[data-placement='right']::before {\\n      right: calc(100% + 0.5em);\\n      border-right-color: var(--switch-bg, #6e6e6e);\\n      border-right-width: 0.5em;\\n    }\\n.iconButtonPopper___dVIu-[data-placement='left'] {\\n    right: calc(100% + 1.5em);\\n  }\\n.iconButtonPopper___dVIu-[data-placement='left']::before {\\n      left: calc(100% + 0.5em);\\n      border-left-color: var(--switch-bg, #6e6e6e);\\n      border-left-width: 0.5em;\\n    }\\n\\n/* 工具栏按钮的悬浮框的箭头 */\\n.iconButtonPopper___dVIu-::before {\\n  pointer-events: none;\\n  content: '';\\n\\n  position: absolute;\\n\\n  border-color: transparent;\\n  border-style: solid;\\n  border-width: 0.4em;\\n\\n  background-color: transparent;\\n\\n  transition: opacity 150ms;\\n}\\n\\n/* 控制悬浮框的显示 */\\n.iconButtonItem___vTPHz:is(:hover, :focus, [data-show='true']) .iconButtonPopper___dVIu- {\\n  opacity: 1;\\n}\\n\\n.hidden___v7N-q {\\n  display: none;\\n}\\n";
 //#endregion
 //#region src/components/IconButton/index.tsx
-var _tmpl$$18 = /*#__PURE__*/ solid_js_web.template(\`<div><button type=button tabindex=0>\`);
-var _tmpl$2$4 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
+var _tmpl$$21 = /*#__PURE__*/ solid_js_web.template(\`<div><button type=button tabindex=0>\`);
+var _tmpl$2$5 = /*#__PURE__*/ solid_js_web.template(\`<div>\`);
 /** 图标按钮 */
 const IconButton$1 = (_props) => {
 	const props = solid_js.mergeProps({ placement: "right" }, _props);
@@ -7736,7 +8192,7 @@ const IconButton$1 = (_props) => {
 		buttonRef?.blur();
 	};
 	return (() => {
-		var _el$ = _tmpl$$18(), _el$2 = _el$.firstChild;
+		var _el$ = _tmpl$$21(), _el$2 = _el$.firstChild;
 		solid_js_web.use((ref) => helper.css(index_module_default$1, ref), _el$);
 		solid_js_web.addEventListener(_el$2, "click", handleClick);
 		var _ref$ = buttonRef;
@@ -7745,7 +8201,7 @@ const IconButton$1 = (_props) => {
 		solid_js_web.insert(_el$, (() => {
 			var _c$ = solid_js_web.memo(() => !!(props.popper || props.tip));
 			return () => _c$() ? (() => {
-				var _el$3 = _tmpl$2$4();
+				var _el$3 = _tmpl$2$5();
 				solid_js_web.insert(_el$3, () => props.popper || props.tip);
 				solid_js_web.effect((_p$) => {
 					var _v$7 = [classes$1.iconButtonPopper, props.popperClassName].join(" "), _v$8 = props.placement;
@@ -7784,18 +8240,18 @@ const IconButton$1 = (_props) => {
 	})();
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/play_arrow.svg
-var _tmpl$$17 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18a1 1 0 0 0 0-1.69L9.54 5.98A.998.998 0 0 0 8 6.82">\`);
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/play_arrow.svg
+var _tmpl$$20 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18a1 1 0 0 0 0-1.69L9.54 5.98A.998.998 0 0 0 8 6.82">\`);
 var play_arrow_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$17();
+	var _el$ = _tmpl$$20();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/stop.svg
-var _tmpl$$16 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M8 6h8c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2">\`);
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/stop.svg
+var _tmpl$$19 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M8 6h8c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H8c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2">\`);
 var stop_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$16();
+	var _el$ = _tmpl$$19();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
@@ -7888,10 +8344,10 @@ const AutoScrollButton = () => {
 	});
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/file_download.svg
-var _tmpl$$15 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M16.59 9H15V4c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1v5H7.41c-.89 0-1.34 1.08-.71 1.71l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.63-.63.19-1.71-.7-1.71M5 19c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H6c-.55 0-1 .45-1 1">\`);
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/file_download.svg
+var _tmpl$$18 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M16.59 9H15V4c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1v5H7.41c-.89 0-1.34 1.08-.71 1.71l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.63-.63.19-1.71-.7-1.71M5 19c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H6c-.55 0-1 .45-1 1">\`);
 var file_download_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$15();
+	var _el$ = _tmpl$$18();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
@@ -7922,7 +8378,9 @@ const DownloadButton = () => {
 			const img = imgList()[i];
 			if (store.option.translation.onlyDownloadTranslated && img.translationType !== "show") continue;
 			let url;
-			if (img.translationType === "show") url = img.translationUrl;
+			const processed = chainnerImageUrl(img);
+			if (processed) url = processed;
+			else if (img.translationType === "show") url = img.translationUrl;
 			else if (img.upscaleUrl && isUpscale()) url = img.upscaleUrl;
 			else url = img.src;
 			if (!url?.trim()) continue;
@@ -7930,7 +8388,7 @@ const DownloadButton = () => {
 			let fileName;
 			const index = \`\${i}\`.padStart(imgIndexNum, "0");
 			try {
-				data = await downloadImg(url, void 0, 3);
+				data = await downloadImg$1(url, void 0, 3);
 				fileName = img.name || \`\${index}.\${getExtName(data.type)}\`;
 			} catch {
 				fileName = \`\${index} - \${helper.t("alert.download_failed")}\`;
@@ -7999,40 +8457,153 @@ const DownloadButton = () => {
 	});
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/format_textdirection_l_to_r.svg
-var _tmpl$$14 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M9 10v4c0 .55.45 1 1 1s1-.45 1-1V4h2v10c0 .55.45 1 1 1s1-.45 1-1V4h1c.55 0 1-.45 1-1s-.45-1-1-1H9.17C7.08 2 5.22 3.53 5.02 5.61A4 4 0 0 0 9 10m11.65 7.65-2.79-2.79a.501.501 0 0 0-.86.35V17H6c-.55 0-1 .45-1 1s.45 1 1 1h11v1.79c0 .45.54.67.85.35l2.79-2.79c.2-.19.2-.51.01-.7">\`);
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/format_textdirection_l_to_r.svg
+var _tmpl$$17 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M9 10v4c0 .55.45 1 1 1s1-.45 1-1V4h2v10c0 .55.45 1 1 1s1-.45 1-1V4h1c.55 0 1-.45 1-1s-.45-1-1-1H9.17C7.08 2 5.22 3.53 5.02 5.61A4 4 0 0 0 9 10m11.65 7.65-2.79-2.79a.501.501 0 0 0-.86.35V17H6c-.55 0-1 .45-1 1s.45 1 1 1h11v1.79c0 .45.54.67.85.35l2.79-2.79c.2-.19.2-.51.01-.7">\`);
 var format_textdirection_l_to_r_default = (props = {}) => (() => {
+	var _el$ = _tmpl$$17();
+	solid_js_web.spread(_el$, props, true, true);
+	return _el$;
+})();
+//#endregion
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/format_textdirection_r_to_l.svg
+var _tmpl$$16 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M10 10v4c0 .55.45 1 1 1s1-.45 1-1V4h2v10c0 .55.45 1 1 1s1-.45 1-1V4h1c.55 0 1-.45 1-1s-.45-1-1-1h-6.83C8.08 2 6.22 3.53 6.02 5.61A4 4 0 0 0 10 10m-2 7v-1.79c0-.45-.54-.67-.85-.35l-2.79 2.79c-.2.2-.2.51 0 .71l2.79 2.79a.5.5 0 0 0 .85-.36V19h11c.55 0 1-.45 1-1s-.45-1-1-1z">\`);
+var format_textdirection_r_to_l_default = (props = {}) => (() => {
+	var _el$ = _tmpl$$16();
+	solid_js_web.spread(_el$, props, true, true);
+	return _el$;
+})();
+//#endregion
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/delete_sweep.svg
+var _tmpl$$15 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M16 16h2c.55 0 1 .45 1 1s-.45 1-1 1h-2c-.55 0-1-.45-1-1s.45-1 1-1m0-8h5c.55 0 1 .45 1 1s-.45 1-1 1h-5c-.55 0-1-.45-1-1s.45-1 1-1m0 4h4c.55 0 1 .45 1 1s-.45 1-1 1h-4c-.55 0-1-.45-1-1s.45-1 1-1M3 18c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V8H3zM13 5h-2l-.71-.71c-.18-.18-.44-.29-.7-.29H6.41c-.26 0-.52.11-.7.29L5 5H3c-.55 0-1 .45-1 1s.45 1 1 1h10c.55 0 1-.45 1-1s-.45-1-1-1">\`);
+var delete_sweep_default = (props = {}) => (() => {
+	var _el$ = _tmpl$$15();
+	solid_js_web.spread(_el$, props, true, true);
+	return _el$;
+})();
+//#endregion
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/link.svg
+var _tmpl$$14 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M17 7h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c1.65 0 3 1.35 3 3s-1.35 3-3 3h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c2.76 0 5-2.24 5-5s-2.24-5-5-5m-9 5c0 .55.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1H9c-.55 0-1 .45-1 1m2 3H7c-1.65 0-3-1.35-3-3s1.35-3 3-3h3c.55 0 1-.45 1-1s-.45-1-1-1H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h3c.55 0 1-.45 1-1s-.45-1-1-1">\`);
+var link_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$14();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/format_textdirection_r_to_l.svg
-var _tmpl$$13 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M10 10v4c0 .55.45 1 1 1s1-.45 1-1V4h2v10c0 .55.45 1 1 1s1-.45 1-1V4h1c.55 0 1-.45 1-1s-.45-1-1-1h-6.83C8.08 2 6.22 3.53 6.02 5.61A4 4 0 0 0 10 10m-2 7v-1.79c0-.45-.54-.67-.85-.35l-2.79 2.79c-.2.2-.2.51 0 .71l2.79 2.79a.5.5 0 0 0 .85-.36V19h11c.55 0 1-.45 1-1s-.45-1-1-1z">\`);
-var format_textdirection_r_to_l_default = (props = {}) => (() => {
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/refresh.svg
+var _tmpl$$13 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M17.65 6.35a7.95 7.95 0 0 0-6.48-2.31c-3.67.37-6.69 3.35-7.1 7.02C3.52 15.91 7.27 20 12 20a7.98 7.98 0 0 0 7.21-4.56c.32-.67-.16-1.44-.9-1.44-.37 0-.72.2-.88.53a5.994 5.994 0 0 1-6.8 3.31c-2.22-.49-4.01-2.3-4.48-4.52A6.002 6.002 0 0 1 12 6c1.66 0 3.14.69 4.22 1.78l-1.51 1.51c-.63.63-.19 1.71.7 1.71H19c.55 0 1-.45 1-1V6.41c0-.89-1.08-1.34-1.71-.71z">\`);
+var refresh_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$13();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/add.svg
-var _tmpl$$12 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1">\`);
-var add_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$12();
-	solid_js_web.spread(_el$, props, true, true);
-	return _el$;
-})();
+//#region src/components/Manga/components/SettingsItemButton.tsx
+var _tmpl$$12 = /*#__PURE__*/ solid_js_web.template(\`<button type=button>\`);
+/** 按钮式菜单项 */
+const SettingsItemButton = (props) => {
+	const [, others] = solid_js.splitProps(props, ["children", "onClick"]);
+	return solid_js_web.createComponent(SettingsItem, solid_js_web.mergeProps(others, { get children() {
+		var _el$ = _tmpl$$12();
+		solid_js_web.addEventListener(_el$, "click", props.onClick);
+		solid_js_web.insert(_el$, () => props.children);
+		solid_js_web.effect((_p$) => {
+			var _v$ = props.name, _v$2 = classes$2.SettingsItemIconButton;
+			_v$ !== _p$.e && solid_js_web.setAttribute(_el$, "aria-label", _p$.e = _v$);
+			_v$2 !== _p$.t && solid_js_web.className(_el$, _p$.t = _v$2);
+			return _p$;
+		}, {
+			e: void 0,
+			t: void 0
+		});
+		return _el$;
+	} }));
+};
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/refresh.svg
-var _tmpl$$11 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M17.65 6.35a7.95 7.95 0 0 0-6.48-2.31c-3.67.37-6.69 3.35-7.1 7.02C3.52 15.91 7.27 20 12 20a7.98 7.98 0 0 0 7.21-4.56c.32-.67-.16-1.44-.9-1.44-.37 0-.72.2-.88.53a5.994 5.994 0 0 1-6.8 3.31c-2.22-.49-4.01-2.3-4.48-4.52A6.002 6.002 0 0 1 12 6c1.66 0 3.14.69 4.22 1.78l-1.51 1.51c-.63.63-.19 1.71.7 1.71H19c.55 0 1-.45 1-1V6.41c0-.89-1.08-1.34-1.71-.71z">\`);
-var refresh_default = (props = {}) => (() => {
-	var _el$ = _tmpl$$11();
+//#region src/components/Manga/components/SettingChainner.tsx
+var _tmpl$$11 = /*#__PURE__*/ solid_js_web.template(\`<input type=url>\`);
+var _tmpl$2$4 = /*#__PURE__*/ solid_js_web.template(\`<input type=password autocomplete=off>\`);
+const SettingChainner = () => [
+	solid_js_web.createComponent(SettingsItem, {
+		get name() {
+			return helper.t("chainner.server_url");
+		},
+		style: { display: "block" },
+		get children() {
+			var _el$ = _tmpl$$11();
+			solid_js_web.addEventListener(_el$, "change", (event) => setOption("chainner", "serverUrl", event.currentTarget.value.trim()));
+			solid_js_web.effect(() => solid_js_web.setAttribute(_el$, "aria-label", helper.t("chainner.server_url")));
+			solid_js_web.effect(() => _el$.value = store.option.chainner.serverUrl);
+			return _el$;
+		}
+	}),
+	solid_js_web.createComponent(SettingsItem, {
+		get name() {
+			return helper.t("chainner.token");
+		},
+		style: { display: "block" },
+		get children() {
+			var _el$2 = _tmpl$2$4();
+			solid_js_web.addEventListener(_el$2, "change", (event) => setOption("chainner", "token", event.currentTarget.value.trim()));
+			solid_js_web.effect(() => solid_js_web.setAttribute(_el$2, "aria-label", helper.t("chainner.token")));
+			solid_js_web.effect(() => _el$2.value = store.option.chainner.token);
+			return _el$2;
+		}
+	}),
+	solid_js_web.createComponent(SettingsItemNumber, {
+		get name() {
+			return helper.t("chainner.preload");
+		},
+		step: 1,
+		maxLength: 1,
+		get value() {
+			return store.option.chainner.preload;
+		},
+		onChange: (value) => {
+			if (Number.isFinite(value)) setOption("chainner", "preload", Math.max(0, Math.min(8, Math.round(value))));
+		}
+	}),
+	solid_js_web.createComponent(SettingsItemButton, {
+		get name() {
+			return helper.t("chainner.test");
+		},
+		onClick: () => void testChainner(),
+		get children() {
+			return solid_js_web.createComponent(link_default, {});
+		}
+	}),
+	solid_js_web.createComponent(SettingsItemButton, {
+		get name() {
+			return helper.t("chainner.retry");
+		},
+		onClick: retryChainner,
+		get children() {
+			return solid_js_web.createComponent(refresh_default, {});
+		}
+	}),
+	solid_js_web.createComponent(SettingsItemButton, {
+		get name() {
+			return helper.t("chainner.clear_cache");
+		},
+		onClick: () => void clearChainnerCache(),
+		get children() {
+			return solid_js_web.createComponent(delete_sweep_default, {});
+		}
+	}),
+	solid_js_web.createComponent(SettingsItem, { get name() {
+		return chainnerConnection() || helper.t("chainner.help");
+	} })
+];
+//#endregion
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/add.svg
+var _tmpl$$10 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1">\`);
+var add_default = (props = {}) => (() => {
+	var _el$ = _tmpl$$10();
 	solid_js_web.spread(_el$, props, true, true);
 	return _el$;
 })();
 //#endregion
 //#region src/components/Manga/components/SettingHotkeys.tsx
-var _tmpl$$10 = /*#__PURE__*/ solid_js_web.template(\`<div tabindex=0>\`);
+var _tmpl$$9 = /*#__PURE__*/ solid_js_web.template(\`<div tabindex=0>\`);
 var _tmpl$2$3 = /*#__PURE__*/ solid_js_web.template(\`<div><div><p></p><span style=flex-grow:1></span><div></div><div>\`);
 var _tmpl$3$1 = /*#__PURE__*/ solid_js_web.template(\`<div><select style=height:100%><option value disabled hidden selected> …\`);
 var _tmpl$4 = /*#__PURE__*/ solid_js_web.template(\`<option>\`);
@@ -8071,7 +8642,7 @@ const KeyItem = (props) => {
 		else setHotkeys(props.operateName, props.i, newCode);
 	};
 	return (() => {
-		var _el$ = _tmpl$$10();
+		var _el$ = _tmpl$$9();
 		_el$.addEventListener("blur", () => code() || del());
 		solid_js_web.use((ref) => code() || setTimeout(() => ref.focus()), _el$);
 		solid_js_web.addEventListener(_el$, "keydown", handleKeyDown);
@@ -8179,20 +8750,6 @@ const SettingHotkeysBlock = () => {
 			} });
 		}
 	})];
-};
-//#endregion
-//#region src/components/Manga/components/SettingsItemButton.tsx
-var _tmpl$$9 = /*#__PURE__*/ solid_js_web.template(\`<button type=button>\`);
-/** 按钮式菜单项 */
-const SettingsItemButton = (props) => {
-	const [, others] = solid_js.splitProps(props, ["children", "onClick"]);
-	return solid_js_web.createComponent(SettingsItem, solid_js_web.mergeProps(others, { get children() {
-		var _el$ = _tmpl$$9();
-		solid_js_web.addEventListener(_el$, "click", props.onClick);
-		solid_js_web.insert(_el$, () => props.children);
-		solid_js_web.effect(() => solid_js_web.className(_el$, classes$2.SettingsItemIconButton));
-		return _el$;
-	} }));
 };
 //#endregion
 //#region src/components/Manga/components/SettingsShowItem.tsx
@@ -8920,18 +9477,36 @@ const defaultSettingList = () => [
 				return !store.isMobile;
 			},
 			get children() {
-				return solid_js_web.createComponent(SettingsItemSwitch, {
-					get name() {
-						return helper.t("upscale.title");
-					},
-					get disabled() {
-						return !store.option.imgRecognition.enabled || !store.supportUpscaleImage;
-					},
-					get value() {
-						return store.option.imgRecognition.upscale;
-					},
-					onChange: () => switchImgRecognition("upscale")
-				});
+				return [
+					solid_js_web.createComponent(SettingsItemSelect, solid_js_web.mergeProps({
+						get name() {
+							return helper.t("chainner.provider");
+						},
+						get options() {
+							return [["browser", helper.t("chainner.browser")], ["chainner", helper.t("chainner.title")]];
+						}
+					}, () => bindOption("upscaleProvider"))),
+					solid_js_web.createComponent(SettingsItemSwitch, {
+						get name() {
+							return helper.t("upscale.title");
+						},
+						get disabled() {
+							return solid_js_web.memo(() => store.option.upscaleProvider !== "chainner")() && (!store.option.imgRecognition.enabled || !store.supportUpscaleImage);
+						},
+						get value() {
+							return store.option.imgRecognition.upscale;
+						},
+						onChange: (value) => setOption("imgRecognition", "upscale", value)
+					}),
+					solid_js_web.createComponent(solid_js.Show, {
+						get when() {
+							return store.option.upscaleProvider === "chainner";
+						},
+						get children() {
+							return solid_js_web.createComponent(SettingChainner, {});
+						}
+					})
+				];
 			}
 		})
 	]],
@@ -9600,6 +10175,8 @@ const Manga = (props) => {
 	useCssVar();
 	solid_js.onMount(() => useInit(props));
 	solid_js.createEffect(() => props.show && focus());
+	solid_js.createEffect(() => setChainnerReaderVisible(props.show !== false));
+	solid_js.onCleanup(() => setChainnerReaderVisible(false));
 	return (() => {
 		var _el$ = _tmpl$();
 		solid_js_web.addEventListener(_el$, "wheel", handleWheel);
@@ -9673,7 +10250,11 @@ exports.bindRef = bindRef;
 exports.bindScrollTop = bindScrollTop;
 exports.bound = bound;
 exports.cancelTurnAnimation = cancelTurnAnimation;
+exports.chainnerConnection = chainnerConnection;
+exports.chainnerImageUrl = chainnerImageUrl;
+exports.chainnerReaderVisible = chainnerReaderVisible;
 exports.checkImgSize = checkImgSize;
+exports.clearChainnerCache = clearChainnerCache;
 exports.constantScroll = constantScroll;
 exports.contentHeight = contentHeight;
 exports.cotransSettings = cotransSettings;
@@ -9717,6 +10298,7 @@ exports.imgPageMap = imgPageMap;
 exports.initStore = initStore;
 exports.isAbreastMode = isAbreastMode;
 exports.isBottom = isBottom;
+exports.isChainnerUpscale = isChainnerUpscale;
 exports.isDoubleMode = isDoubleMode;
 exports.isDrag = isDrag;
 exports.isEnableBg = isEnableBg;
@@ -9748,6 +10330,7 @@ exports.renderImgList = renderImgList;
 exports.resetImgState = resetImgState;
 exports.resetPage = resetPage;
 exports.resetUI = resetUI;
+exports.retryChainner = retryChainner;
 exports.saveScrollProgress = saveScrollProgress;
 exports.scrollBy = scrollBy;
 exports.scrollDomLength = scrollDomLength;
@@ -9761,6 +10344,8 @@ exports.scrollTop = scrollTop;
 exports.scrollViewImg = scrollViewImg;
 exports.setAbreastScrollFill = setAbreastScrollFill;
 exports.setAdjustToWidth = setAdjustToWidth;
+exports.setChainnerConnection = setChainnerConnection;
+exports.setChainnerReaderVisible = setChainnerReaderVisible;
 exports.setDefaultHotkeys = setDefaultHotkeys;
 exports.setImgScale = setImgScale;
 exports.setImgTranslationEnbale = setImgTranslationEnbale;
@@ -9781,6 +10366,7 @@ exports.switchImgRecognition = switchImgRecognition;
 exports.switchOnePageMode = switchOnePageMode;
 exports.switchScrollMode = switchScrollMode;
 exports.syncImgLoadState = syncImgLoadState;
+exports.testChainner = testChainner;
 exports.touches = touches;
 exports.translateAll = translateAll;
 exports.translateCurrent = translateCurrent;
@@ -9884,7 +10470,7 @@ exports.IconButton = IconButton;
 	"components/Fab": `\nlet solid_js_web = require("solid-js/web");
 let helper = require("helper");
 let solid_js = require("solid-js");
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/menu_book.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/menu_book.svg
 var _tmpl$$1 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M17.5 4.5c-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5-1.45 0-2.99.22-4.28.79C1.49 5.62 1 6.33 1 7.14v11.28c0 1.3 1.22 2.26 2.48 1.94.98-.25 2.02-.36 3.02-.36 1.56 0 3.22.26 4.56.92.6.3 1.28.3 1.87 0 1.34-.67 3-.92 4.56-.92 1 0 2.04.11 3.02.36 1.26.33 2.48-.63 2.48-1.94V7.14c0-.81-.49-1.52-1.22-1.85-1.28-.57-2.82-.79-4.27-.79M21 17.23c0 .63-.58 1.09-1.2.98-.75-.14-1.53-.2-2.3-.2-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5.92 0 1.83.09 2.7.28.46.1.8.51.8.98z"></path><path d="M13.98 11.01c-.32 0-.61-.2-.71-.52-.13-.39.09-.82.48-.94 1.54-.5 3.53-.66 5.36-.45.41.05.71.42.66.83s-.42.71-.83.66c-1.62-.19-3.39-.04-4.73.39-.08.01-.16.03-.23.03m0 2.66c-.32 0-.61-.2-.71-.52-.13-.39.09-.82.48-.94 1.53-.5 3.53-.66 5.36-.45.41.05.71.42.66.83s-.42.71-.83.66c-1.62-.19-3.39-.04-4.73.39a1 1 0 0 1-.23.03m0 2.66c-.32 0-.61-.2-.71-.52-.13-.39.09-.82.48-.94 1.53-.5 3.53-.66 5.36-.45.41.05.71.42.66.83s-.42.7-.83.66c-1.62-.19-3.39-.04-4.73.39a1 1 0 0 1-.23.03">\`);
 var menu_book_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$1();
@@ -10055,7 +10641,7 @@ const classes = {
 //#region src/components/Toast/index.module.css?inline
 var index_module_default = ".root___AXj2H {\\n  pointer-events: none;\\n\\n  position: fixed;\\n  z-index: 2147483647;\\n  right: 0;\\n  bottom: 0;\\n\\n  display: flex;\\n  flex-direction: column;\\n  align-items: flex-end;\\n\\n  font-size: 16px;\\n}\\n\\n.item___eASYv {\\n  pointer-events: auto;\\n  cursor: pointer;\\n\\n  position: relative;\\n\\n  overflow: hidden;\\n  display: flex;\\n  align-items: center;\\n\\n  width: fit-content;\\n  max-width: min(30em, 100vw);\\n  margin: 1em;\\n  padding: 0.8em 1em;\\n  border-radius: 4px;\\n\\n  color: light-dark(#000, #eee);\\n\\n  background: light-dark(#fff, #323232);\\n  box-shadow:\\n    0 1px 10px 0 #0000001a,\\n    0 2px 15px 0 #0000000d;\\n\\n  animation: bounceInRight___94v9w 0.5s 1;\\n}\\n\\n.item___eASYv > svg {\\n    width: 1.5em;\\n    margin-right: 0.5em;\\n    color: var(--theme);\\n  }\\n\\n.item___eASYv[data-exit] {\\n    animation: bounceOutRight___0RcOn 0.5s 1;\\n  }\\n\\n.schedule___AWwkh {\\n  position: absolute;\\n  bottom: 0;\\n  left: 0;\\n  transform-origin: left;\\n\\n  width: 100%;\\n  height: 0.2em;\\n\\n  background-color: var(--theme);\\n}\\n\\n.item___eASYv[data-schedule] .schedule___AWwkh {\\n  transition: transform 100ms;\\n}\\n\\n.item___eASYv:not([data-schedule]) .schedule___AWwkh {\\n  animation: schedule___AWwkh linear 1 forwards;\\n}\\n\\n:is(.item___eASYv:hover, .item___eASYv[data-schedule], .root___AXj2H[data-paused]) .schedule___AWwkh {\\n  animation-play-state: paused;\\n}\\n\\n.msg___pGOp2 {\\n  width: fit-content;\\n\\n  line-height: 1.4em;\\n  text-align: start;\\n  overflow-wrap: anywhere;\\n  white-space: break-spaces;\\n}\\n\\n.msg___pGOp2 h2 {\\n    margin: 0;\\n  }\\n\\n.msg___pGOp2 h3 {\\n    margin: 0.7em 0;\\n  }\\n\\n.msg___pGOp2 ul {\\n    margin: 0;\\n    text-align: left;\\n  }\\n\\n.msg___pGOp2 button {\\n    cursor: pointer;\\n\\n    margin: 0 0.5em;\\n    padding: 0.2em 0.6em;\\n    border: none;\\n    border-radius: 0.4em;\\n\\n    font-size: inherit;\\n\\n    background-color: light-dark(#eee, #3a3a3a);\\n    outline: none;\\n  }\\n\\n:is(.msg___pGOp2 button):hover {\\n      background: light-dark(#e0e0e0, #4a4a4a);\\n    }\\n\\np {\\n  margin: 0;\\n}\\n\\n@keyframes schedule___AWwkh {\\n  0% {\\n    transform: scaleX(1);\\n  }\\n\\n  100% {\\n    transform: scaleX(0);\\n  }\\n}\\n\\n@keyframes bounceInRight___94v9w {\\n  0%,\\n  60%,\\n  75%,\\n  90%,\\n  100% {\\n    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);\\n  }\\n\\n  0% {\\n    transform: translate3d(3000px, 0, 0) scaleX(3);\\n    opacity: 0;\\n  }\\n\\n  60% {\\n    transform: translate3d(-25px, 0, 0) scaleX(1);\\n    opacity: 1;\\n  }\\n\\n  75% {\\n    transform: translate3d(10px, 0, 0) scaleX(0.98);\\n  }\\n\\n  90% {\\n    transform: translate3d(-5px, 0, 0) scaleX(0.995);\\n  }\\n\\n  100% {\\n    transform: translate3d(0, 0, 0);\\n  }\\n}\\n\\n@keyframes bounceOutRight___0RcOn {\\n  20% {\\n    transform: translate3d(-20px, 0, 0) scaleX(0.9);\\n    opacity: 1;\\n  }\\n\\n  100% {\\n    transform: translate3d(2000px, 0, 0) scaleX(2);\\n    opacity: 0;\\n  }\\n}\\n";
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/check_circle.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/check_circle.svg
 var _tmpl$$5 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2M9.29 16.29 5.7 12.7a.996.996 0 1 1 1.41-1.41L10 14.17l6.88-6.88a.996.996 0 1 1 1.41 1.41l-7.59 7.59a.996.996 0 0 1-1.41 0">\`);
 var check_circle_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$5();
@@ -10063,7 +10649,7 @@ var check_circle_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/error.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/error.svg
 var _tmpl$$4 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 11c-.55 0-1-.45-1-1V8c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1 4h-2v-2h2z">\`);
 var error_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$4();
@@ -10071,7 +10657,7 @@ var error_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/info.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/info.svg
 var _tmpl$$3 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1m1-8h-2V7h2z">\`);
 var info_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$3();
@@ -10079,7 +10665,7 @@ var info_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/warning.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/warning.svg
 var _tmpl$$2 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M4.47 21h15.06c1.54 0 2.5-1.67 1.73-3L13.73 4.99c-.77-1.33-2.69-1.33-3.46 0L2.74 18c-.77 1.33.19 3 1.73 3M12 14c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1s1 .45 1 1v2c0 .55-.45 1-1 1m1 4h-2v-2h2z">\`);
 var warning_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$2();
@@ -10424,7 +11010,7 @@ const mobileApi = new class {
 		webp: "1",
 		region: "1",
 		"User-Agent": "COPY/3.0.0",
-		version: "3.0.9",
+		version: "3.1.0",
 		source: "copyApp",
 		referer: "com.copymanga.app-3.0.0",
 		Authorization: token ? \`Token \${token}\` : ""
@@ -10435,9 +11021,9 @@ const mobileApi = new class {
 		...details
 	}, ...args);
 	eachGet = (url, details) => request.eachApi(url, [
+		"https://api.mangacopy.com",
 		"https://api.copy4000.com",
 		"https://api.copy3000.com",
-		"https://api.mangacopy.com",
 		"https://mapi.copy20.com",
 		"https://api.2026copy.com"
 	], {
@@ -10468,15 +11054,15 @@ const pcApi = new class {
 		...details
 	}, ...args);
 	eachGet = (url, details) => request.eachApi(url, [
-		"https://mapi.elfgjfghkk.club",
-		"https://mapi.fgjfghkk.club",
-		"https://mapi.hotmangasg.com",
-		"https://mapi.hotmangasd.com",
 		"https://api.2024manga.com",
+		"https://mapi.hotmangasg.com",
 		"https://mapi.hotmangasf.com",
-		"https://mapi.fgjfghkkcenter.club",
-		"https://www.manga2026.xyz",
 		"https://www.manga2025.com",
+		"https://mapi.fgjfghkkcenter.club",
+		"https://mapi.hotmangasd.com",
+		"https://www.manga2026.xyz",
+		"https://mapi.fgjfghkk.club",
+		"https://mapi.elfgjfghkk.club",
 		"https://api.manga2025.com",
 		"https://m.manga2025.com"
 	], {
@@ -10919,7 +11505,7 @@ const handleUrlNavigation = (url) => {
 	switchChapter(chapter.id, false);
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/toc.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/toc.svg
 var _tmpl$$19 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M4 9h12c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1m0 4h12c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1m0 4h12c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1m15 0h2v-2h-2zm0-10v2h2V7zm0 6h2v-2h-2z">\`);
 var toc_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$19();
@@ -11397,7 +11983,7 @@ const initChapters = (coreCtx, options) => {
 	return activateManager(createManager(coreCtx, options), currentChapter, nowManager);
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/settings.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/settings.svg
 var _tmpl$$17 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M19.5 12c0-.23-.01-.45-.03-.68l1.86-1.41c.4-.3.51-.86.26-1.3l-1.87-3.23a.987.987 0 0 0-1.25-.42l-2.15.91c-.37-.26-.76-.49-1.17-.68l-.29-2.31c-.06-.5-.49-.88-.99-.88h-3.73c-.51 0-.94.38-1 .88l-.29 2.31c-.41.19-.8.42-1.17.68l-2.15-.91c-.46-.2-1-.02-1.25.42L2.41 8.62c-.25.44-.14.99.26 1.3l1.86 1.41a7.3 7.3 0 0 0 0 1.35l-1.86 1.41c-.4.3-.51.86-.26 1.3l1.87 3.23c.25.44.79.62 1.25.42l2.15-.91c.37.26.76.49 1.17.68l.29 2.31c.06.5.49.88.99.88h3.73c.5 0 .93-.38.99-.88l.29-2.31c.41-.19.8-.42 1.17-.68l2.15.91c.46.2 1 .02 1.25-.42l1.87-3.23c.25-.44.14-.99-.26-1.3l-1.86-1.41c.03-.23.04-.45.04-.68m-7.46 3.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5">\`);
 var settings_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$17();
@@ -11436,7 +12022,7 @@ const handleEsc = () => {
 	return false;
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/checklist.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/checklist.svg
 var _tmpl$$16 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M22 8c0-.55-.45-1-1-1h-7c-.55 0-1 .45-1 1s.45 1 1 1h7c.55 0 1-.45 1-1m-9 8c0 .55.45 1 1 1h7c.55 0 1-.45 1-1s-.45-1-1-1h-7c-.55 0-1 .45-1 1M10.47 4.63c.39.39.39 1.02 0 1.41l-4.23 4.25c-.39.39-1.02.39-1.42 0L2.7 8.16a.996.996 0 1 1 1.41-1.41l1.42 1.42 3.54-3.54c.38-.38 1.02-.38 1.4 0m.01 8.01c.39.39.39 1.02 0 1.41L6.25 18.3c-.39.39-1.02.39-1.42 0L2.7 16.16a.996.996 0 1 1 1.41-1.41l1.42 1.42 3.54-3.54c.38-.38 1.02-.38 1.41.01">\`);
 var checklist_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$16();
@@ -11960,7 +12546,7 @@ const restoreReadProgress = async (id, imgList) => {
 	};
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/clear_all.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/clear_all.svg
 var _tmpl$$14 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M6 13h12c.55 0 1-.45 1-1s-.45-1-1-1H6c-.55 0-1 .45-1 1s.45 1 1 1m-2 4h12c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1m3-9c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H8c-.55 0-1 .45-1 1">\`);
 var clear_all_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$14();
@@ -11968,7 +12554,7 @@ var clear_all_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/close.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/close.svg
 var _tmpl$$13 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59 7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12 5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4">\`);
 var close_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$13();
@@ -11976,7 +12562,7 @@ var close_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/cloud_download.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/cloud_download.svg
 var _tmpl$$12 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96M17 13l-4.65 4.65c-.2.2-.51.2-.71 0L7 13h3V9h4v4z">\`);
 var cloud_download_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$12();
@@ -11984,7 +12570,7 @@ var cloud_download_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/image_search.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/image_search.svg
 var _tmpl$$11 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M18 15v4c0 .55-.45 1-1 1H5c-.55 0-1-.45-1-1V7c0-.55.45-1 1-1h3.02c.55 0 1-.45 1-1s-.45-1-1-1H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-5c0-.55-.45-1-1-1s-1 .45-1 1m-2.5 3H6.52c-.42 0-.65-.48-.39-.81l1.74-2.23a.5.5 0 0 1 .78-.01l1.56 1.88 2.35-3.02c.2-.26.6-.26.79.01l2.55 3.39c.25.32.01.79-.4.79m3.8-9.11c.48-.77.75-1.67.69-2.66-.13-2.15-1.84-3.97-3.97-4.2A4.5 4.5 0 0 0 11 6.5c0 2.49 2.01 4.5 4.49 4.5.88 0 1.7-.26 2.39-.7l2.41 2.41c.39.39 1.03.39 1.42 0s.39-1.03 0-1.42zM15.5 9a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5">\`);
 var image_search_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$11();
@@ -11992,7 +12578,7 @@ var image_search_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/import_contacts.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/import_contacts.svg
 var _tmpl$$10 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M17.5 4.5c-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5-1.45 0-2.99.22-4.28.79C1.49 5.62 1 6.33 1 7.14v11.28c0 1.3 1.22 2.26 2.48 1.94.98-.25 2.02-.36 3.02-.36 1.56 0 3.22.26 4.56.92.6.3 1.28.3 1.87 0 1.34-.67 3-.92 4.56-.92 1 0 2.04.11 3.02.36 1.26.33 2.48-.63 2.48-1.94V7.14c0-.81-.49-1.52-1.22-1.85-1.28-.57-2.82-.79-4.27-.79M21 17.23c0 .63-.58 1.09-1.2.98-.75-.14-1.53-.2-2.3-.2-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5.92 0 1.83.09 2.7.28.46.1.8.51.8.98z">\`);
 var import_contacts_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$10();
@@ -12000,7 +12586,7 @@ var import_contacts_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/menu_book.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/menu_book.svg
 var _tmpl$$9 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M17.5 4.5c-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5-1.45 0-2.99.22-4.28.79C1.49 5.62 1 6.33 1 7.14v11.28c0 1.3 1.22 2.26 2.48 1.94.98-.25 2.02-.36 3.02-.36 1.56 0 3.22.26 4.56.92.6.3 1.28.3 1.87 0 1.34-.67 3-.92 4.56-.92 1 0 2.04.11 3.02.36 1.26.33 2.48-.63 2.48-1.94V7.14c0-.81-.49-1.52-1.22-1.85-1.28-.57-2.82-.79-4.27-.79M21 17.23c0 .63-.58 1.09-1.2.98-.75-.14-1.53-.2-2.3-.2-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5.92 0 1.83.09 2.7.28.46.1.8.51.8.98z"></path><path d="M13.98 11.01c-.32 0-.61-.2-.71-.52-.13-.39.09-.82.48-.94 1.54-.5 3.53-.66 5.36-.45.41.05.71.42.66.83s-.42.71-.83.66c-1.62-.19-3.39-.04-4.73.39-.08.01-.16.03-.23.03m0 2.66c-.32 0-.61-.2-.71-.52-.13-.39.09-.82.48-.94 1.53-.5 3.53-.66 5.36-.45.41.05.71.42.66.83s-.42.71-.83.66c-1.62-.19-3.39-.04-4.73.39a1 1 0 0 1-.23.03m0 2.66c-.32 0-.61-.2-.71-.52-.13-.39.09-.82.48-.94 1.53-.5 3.53-.66 5.36-.45.41.05.71.42.66.83s-.42.7-.83.66c-1.62-.19-3.39-.04-4.73.39a1 1 0 0 1-.23.03">\`);
 var menu_book_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$9();
@@ -12008,7 +12594,7 @@ var menu_book_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/auto_fix_high.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/auto_fix_high.svg
 var _tmpl$$8 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="m20.45 6 .49-1.06L22 4.45a.5.5 0 0 0 0-.91l-1.06-.49L20.45 2a.5.5 0 0 0-.91 0l-.49 1.06-1.05.49a.5.5 0 0 0 0 .91l1.06.49.49 1.05c.17.39.73.39.9 0M8.95 6l.49-1.06 1.06-.49a.5.5 0 0 0 0-.91l-1.06-.48L8.95 2a.492.492 0 0 0-.9 0l-.49 1.06-1.06.49a.5.5 0 0 0 0 .91l1.06.49L8.05 6c.17.39.73.39.9 0m10.6 7.5-.49 1.06-1.06.49a.5.5 0 0 0 0 .91l1.06.49.49 1.06a.5.5 0 0 0 .91 0l.49-1.06 1.05-.5a.5.5 0 0 0 0-.91l-1.06-.49-.49-1.06c-.17-.38-.73-.38-.9.01m-1.84-4.38-2.83-2.83a.996.996 0 0 0-1.41 0L2.29 17.46a.996.996 0 0 0 0 1.41l2.83 2.83c.39.39 1.02.39 1.41 0L17.7 10.53c.4-.38.4-1.02.01-1.41m-3.5 2.09L12.8 9.8l1.38-1.38 1.41 1.41z">\`);
 var auto_fix_high_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$8();
@@ -12016,7 +12602,7 @@ var auto_fix_high_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/auto_fix_off.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/auto_fix_off.svg
 var _tmpl$$7 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="m22 3.55-1.06-.49L20.45 2a.5.5 0 0 0-.91 0l-.49 1.06-1.05.49a.5.5 0 0 0 0 .91l1.06.49.49 1.05a.5.5 0 0 0 .91 0l.49-1.06L22 4.45c.39-.17.39-.73 0-.9m-7.83 4.87 1.41 1.41-1.46 1.46 1.41 1.41 2.17-2.17a.996.996 0 0 0 0-1.41l-2.83-2.83a.996.996 0 0 0-1.41 0l-2.17 2.17 1.41 1.41zM2.1 4.93l6.36 6.36-6.17 6.17a.996.996 0 0 0 0 1.41l2.83 2.83c.39.39 1.02.39 1.41 0l6.17-6.17 6.36 6.36a.996.996 0 1 0 1.41-1.41L3.51 3.51a.996.996 0 0 0-1.41 0c-.39.4-.39 1.03 0 1.42">\`);
 var auto_fix_off_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$7();
@@ -12024,7 +12610,7 @@ var auto_fix_off_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/flash_off.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/flash_off.svg
 var _tmpl$$6 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M16.12 11.5a.995.995 0 0 0-.86-1.5h-1.87l2.28 2.28zm.16-8.05c.33-.67-.15-1.45-.9-1.45H8c-.55 0-1 .45-1 1v.61l6.13 6.13zm2.16 14.43L4.12 3.56a.996.996 0 1 0-1.41 1.41L7 9.27V12c0 .55.45 1 1 1h2v7.15c0 .51.67.69.93.25l2.65-4.55 3.44 3.44c.39.39 1.02.39 1.41 0 .4-.39.4-1.02.01-1.41">\`);
 var flash_off_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$6();
@@ -12032,7 +12618,7 @@ var flash_off_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/flash_on.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/flash_on.svg
 var _tmpl$$5 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M7 3v9c0 .55.45 1 1 1h2v7.15c0 .51.67.69.93.25l5.19-8.9a.995.995 0 0 0-.86-1.5H13l2.49-6.65A.994.994 0 0 0 14.56 2H8c-.55 0-1 .45-1 1">\`);
 var flash_on_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$5();
@@ -12040,7 +12626,7 @@ var flash_on_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/lock.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/lock.svg
 var _tmpl$$4 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2m-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2M9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2z">\`);
 var lock_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$4();
@@ -12048,7 +12634,7 @@ var lock_default = (props = {}) => (() => {
 	return _el$;
 })();
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/lock_open.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/lock_open.svg
 var _tmpl$$3 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m6-5h-1V6c0-2.76-2.24-5-5-5-2.28 0-4.27 1.54-4.84 3.75-.14.54.18 1.08.72 1.22a1 1 0 0 0 1.22-.72A2.996 2.996 0 0 1 12 3c1.65 0 3 1.35 3 3v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2m0 11c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-8c0-.55.45-1 1-1h10c.55 0 1 .45 1 1z">\`);
 var lock_open_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$3();
@@ -12283,7 +12869,7 @@ const useImgList = (coreCtx, currentImgListId) => {
 	});
 };
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/sync.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/sync.svg
 var _tmpl$$1 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M12 4V2.21c0-.45-.54-.67-.85-.35l-2.8 2.79c-.2.2-.2.51 0 .71l2.79 2.79c.32.31.86.09.86-.36V6c3.31 0 6 2.69 6 6 0 .79-.15 1.56-.44 2.25-.15.36-.04.77.23 1.04.51.51 1.37.33 1.64-.34.37-.91.57-1.91.57-2.95 0-4.42-3.58-8-8-8m0 14c-3.31 0-6-2.69-6-6 0-.79.15-1.56.44-2.25.15-.36.04-.77-.23-1.04-.51-.51-1.37-.33-1.64.34C4.2 9.96 4 10.96 4 12c0 4.42 3.58 8 8 8v1.79c0 .45.54.67.85.35l2.79-2.79c.2-.2.2-.51 0-.71l-2.79-2.79a.5.5 0 0 0-.85.36z">\`);
 var sync_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$1();
@@ -15843,7 +16429,7 @@ exports.upscaleImage = upscaleImage;
 let core = require("core");
 let helper = require("helper");
 let userscript_autoImageScanner = require("userscript/autoImageScanner");
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/delete.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/delete.svg
 var _tmpl$$1 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2zM18 4h-2.5l-.71-.71c-.18-.18-.44-.29-.7-.29H9.91c-.26 0-.52.11-.7.29L8.5 4H6c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1">\`);
 var delete_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$1();
@@ -18268,7 +18854,7 @@ solid_js_web.delegateEvents([
 	"click"
 ]);
 //#endregion
-//#region node_modules/.pnpm/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/launch.svg
+//#region F:/chaiNNer-GFISRv2/cache/comicread-node-modules/@material-design-icons+svg@0.14.15/node_modules/@material-design-icons/svg/round/launch.svg
 var _tmpl$$3 = /*#__PURE__*/ solid_js_web.template(\`<svg xmlns=http://www.w3.org/2000/svg viewBox="0 0 24 24"stroke=currentColor fill=currentColor stroke-width=0><path d="M18 19H6c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h5c.55 0 1-.45 1-1s-.45-1-1-1H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6c0-.55-.45-1-1-1s-1 .45-1 1v5c0 .55-.45 1-1 1M14 4c0 .55.45 1 1 1h2.59l-9.13 9.13a.996.996 0 1 0 1.41 1.41L19 6.41V9c0 .55.45 1 1 1s1-.45 1-1V3h-6c-.55 0-1 .45-1 1">\`);
 var launch_default = (props = {}) => (() => {
 	var _el$ = _tmpl$$3();
@@ -20564,7 +21150,7 @@ const gmApi = {
 	unsafeWindow: typeof unsafeWindow === "undefined" ? window : unsafeWindow
 };
 const gmApiList = Object.keys(gmApi);
-const { trustedTypes } = unsafeWindow;
+const { trustedTypes } = gmApi.unsafeWindow;
 if (trustedTypes) try {
 	if (!trustedTypes.defaultPolicy) trustedTypes.createPolicy("default", {
 		createHTML: (s) => s,
@@ -20784,8 +21370,8 @@ try {
 			});
 			break;
 		}
-		case "www.wn10.cfd":
-		case "www.wn10.shop":
+		case "www.wnacg.buzz":
+		case "www.wnacg.site":
 		case "www.wnacg.com":
 		case "wnacg.com":
 			selfImport("site/wnacg");
@@ -20830,8 +21416,6 @@ try {
 				}
 			});
 			break;
-		case "ex.810114.xyz":
-		case "e.810114.xyz":
 		case "ex.moonchan.xyz":
 			selfImport("site/ehentai");
 			break;

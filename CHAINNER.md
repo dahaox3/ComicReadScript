@@ -60,3 +60,5 @@ CI 不需要真实网站 Cookie、模型权重或 GPU。
 构建请使用隔离副本，避免清空开发中的 dist；将 `dist/index.js` 复制为
 根目录 `ComicRead.user.js`，`dist/adguard.js` 复制为 `ComicRead-AdGuard.user.js`。
 保留上游 AGPL-3.0-or-later 许可证与作者署名。
+同一上游版本内再次发布时，递增 `scripts/lib/ctx.ts` 中的 `-chainner.1`
+后缀，让油猴能识别新版本。

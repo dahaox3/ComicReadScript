@@ -36,6 +36,10 @@ export type ComicImg = {
 	translationMessage?: string;
 	translationType?: "wait" | "show" | "hide" | "error";
 	upscaleUrl?: string;
+	chainnerOriginalUrl?: string;
+	chainnerTranslatedUrl?: string;
+	chainnerTranslatedSource?: string;
+	chainnerMessage?: string;
 };
 export type PageList = ([
 	number
@@ -127,6 +131,12 @@ declare const areaArrayMap: {
 	l: ArrayConfig;
 };
 type Option$1 = {
+	upscaleProvider: "browser" | "chainner";
+	chainner: {
+		serverUrl: string;
+		token: string;
+		preload: number;
+	};
 	/** 漫画方向 */
 	dir: "ltr" | "rtl";
 	/** 默认启用首页填充 */

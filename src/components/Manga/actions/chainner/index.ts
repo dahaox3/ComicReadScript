@@ -89,6 +89,10 @@ const stop = () => {
   if (heartbeat) clearInterval(heartbeat);
   heartbeat = undefined;
   queue?.dispose();
+  setState((state) => {
+    for (const url of retainUrls)
+      if (state.imgMap[url]) state.imgMap[url].chainnerMessage = undefined;
+  });
   queue = undefined;
   client = undefined;
   fingerprint = '';

@@ -72,6 +72,6 @@ describe('gM request cancellation cleanup', () => {
         signal: controller.signal,
       }),
     ).rejects.toThrow('/v1/jobs');
-    expect(aborted).toHaveBeenCalledOnce();
+    expect(aborted).toHaveBeenCalledTimes(1);
   });
 });
