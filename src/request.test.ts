@@ -1,5 +1,6 @@
 import { request } from 'request';
 // @vitest-environment jsdom
+// oxlint-disable vitest/prefer-called-times -- conflicts with prefer-called-once
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock(
@@ -72,6 +73,6 @@ describe('gM request cancellation cleanup', () => {
         signal: controller.signal,
       }),
     ).rejects.toThrow('/v1/jobs');
-    expect(aborted).toHaveBeenCalledTimes(1);
+    expect(aborted).toHaveBeenCalledOnce();
   });
 });

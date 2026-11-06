@@ -1,3 +1,4 @@
+// oxlint-disable vitest/prefer-called-times -- conflicts with prefer-called-once
 import { describe, expect, it, vi } from 'vitest';
 
 import {
@@ -75,7 +76,7 @@ describe('chaiNNer reading window', () => {
     const state = setup();
     state.queue.reconcile([target('page', 'original', 4)], new Set(['page']));
     state.queue.reconcile([target('page')], new Set(['page']));
-    expect(state.process).toHaveBeenCalledTimes(1);
+    expect(state.process).toHaveBeenCalledOnce();
     expect(state.reprioritize).toHaveBeenCalledWith(
       state.pending[0].request.id,
       0,
@@ -93,7 +94,7 @@ describe('chaiNNer reading window', () => {
     state.pending[1].resolve(new Blob(['also stale']));
     state.pending[2].resolve(new Blob(['current']));
     await vi.waitFor(() =>
-      expect(state.objectUrls.create).toHaveBeenCalledTimes(1),
+      expect(state.objectUrls.create).toHaveBeenCalledOnce(),
     );
     expect(state.onResult).toHaveBeenCalledWith(target('old'), 'blob:result-1');
     state.queue.dispose();
@@ -104,7 +105,7 @@ describe('chaiNNer reading window', () => {
     state.queue.reconcile([target('page')], new Set(['page']));
     state.pending[0].resolve(new Blob(['original']));
     await vi.waitFor(() =>
-      expect(state.objectUrls.create).toHaveBeenCalledTimes(1),
+      expect(state.objectUrls.create).toHaveBeenCalledOnce(),
     );
     state.queue.reconcile(
       [target('page', 'blob:translated')],
@@ -129,9 +130,9 @@ describe('chaiNNer reading window', () => {
     const state = setup();
     state.queue.reconcile([target('page')], new Set(['page']));
     state.pending[0].reject(new Error('GPU unavailable'));
-    await vi.waitFor(() => expect(state.onError).toHaveBeenCalledTimes(1));
+    await vi.waitFor(() => expect(state.onError).toHaveBeenCalledOnce());
     state.queue.reconcile([target('page')], new Set(['page']));
-    expect(state.process).toHaveBeenCalledTimes(1);
+    expect(state.process).toHaveBeenCalledOnce();
     expect(state.cancel).toHaveBeenCalledWith(state.pending[0].request.id);
     state.queue.dispose();
   });

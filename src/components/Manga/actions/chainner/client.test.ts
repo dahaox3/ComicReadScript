@@ -1,3 +1,4 @@
+// oxlint-disable vitest/prefer-called-times -- conflicts with prefer-called-once
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { BridgeClient } from './client';
@@ -60,7 +61,7 @@ describe('chaiNNer client', () => {
     });
     await vi.advanceTimersByTimeAsync(350);
     await expect(result).resolves.toBe(blob);
-    expect(transport.downloadImg).toHaveBeenCalledTimes(1);
+    expect(transport.downloadImg).toHaveBeenCalledOnce();
     const first = transport.request.mock.calls[0][1].data as FormData;
     const retry = transport.request.mock.calls[1][1].data as FormData;
     expect(first.get('request_id')).toBe(retry.get('request_id'));
@@ -79,7 +80,7 @@ describe('chaiNNer client', () => {
       onState: () => controller.abort(),
     });
     await expect(result).rejects.toThrow('Aborted');
-    expect(transport.request).toHaveBeenCalledTimes(1);
+    expect(transport.request).toHaveBeenCalledOnce();
   });
 
   it('does not retry invalid tokens or incompatible servers', async () => {
