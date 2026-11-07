@@ -359,6 +359,8 @@
     }
   },
   "upscale": {
+    "enable": "Enable upscale",
+    "disable": "Disable upscale",
     "module_download_complete": "Image upscaling model download complete",
     "module_download_failed": "Image upscaling model download failed",
     "module_downloading": "Image upscaling model downloading...",
@@ -381,6 +383,10 @@
     "connecting": "Connecting to chaiNNer",
     "connected": "chaiNNer connected",
     "paused": "chaiNNer paused",
+    "downloading": "Downloading source image",
+    "uploading": "Uploading to chaiNNer",
+    "receiving": "Receiving upscaled image",
+    "progress_legend": "Progress: purple = upscaled, pale purple = pending, red = failed. Translated images also retain their green marker.",
     "queued": "Waiting to upscale",
     "processing": "Upscaling",
     "ready": "Upscaled",

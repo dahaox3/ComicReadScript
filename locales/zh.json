@@ -359,6 +359,8 @@
     }
   },
   "upscale": {
+    "enable": "开启超分",
+    "disable": "关闭超分",
     "module_download_complete": "图片放大模型下载完成",
     "module_download_failed": "图片放大模型下载失败",
     "module_downloading": "图片放大模型下载中...",
@@ -381,6 +383,10 @@
     "connecting": "正在连接 chaiNNer",
     "connected": "chaiNNer 已连接",
     "paused": "chaiNNer 已暂停",
+    "downloading": "正在下载超分原图／译图",
+    "uploading": "正在上传至 chaiNNer",
+    "receiving": "正在接收超分结果",
+    "progress_legend": "进度条：紫色已完成，浅紫处理中，红色失败；译图同时显示绿色翻译状态。",
     "queued": "等待超分",
     "processing": "正在超分",
     "ready": "超分完成",

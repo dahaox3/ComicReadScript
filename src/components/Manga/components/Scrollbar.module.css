@@ -1,4 +1,5 @@
 .scrollbar {
+  --status-split-direction: 90deg;
   --arrow-y: clamp(
     0.45em,
     calc(var(--slider-midpoint)),
@@ -50,15 +51,6 @@
     transform: scaleY(0);
   }
 
-  &[data-upscale] {
-    transform: scaleY(1);
-    background-color: #b39ddb;
-  }
-
-  &[data-upscale='loading'] {
-    background-color: #d1c4e9;
-  }
-
   &[data-translation-type] {
     transform-origin: top;
     transform: scaleY(1);
@@ -75,6 +67,30 @@
 
   &[data-translation-type='error'] {
     background-color: #f005;
+  }
+
+  &[data-upscale] {
+    --upscale-color: #8b5cf6;
+
+    transform: scaleY(1);
+    background-color: var(--upscale-color);
+  }
+
+  &[data-upscale='loading'] {
+    --upscale-color: #ddd6fe;
+  }
+
+  &[data-upscale='error'] {
+    --upscale-color: #ef4444;
+  }
+
+  /* Preserve translation green beside the upscale status instead of hiding it. */
+  &[data-upscale][data-translation-type='show'] {
+    background: linear-gradient(
+      var(--status-split-direction),
+      #4caf50 50%,
+      var(--upscale-color) 50%
+    );
   }
 
   &[data-type='wait'] {
@@ -237,6 +253,7 @@
 
 .scrollbar[data-position='top'],
 .scrollbar[data-position='bottom'] {
+  --status-split-direction: 180deg;
   --arrow-x: calc(var(--arrow-y) * -1 + 50%);
 
   right: 1%;
@@ -292,7 +309,8 @@
       transform: scaleX(0);
     }
 
-    &[data-translation-type] {
+    &[data-translation-type],
+    &[data-upscale] {
       transform: scaleX(1);
     }
   }

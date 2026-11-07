@@ -28,7 +28,14 @@ export const ComicImg: Component<TComicImg & { index: number }> = (img) => {
   const showState = () => store.imgShowState[img.index];
 
   // 让浏览器提前解码防止在火狐和 Safari 上的翻页闪烁
-  createEffect(() => src() && getImgEle(img.src)?.decode());
+  createEffect(() => {
+    // Switching the upscale toggle can replace/revoke the source mid-decode.
+    // Real image failures are handled by onError below.
+    if (src())
+      void getImgEle(img.src)
+        ?.decode()
+        .catch(() => {});
+  });
 
   const src = () => {
     if (img.loadType === 'wait') return '';

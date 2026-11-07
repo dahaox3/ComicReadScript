@@ -91,7 +91,7 @@ export const meta = {
   'name:en': 'ComicRead chaiNNer',
   'name:ru': 'ComicRead chaiNNer',
   namespace: 'dahaox3/ComicReadScript/chainner',
-  version: `${pkg.version}-chainner.1`,
+  version: `${pkg.version}-chainner.2`,
   description: `${zh.description}${getSupportSiteList()
     .map((site) =>
       site.replace(/^[^[]*\[(?<text>[^\]]+)\]\([^)]+\).*$/u, '$<text>'),

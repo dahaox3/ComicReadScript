@@ -1,3 +1,4 @@
+import MdAutoAwesome from '@material-design-icons/svg/round/auto_awesome.svg';
 import MdClose from '@material-design-icons/svg/round/close.svg';
 import MdFullscreen from '@material-design-icons/svg/round/fullscreen.svg';
 import MdFullscreenExit from '@material-design-icons/svg/round/fullscreen_exit.svg';
@@ -27,6 +28,7 @@ import {
   switchFullscreen,
   switchOnePageMode,
   switchScrollMode,
+  switchUpscale,
   translateCurrent,
   translateToEnd,
 } from './actions';
@@ -156,6 +158,20 @@ export const defaultButtonList: ToolbarButtonList = [
         children={<MdLowPriority />}
       />
     </Show>
+  ),
+  // 超分：始终提供桌面入口，不依赖翻译或图像识别总开关。
+  () => (
+    <IconButton
+      tip={t(
+        store.option.imgRecognition.upscale
+          ? 'upscale.disable'
+          : 'upscale.enable',
+      )}
+      enabled={store.option.imgRecognition.upscale}
+      hidden={store.isMobile}
+      onClick={switchUpscale}
+      children={<MdAutoAwesome />}
+    />
   ),
   // 自动滚动
   () => (

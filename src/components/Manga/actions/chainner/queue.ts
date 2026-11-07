@@ -55,7 +55,12 @@ export class ReadingQueue {
   private desired = new Map<string, ReadingTarget>();
   private readonly tasks = new Map<
     string,
-    { id: string; controller: AbortController; priority: number }
+    {
+      id: string;
+      controller: AbortController;
+      priority: number;
+      target: ReadingTarget;
+    }
   >();
   private readonly results = new Map<
     string,
@@ -85,6 +90,7 @@ export class ReadingQueue {
     for (const [key, task] of this.tasks) {
       const target = this.desired.get(key);
       if (!target) {
+        this.onState(task.target, 'cancelled');
         task.controller.abort();
         void this.processor.cancel(task.id).catch(() => {});
         this.tasks.delete(key);
@@ -121,7 +127,7 @@ export class ReadingQueue {
       this.attempted.add(target.key);
       const id = crypto.randomUUID();
       const controller = new AbortController();
-      const task = { id, controller, priority: target.priority };
+      const task = { id, controller, priority: target.priority, target };
       this.tasks.set(target.key, task);
       this.onState(target, 'queued');
       void this.processor

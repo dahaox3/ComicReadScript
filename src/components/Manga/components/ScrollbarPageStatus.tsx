@@ -2,6 +2,8 @@ import { createThrottleMemo } from 'helper';
 import { type Component, For } from 'solid-js';
 
 import { getImg, isOnePageMode, isUpscale, scrollLength } from '../actions';
+import { isChainnerUpscale } from '../actions/chainner';
+import { chainnerImageProgress } from '../actions/chainner/progress';
 import classes from '../index.module.css';
 import { store } from '../store';
 import { type ComicImg } from '../store/image';
@@ -11,7 +13,7 @@ type ScrollbarPageItem = {
   num: number;
   loadType: ComicImg['loadType'];
   translationType: ComicImg['translationType'];
-  upscale?: 'loading' | true;
+  upscale?: 'loading' | 'error' | true;
 };
 
 const getScrollbarPage = (
@@ -24,7 +26,10 @@ const getScrollbarPage = (
   else num = double ? 2 : 1;
 
   let upscale: ScrollbarPageItem['upscale'];
-  if (isUpscale() && img.upscaleUrl !== undefined)
+  if (isChainnerUpscale()) {
+    const progress = chainnerImageProgress(img);
+    upscale = progress === 'ready' ? true : progress;
+  } else if (isUpscale() && img.upscaleUrl !== undefined)
     upscale = img.upscaleUrl === '' ? 'loading' : true;
 
   return {

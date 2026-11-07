@@ -52,12 +52,13 @@ describe('chaiNNer client', () => {
         response(200, { id: 'request', state: 'ready', cached: false }),
       )
       .mockResolvedValueOnce(response(200, blob));
+    const states: string[] = [];
     const result = client.process({
       source: 'https://images.invalid/page.png',
       id: 'request',
       priority: 0,
       signal: new AbortController().signal,
-      onState: () => {},
+      onState: (state) => states.push(state),
     });
     await vi.advanceTimersByTimeAsync(350);
     await expect(result).resolves.toBe(blob);
@@ -66,6 +67,13 @@ describe('chaiNNer client', () => {
     const retry = transport.request.mock.calls[1][1].data as FormData;
     expect(first.get('request_id')).toBe(retry.get('request_id'));
     expect(first.get('image')).toBeInstanceOf(Blob);
+    expect(states).toStrictEqual([
+      'downloading',
+      'uploading',
+      'queued',
+      'uploading',
+      'receiving',
+    ]);
   });
 
   it('stops retrying when the reading window cancels the job', async () => {
@@ -77,7 +85,9 @@ describe('chaiNNer client', () => {
       id: 'request',
       priority: 0,
       signal: controller.signal,
-      onState: () => controller.abort(),
+      onState: (state) => {
+        if (state === 'queued') controller.abort();
+      },
     });
     await expect(result).rejects.toThrow('Aborted');
     expect(transport.request).toHaveBeenCalledOnce();

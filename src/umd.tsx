@@ -88,7 +88,7 @@ export const initComicReader = ({
     for (const [key, value] of Object.entries(polyfill)) {
       if (key === 'GM') {
         gmApi.GM = { ...gmApi.GM, ...(value as InitConfig['polyfill']) };
-      } else GM[key] = value;
+      } else Reflect.set(gmApi, key, value);
     }
     Object.assign(crsLib as any, gmApi);
   }

@@ -68,5 +68,6 @@ export const SettingChainner = () => (
       <MdDeleteSweep />
     </SettingsItemButton>
     <SettingsItem name={chainnerConnection() || t('chainner.help')} />
+    <SettingsItem name={t('chainner.progress_legend')} />
   </>
 );

@@ -99,3 +99,15 @@ export const switchImgRecognition = (...path: ImgRecognitionBooleanKey[]) => {
   // 仅切换 upscale 不会影响识别结果，不需要使正在进行的识别失效
   if (!onlyUpscale) invalidateRecognition();
 };
+
+/** Toggle the selected upscale backend from the main toolbar. */
+export const switchUpscale = () => {
+  const keys: ImgRecognitionBooleanKey[] = ['upscale'];
+  if (
+    !store.option.imgRecognition.upscale &&
+    store.option.upscaleProvider !== 'chainner' &&
+    !store.option.imgRecognition.enabled
+  )
+    keys.push('enabled');
+  switchImgRecognition(...keys);
+};

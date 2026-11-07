@@ -25,30 +25,59 @@ const xmlHttpRequest = <T = any>(
   details: Tampermonkey.Request<T>,
 ): Promise<Tampermonkey.Response<T>> =>
   new Promise((resolve, reject) => {
-    const abortListener = () => abort.abort();
+    const { signal, ...gmDetails } = details;
+    let abort: { abort: () => void } | undefined;
+    let settled = false;
     const cleanup = () => {
-      details.signal?.removeEventListener('abort', abortListener);
+      clearTimeout(timer);
+      signal?.removeEventListener('abort', abortListener);
     };
+    const cancel = (error: DOMException) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      // Some userscript managers never call onabort/ontimeout. Settle locally
+      // before aborting so a stalled request cannot leave the reader waiting.
+      reject(error instanceof Error ? error : new Error(String(error)));
+      abort?.abort();
+    };
+    const abortListener = () =>
+      cancel(new DOMException('Request aborted', 'AbortError'));
+    const timer = setTimeout(
+      () => cancel(new DOMException('Request timed out', 'TimeoutError')),
+      details.timeout ?? 10_000,
+    );
     const handleError = (error?: Tampermonkey.ErrorResponse) => {
+      if (settled) return;
+      settled = true;
       cleanup();
       details.onerror?.(error);
       log.error('GM_xmlhttpRequest Error', error);
       reject(new Error(error?.responseText || 'GM_xmlhttpRequest Error'));
     };
-    const abort = GM_xmlhttpRequest<T>({
-      ...details,
-      onload(res) {
-        cleanup();
-        details.onload?.call(res, res);
-        resolve(res);
-      },
-      onerror: handleError,
-      ontimeout: handleError,
-      onabort: handleError,
-    });
-    if (details.signal?.aborted) abortListener();
-    else
-      details.signal?.addEventListener('abort', abortListener, { once: true });
+    try {
+      // AbortSignal belongs to our wrapper, not the privileged GM transport.
+      abort = GM_xmlhttpRequest<T>({
+        ...gmDetails,
+        onload(res) {
+          if (settled) return;
+          settled = true;
+          cleanup();
+          details.onload?.call(res, res);
+          resolve(res);
+        },
+        onerror: handleError,
+        ontimeout: handleError,
+        onabort: handleError,
+      });
+      if (signal?.aborted) abortListener();
+      else if (!settled)
+        signal?.addEventListener('abort', abortListener, { once: true });
+    } catch (error) {
+      settled = true;
+      cleanup();
+      reject(error instanceof Error ? error : new Error(String(error)));
+    }
   });
 
 /** 通过流读取 blob，并回报下载进度 */
@@ -107,9 +136,14 @@ export const request = async <T = any>(
       const res = await fetch(url, {
         method: 'GET',
         headers,
-        signal: AbortSignal.timeout?.(details.timeout ?? 1000 * 10),
         body: details.data,
         ...details,
+        signal: details.signal
+          ? AbortSignal.any([
+              details.signal,
+              AbortSignal.timeout(details.timeout ?? 10_000),
+            ])
+          : AbortSignal.timeout(details.timeout ?? 10_000),
       });
       if (!details.noCheckCode && res.status !== 200) {
         log.error(errorText, res);
@@ -149,7 +183,7 @@ export const request = async <T = any>(
     // 实际 finalUrl 会变成 `///xxx.xxx` 莫名多了一个斜杠
     // 然而在修改代码发出正确的请求后，就再也无法复现了
     // 不过以防万一还是在这里手动处理下
-    if (url.startsWith('//')) targetUrl = `http:${url}`;
+    if (url.startsWith('//')) targetUrl = `${location.protocol}${url}`;
     // stay 没法处理相对路径，也得转换一下
     else if (url.startsWith('/')) targetUrl = `${location.origin}${url}`;
 
@@ -179,6 +213,7 @@ export const request = async <T = any>(
 
     return res;
   } catch (error) {
+    if (details.signal?.aborted) throw error;
     if (details && details.retryFetch && retryNum === 0) {
       console.warn('retryFetch', url);
       details.fetch = !details.fetch;
@@ -188,7 +223,9 @@ export const request = async <T = any>(
       (details.noTip ? log.error : toast.error)(
         `${errorText}\nerror: ${(error as Error).message}`,
       );
-      throw new Error(errorText, { cause: error });
+      throw new Error(`${errorText}\n${(error as Error).message}`, {
+        cause: error,
+      });
     }
 
     log.error(errorText, error);
@@ -233,8 +270,12 @@ export const downloadImg = async (
   retryNum = 0,
 ) => {
   if (url.startsWith('blob:')) {
-    const res = await fetch(url);
-    return res.blob();
+    const res = await request<Blob>(url, {
+      ...details,
+      fetch: true,
+      responseType: 'blob',
+    });
+    return res.response;
   }
 
   const res = await request<Blob>(

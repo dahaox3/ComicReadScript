@@ -6,6 +6,7 @@ import { setState, store } from '../../store';
 import { type ComicImg } from '../../store/image';
 import { activePage } from '../memo';
 import { BridgeClient } from './client';
+import { clearChainnerProgress } from './progress';
 import { ReadingQueue, type ReadingTarget, readingWindow } from './queue';
 
 export const [chainnerReaderVisible, setChainnerReaderVisible] =
@@ -33,6 +34,7 @@ export const chainnerImageUrl = (img: ComicImg) => {
 let client: BridgeClient | undefined;
 let queue: ReadingQueue | undefined;
 let fingerprint = '';
+let completionVersion = '';
 let configuration = '';
 let generation = 0;
 let heartbeat: ReturnType<typeof setInterval> | undefined;
@@ -46,6 +48,7 @@ const updateImage = (target: ReadingTarget, url?: string) => {
   if (target.key.endsWith('\0original'))
     setState('imgMap', target.url, {
       chainnerOriginalUrl: url,
+      ...(url ? { chainnerOriginalDone: true } : {}),
       ...(url ? {} : { chainnerMessage: undefined }),
     });
   else if (
@@ -55,6 +58,7 @@ const updateImage = (target: ReadingTarget, url?: string) => {
     setState('imgMap', target.url, {
       chainnerTranslatedUrl: url,
       chainnerTranslatedSource: url ? target.source : undefined,
+      ...(url ? { chainnerTranslatedDoneSource: target.source } : {}),
       ...(url ? {} : { chainnerMessage: undefined }),
     });
 };
@@ -65,22 +69,25 @@ const makeQueue = (processor: BridgeClient) =>
     onResult: updateImage,
     onState: (target, state) => {
       if (store.imgMap[target.url])
-        setState(
-          'imgMap',
-          target.url,
-          'chainnerMessage',
-          t(`chainner.${state}`),
-        );
+        setState('imgMap', target.url, {
+          chainnerMessage:
+            state === 'cancelled' ? undefined : t(`chainner.${state}`),
+          chainnerProgress:
+            state === 'cancelled'
+              ? undefined
+              : {
+                  source: target.source,
+                  state: state === 'ready' ? 'ready' : 'loading',
+                },
+        });
     },
     onError: (target, error) => {
       log.error('chaiNNer image request failed', error);
       if (store.imgMap[target.url])
-        setState(
-          'imgMap',
-          target.url,
-          'chainnerMessage',
-          `${t('chainner.failed')}: ${(error as Error).message}`,
-        );
+        setState('imgMap', target.url, {
+          chainnerMessage: `${t('chainner.failed')}: ${(error as Error).message}`,
+          chainnerProgress: { source: target.source, state: 'error' },
+        });
     },
   });
 
@@ -90,12 +97,23 @@ const stop = () => {
   heartbeat = undefined;
   queue?.dispose();
   setState((state) => {
-    for (const url of retainUrls)
-      if (state.imgMap[url]) state.imgMap[url].chainnerMessage = undefined;
+    for (const img of Object.values(state.imgMap)) {
+      img.chainnerMessage = undefined;
+      img.chainnerProgress = undefined;
+    }
   });
   queue = undefined;
   client = undefined;
   fingerprint = '';
+};
+
+const syncCompletionVersion = (processor: BridgeClient, next: string) => {
+  const version = JSON.stringify([processor.baseUrl, next]);
+  if (completionVersion === version) return;
+  setState((state) => {
+    for (const img of Object.values(state.imgMap)) clearChainnerProgress(img);
+  });
+  completionVersion = version;
 };
 
 window.addEventListener('pagehide', () => {
@@ -116,6 +134,7 @@ const start = async (key: string) => {
     if (current !== generation || configuration !== key) return;
     client = processor;
     ({ fingerprint } = status);
+    syncCompletionVersion(processor, fingerprint);
     queue = makeQueue(processor);
     queue.reconcile(targets, retainUrls);
     setChainnerConnection(t('chainner.connected'));
@@ -129,6 +148,7 @@ const start = async (key: string) => {
           if (current !== generation) return;
           if (next.fingerprint !== fingerprint) {
             ({ fingerprint } = next);
+            syncCompletionVersion(processor, fingerprint);
             queue?.dispose();
             queue = makeQueue(processor);
             queue.reconcile(targets, retainUrls);
@@ -175,6 +195,7 @@ export const clearChainnerCache = async () => {
     // Cancellation reaches the server before this request; an active GPU job
     // may still finish, in which case the user can retry clearing after it ends.
     await processor.clearCache();
+    completionVersion = '';
     toast.success(t('chainner.cache_cleared'));
   } catch (error) {
     toast.error(`${t('chainner.failed')}: ${(error as Error).message}`);

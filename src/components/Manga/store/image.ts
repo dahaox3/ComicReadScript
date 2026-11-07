@@ -34,6 +34,13 @@ export type ComicImg = {
   chainnerTranslatedUrl?: string;
   chainnerTranslatedSource?: string;
   chainnerMessage?: string;
+  /** Completion metadata survives releasing nearby image Blob URLs. */
+  chainnerOriginalDone?: boolean;
+  chainnerTranslatedDoneSource?: string;
+  chainnerProgress?: {
+    source: string;
+    state: 'loading' | 'ready' | 'error';
+  };
 };
 
 export type PageList = ([number] | [number, number])[];

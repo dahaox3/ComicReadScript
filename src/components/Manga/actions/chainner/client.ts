@@ -97,6 +97,7 @@ export class BridgeClient {
     signal,
     onState,
   }: ImageRequest): Promise<Blob> {
+    onState('downloading');
     const blob = await downloadImg(source, { signal, noTip: true });
     signal.throwIfAborted();
     const form = new FormData();
@@ -108,6 +109,7 @@ export class BridgeClient {
     while (true) {
       signal.throwIfAborted();
       try {
+        onState('uploading');
         job = await this.api<BridgeJob>('/jobs', {
           method: 'POST',
           data: form,
@@ -135,6 +137,7 @@ export class BridgeClient {
       await delay(signal);
       job = await this.api<BridgeJob>(`/jobs/${id}`, { signal });
     }
+    onState('receiving');
     return await this.api<Blob>(`/jobs/${id}/result`, {
       responseType: 'blob',
       timeout: 60_000,

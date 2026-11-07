@@ -60,6 +60,7 @@ const setup = () => {
     pending,
     onResult,
     onError,
+    onState,
     objectUrls,
   };
 };
@@ -89,6 +90,7 @@ describe('chaiNNer reading window', () => {
     state.queue.reconcile([target('old')], new Set(['old']));
     state.queue.reconcile([target('new')], new Set(['new']));
     expect(state.pending[0].request.signal.aborted).toBe(true);
+    expect(state.onState).toHaveBeenCalledWith(target('old'), 'cancelled');
     state.queue.reconcile([target('old')], new Set(['old']));
     state.pending[0].resolve(new Blob(['stale']));
     state.pending[1].resolve(new Blob(['also stale']));
